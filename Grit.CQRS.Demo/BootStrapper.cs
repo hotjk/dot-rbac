@@ -1,5 +1,6 @@
 ﻿using Grit.CQRS.Demo.Model;
 using Grit.CQRS.Demo.Model.CommandHandlers;
+using Grit.CQRS.Demo.Model.EventHandlers;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace Grit.CQRS.Demo
         public static void BootStrap()
         {
             AddIocBindings();
-            InitModelServiceLocator();
+            InitHandlerFactory();
+            InitServiceLocator();
         }
 
         private static void AddIocBindings()
@@ -29,9 +31,18 @@ namespace Grit.CQRS.Demo
             Kernel.Bind<IEventBus>().To<EventBus>().InSingletonScope();
 
             Kernel.Bind<CreateItemCommandHandler>().ToSelf().InSingletonScope();
+            Kernel.Bind<ChangeItemCommandHandler>().ToSelf().InSingletonScope();
+            Kernel.Bind<ItemCreatedEventHandler>().ToSelf().InSingletonScope();
+            Kernel.Bind<ItemRenamedEventHandler>().ToSelf().InSingletonScope();
         }
 
-        private static void InitModelServiceLocator()
+        private static void InitHandlerFactory()
+        {
+            CommandHandlerFactory.Init(Kernel, new string[] { "Grit.CQRS.Demo.Model" });
+            EventHandlerFactory.Init(Kernel, new string[] { "Grit.CQRS.Demo.Model" });
+        }
+
+        private static void InitServiceLocator()
         {
             ServiceLocator.Init(Kernel);
         }
