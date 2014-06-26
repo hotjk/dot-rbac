@@ -10,11 +10,5 @@ namespace Grit.CQRS.Demo.Model.Commands
     {
         public string Title { get; set; }
         public string Description { get; set; }
-
-        public ChangeItemCommand(string title, string description)
-        {
-            Description = description;
-            Title = title;
-        }
     }
 }

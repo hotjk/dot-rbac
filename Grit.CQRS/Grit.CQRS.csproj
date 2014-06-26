@@ -51,7 +51,9 @@
     <Compile Include="Commands\ICommandBus.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\ICommandHandlerFactory.cs" />
-    <Compile Include="Events\EventHandlerFactory.cs" />
+    <Compile Include="Events\EventHandlerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Events\IEvent.cs" />
     <Compile Include="Events\IEventBus.cs" />
     <Compile Include="Events\IEventHandler.cs" />

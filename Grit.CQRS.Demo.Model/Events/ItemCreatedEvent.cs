@@ -10,11 +10,5 @@ namespace Grit.CQRS.Demo.Model.Events
     {
         public string Title { get; internal set; }
         public string Description { get; internal set; }
-
-        public ItemCreatedEvent(string title, string description)
-        {
-            Title = title;
-            Description = description;
-        }
     }
 }

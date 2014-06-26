@@ -15,8 +15,18 @@ namespace Grit.CQRS.Demo
         static void Main(string[] args)
         {
             BootStrapper.BootStrap();
-            ServiceLocator.CommandBus.Send(new CreateItemCommand("Title", "Description"));
-            ServiceLocator.CommandBus.Send(new CreateItemCommand("Title", "Description"));
+            ServiceLocator.CommandBus.Send(
+                new CreateItemCommand
+                {
+                    Title = "Title",
+                    Description = "Description"
+                });
+            ServiceLocator.CommandBus.Send(
+                new CreateItemCommand
+                {
+                    Title = "Title",
+                    Description = "Description"
+                });
         }
     }
 }

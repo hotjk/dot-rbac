@@ -9,9 +9,5 @@ namespace Grit.CQRS.Demo.Model.Events
     public class ItemRenamedEvent : Event
     {
         public string Title { get; internal set; }
-        public ItemRenamedEvent(string title)
-        {
-            Title = title;
-        }
     }
 }

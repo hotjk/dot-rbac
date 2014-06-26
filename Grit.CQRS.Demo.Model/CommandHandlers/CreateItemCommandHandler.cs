@@ -17,7 +17,12 @@ namespace Grit.CQRS.Demo.Model.CommandHandlers
         public void Execute(CreateItemCommand command)
         {
             Console.WriteLine(this.GetType().FullName + "." + System.Reflection.MethodBase.GetCurrentMethod().Name);
-            ServiceLocator.EventBus.Publish(new ItemCreatedEvent("Title", "Description"));
+            ServiceLocator.EventBus.Publish(
+                new ItemCreatedEvent
+                {
+                    Title = "Title",
+                    Description = "Description"
+                });
         }
     }
 }
