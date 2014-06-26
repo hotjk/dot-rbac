@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Demo.Model.Investments
+namespace Grit.CQRS.Demo.Model.Projects
 {
-    public class InvestmentService : IInvestmentService
+    public class ProjectService : IProjectService
     {
-        private IInvestmentService _repository;
-        public InvestmentService(IInvestmentService repository)
+        private IProjectRepository _repository;
+        public ProjectService(IProjectRepository repository)
         {
             _repository = repository;
         }
 
-        public Investment Get(int id)
+        public Project Get(int id)
         {
             return _repository.Get(id);
         }

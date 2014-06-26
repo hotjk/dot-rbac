@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS.Demo.Model.Investments
 {
-    public interface IInvestmentService
+    public interface IInvestmentWriteService
     {
-        Investment Get(int id);
+        bool Add(Investment investment);
     }
 }

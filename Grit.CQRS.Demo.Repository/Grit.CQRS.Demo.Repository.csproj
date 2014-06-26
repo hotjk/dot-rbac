@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12BE6EEF-8DEB-4A28-9490-623925508873}</ProjectGuid>
+    <ProjectGuid>{3B40FC43-9D2D-450A-B881-90BDAA7C2974}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Grit.Sequence.Configuration</RootNamespace>
-    <AssemblyName>Grit.Sequence.Configuration</AssemblyName>
+    <RootNamespace>Grit.CQRS.Demo.Repository</RootNamespace>
+    <AssemblyName>Grit.CQRS.Demo.Repository</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,21 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BootStrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Grit.Sequence.Repository.Mysql\Grit.Sequence.Repository.MySql.csproj">
-      <Project>{c8223ccd-75f4-4b9e-813b-b8a5a83ff758}</Project>
-      <Name>Grit.Sequence.Repository.MySql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Grit.Sequence\Grit.Sequence.csproj">
-      <Project>{0161cd61-4221-47c3-9567-1695c06de101}</Project>
-      <Name>Grit.Sequence</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

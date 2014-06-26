@@ -9,7 +9,7 @@ using Grit.CQRS.Demo.Model.Events;
 using Grit.CQRS.Demo.Model;
 using Grit.Sequence;
 using Grit.Configuration;
-using Grit.CQRS.Demo.Model.Investments.Commands;
+using Grit.CQRS.Demo.Model.Investments.Events;
 
 namespace Grit.CQRS.Demo
 {
@@ -44,8 +44,7 @@ namespace Grit.CQRS.Demo
             int projectId = 1;
             ISequenceService sequenceService = BootStrapper.Kernel.Get<ISequenceService>();
 
-
-            InvestCommand command = new InvestCommand
+            InvestmentCreateCommand command = new InvestmentCreateCommand
             {
                 AccountId = accountId,
                 ProjectId = projectId,
