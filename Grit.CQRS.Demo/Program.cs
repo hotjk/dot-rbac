@@ -7,6 +7,9 @@ using Ninject;
 using Grit.CQRS.Demo.Model.Commands;
 using Grit.CQRS.Demo.Model.Events;
 using Grit.CQRS.Demo.Model;
+using Grit.Sequence;
+using Grit.Configuration;
+using Grit.CQRS.Demo.Model.Investments.Commands;
 
 namespace Grit.CQRS.Demo
 {
@@ -15,6 +18,12 @@ namespace Grit.CQRS.Demo
         static void Main(string[] args)
         {
             BootStrapper.BootStrap();
+            //BasicTest();
+            InvestTest();
+        }
+
+        private static void BasicTest()
+        {
             ServiceLocator.CommandBus.Send(
                 new CreateItemCommand
                 {
@@ -27,6 +36,23 @@ namespace Grit.CQRS.Demo
                     Title = "Title",
                     Description = "Description"
                 });
+        }
+
+        private static void InvestTest()
+        {
+            int accountId = 1;
+            int projectId = 1;
+            ISequenceService sequenceService = BootStrapper.Kernel.Get<ISequenceService>();
+
+
+            InvestCommand command = new InvestCommand
+            {
+                AccountId = accountId,
+                ProjectId = projectId,
+                InvestmentId = sequenceService.Next((int)SequenceID.CQRS_Investment, 1),
+                Amount = 10000
+            };
+            ServiceLocator.CommandBus.Send(command);
         }
     }
 }

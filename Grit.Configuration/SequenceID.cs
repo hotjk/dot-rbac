@@ -9,5 +9,9 @@ namespace Grit.Configuration
     public enum SequenceID
     {
         Test1 = 1,
+        
+        CQRS_Account = 100,
+        CQRS_Project = 101,
+        CQRS_Investment = 102,
     }
 }

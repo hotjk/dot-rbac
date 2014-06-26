@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1856B8C2-C299-4931-8884-182E540BAE77}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{DD090637-C0AD-44D8-86B4-BF7B37241DC1}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Grit.Sequence.Demo</RootNamespace>
-    <AssemblyName>Grit.Sequence.Demo</AssemblyName>
+    <RootNamespace>Grit.CQRS.Demo.Repository.Read</RootNamespace>
+    <AssemblyName>Grit.CQRS.Demo.Repository.Read</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,12 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.25\lib\net45\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.6.8.3\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,21 +45,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="BaseRepository.cs" />
+    <Compile Include="InvestmentRepository.cs" />
+    <Compile Include="AccountRepository.cs" />
+    <Compile Include="ProjectRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Grit.Sequence.Repository.Mysql\Grit.Sequence.Repository.MySql.csproj">
-      <Project>{c8223ccd-75f4-4b9e-813b-b8a5a83ff758}</Project>
-      <Name>Grit.Sequence.Repository.MySql</Name>
+    <ProjectReference Include="..\Grit.Configuration\Grit.Configuration.csproj">
+      <Project>{38bff300-be60-4a8b-886e-0c3df4362657}</Project>
+      <Name>Grit.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Grit.Sequence\Grit.Sequence.csproj">
-      <Project>{0161cd61-4221-47c3-9567-1695c06de101}</Project>
-      <Name>Grit.Sequence</Name>
+    <ProjectReference Include="..\Grit.CQRS.Demo.Model\Grit.CQRS.Demo.Model.csproj">
+      <Project>{42fee80f-c97b-4b64-b7df-4835dd113ca2}</Project>
+      <Name>Grit.CQRS.Demo.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

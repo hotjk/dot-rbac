@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Demo.Model.Services
+namespace Grit.CQRS.Demo.Model.Accounts
 {
-    public class ItemService
+    public interface IAccountRepository
     {
+        Account Get(int id);
     }
 }

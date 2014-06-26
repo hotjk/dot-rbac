@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Demo.Model.Services
+namespace Grit.CQRS.Demo.Model.Investments
 {
-    public interface IItemService
+    public interface IInvestmentRepository
     {
-        Item GetItem(int id);
+        Investment Get(int id);
     }
 }

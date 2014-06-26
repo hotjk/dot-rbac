@@ -1,5 +1,4 @@
-﻿using Grit.Sequence.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,18 +6,28 @@ using System.Threading.Tasks;
 using Ninject;
 using System.Threading;
 using System.Transactions;
+using Grit.Sequence.Repository.MySql;
 
 namespace Grit.Sequence.Demo
 {
     class Program
     {
         private const int SequenceID = 1;
+        public static IKernel Kernel;
         static void Main(string[] args)
         {
-            BootStrapper.BootStrap();
+            AddIocBindings();
+
             BasicTest();
             //MultiThreadTest();
             //TransactionScopeTest();
+        }
+
+        private static void AddIocBindings()
+        {
+            Kernel = new StandardKernel();
+            Kernel.Bind<ISequenceRepository>().To<SequenceRepository>().InSingletonScope();
+            Kernel.Bind<ISequenceService>().To<SequenceService>().InSingletonScope();
         }
 
         private static void MultiThreadTest()
@@ -36,7 +45,7 @@ namespace Grit.Sequence.Demo
 
         private static void BasicTest()
         {
-            ISequenceService sequenceService = BootStrapper.Kernel.Get<ISequenceService>();
+            ISequenceService sequenceService = Kernel.Get<ISequenceService>();
             for (int i = 0; i < 100; i++)
             {
                 int next = sequenceService.Next(SequenceID, 10);
@@ -46,7 +55,7 @@ namespace Grit.Sequence.Demo
 
         private static void TransactionScopeTest()
         {
-            ISequenceService sequenceService = BootStrapper.Kernel.Get<ISequenceService>();
+            ISequenceService sequenceService = Kernel.Get<ISequenceService>();
             using (TransactionScope scope = new TransactionScope())
             {
                 BasicTest();

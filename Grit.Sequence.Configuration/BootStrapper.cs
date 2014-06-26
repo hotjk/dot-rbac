@@ -17,11 +17,6 @@ namespace Grit.Sequence.Configuration
             AddIocBindings();
         }
 
-        private static void AddIocBindings()
-        {
-            Kernel = new StandardKernel();
-            Kernel.Bind<ISequenceRepository>().To<SequenceRepository>().InSingletonScope();
-            Kernel.Bind<ISequenceService>().To<SequenceService>().InSingletonScope();
-        }
+        
     }
 }

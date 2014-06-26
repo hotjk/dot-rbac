@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -42,37 +48,59 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandHandlers\ChangeItemCommandHandler.cs">
+    <Compile Include="Accounts\Account.cs" />
+    <Compile Include="Accounts\IAccountRepository.cs" />
+    <Compile Include="Accounts\IAccountWriteRepository.cs" />
+    <Compile Include="Investments\CommandHandlers\InvestCommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CommandHandlers\CreateItemCommandHandler.cs">
+    <Compile Include="Investments\Commands\InvestCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\ChangeItemCommand.cs">
+    <Compile Include="Investments\IInvestmentService.cs" />
+    <Compile Include="Investments\IInvestmentWriteRepository.cs" />
+    <Compile Include="Investments\IInvestmentRepository.cs" />
+    <Compile Include="Investments\Investment.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\CreateItemCommand.cs">
+    <Compile Include="Investments\InvestmentService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EventHandlers\ItemCreatedEventHandler.cs">
+    <Compile Include="Projects\IProjectService.cs" />
+    <Compile Include="Projects\IProjectWriteRepository.cs" />
+    <Compile Include="Projects\IProjectRepository.cs" />
+    <Compile Include="Projects\Project.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EventHandlers\ItemRenamedEventHandler.cs">
+    <Compile Include="Projects\ProjectService.cs" />
+    <Compile Include="Simple\CommandHandlers\ChangeItemCommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Events\ItemCreatedEvent.cs">
+    <Compile Include="Simple\CommandHandlers\CreateItemCommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Events\ItemRenamedEvent.cs">
+    <Compile Include="Simple\Commands\ChangeItemCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Simple\Commands\CreateItemCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Simple\EventHandlers\ItemCreatedEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Simple\EventHandlers\ItemRenamedEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Simple\Events\ItemCreatedEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Simple\Events\ItemRenamedEvent.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\IItemService.cs" />
-    <Compile Include="Services\Item.cs" />
-    <Compile Include="Services\ItemService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Grit.CQRS\Grit.CQRS.csproj">
@@ -83,8 +111,20 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Accounts\CommandHandlers\" />
+    <Folder Include="Accounts\Commands\" />
+    <Folder Include="Accounts\EventHandlers\" />
+    <Folder Include="Accounts\Events\" />
+    <Folder Include="Investments\EventHandlers\" />
+    <Folder Include="Investments\Events\" />
+    <Folder Include="Projects\CommandHandlers\" />
+    <Folder Include="Projects\Commands\" />
+    <Folder Include="Projects\EventHandlers\" />
+    <Folder Include="Projects\Events\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
