@@ -4,7 +4,7 @@ namespace Grit.CQRS.Demo.Model.Projects
 {
     public interface IProjectWriteRepository
     {
-        bool Add(Project project);
-        bool Update(Project project);
+        bool Init(Project project);
+        bool DecreaseAmount(int projectId, decimal Amount);
     }
 }

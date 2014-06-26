@@ -11,7 +11,7 @@ namespace Grit.CQRS.Demo.Repository.Write
 {
     public class ProjectWriteRepository : BaseRepository, IProjectWriteRepository
     {
-        public bool Add(Project project)
+        public bool Init(Project project)
         {
             using (IDbConnection connection = OpenConnection())
             {
@@ -20,12 +20,12 @@ namespace Grit.CQRS.Demo.Repository.Write
             }
         }
 
-        public bool Update(Project project)
+        public bool DecreaseAmount(int projectId, decimal amount)
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return 1 == connection.Execute("UPDATE cqrs_project SET Name = @Name, Amount = @Amount WHERE ProjectId = @ProjectId;",
-                    project);
+                return 1 == connection.Execute("UPDATE cqrs_project SET Amount = Amount + @Amount WHERE ProjectId = @ProjectId AND Amount + @Amount >= 0;",
+                    new { ProjectId = projectId, Amount = 0 - amount });
             }
         }
     }

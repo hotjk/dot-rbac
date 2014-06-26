@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS.Demo.Model.Accounts
 {
-    public class Account
+    public interface IAccountService
     {
-        public int AccountId { get; set; }
-        public decimal Amount { get; set; }
+        Account Get(int id);
     }
 }

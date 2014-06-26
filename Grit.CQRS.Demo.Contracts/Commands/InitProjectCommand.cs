@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Demo.Model.Projects
+namespace Grit.CQRS.Demo.Contracts.Commands
 {
-    public class Project
+    public class InitProjectCommand : Command
     {
         public int ProjectId { get; set; }
         public string Name { get; set; }

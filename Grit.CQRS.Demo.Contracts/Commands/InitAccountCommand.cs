@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Demo.Model.Investments
+namespace Grit.CQRS.Demo.Contracts.Commands
 {
-    public interface IInvestmentWriteService
+    public class InitAccountCommand : Command
     {
-        bool Add(Investment investment);
+        public int AccountId { get; set; }
     }
 }

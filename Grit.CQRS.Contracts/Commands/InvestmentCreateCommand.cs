@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Demo.Model.Projects
+namespace Grit.CQRS.Demo.Model.Investments.Events
 {
-    public class Project
+    public class InvestmentCreateCommand : Command
     {
+        public int InvestmentId { get; set; }
+        public int AccountId { get; set; }
         public int ProjectId { get; set; }
-        public string Name { get; set; }
         public decimal Amount { get; set; }
     }
 }

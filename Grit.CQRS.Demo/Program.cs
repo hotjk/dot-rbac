@@ -9,7 +9,10 @@ using Grit.CQRS.Demo.Model.Events;
 using Grit.CQRS.Demo.Model;
 using Grit.Sequence;
 using Grit.Configuration;
-using Grit.CQRS.Demo.Model.Investments.Events;
+using Grit.CQRS.Demo.Contracts.Commands;
+using Grit.CQRS.Demo.Model.Accounts;
+using Grit.CQRS.Demo.Model.Projects;
+using Grit.CQRS.Demo.Model.Investments;
 
 namespace Grit.CQRS.Demo
 {
@@ -43,15 +46,35 @@ namespace Grit.CQRS.Demo
             int accountId = 1;
             int projectId = 1;
             ISequenceService sequenceService = BootStrapper.Kernel.Get<ISequenceService>();
+            IAccountService accountService = BootStrapper.Kernel.Get<IAccountService>();
+            IProjectService projectService = BootStrapper.Kernel.Get<IProjectService>();
+            IInvestmentService investmentService = BootStrapper.Kernel.Get<IInvestmentService>();
 
-            InvestmentCreateCommand command = new InvestmentCreateCommand
+            if (accountService.Get(accountId) == null)
+            {
+                ServiceLocator.CommandBus.Send(new InitAccountCommand
+                {
+                    AccountId = accountId
+                });
+            }
+
+            if(projectService.Get(projectId) == null)
+            {
+                ServiceLocator.CommandBus.Send(new InitProjectCommand
+                {
+                    ProjectId = projectId,
+                    Name = "Test Project"
+                });
+            }
+
+
+            ServiceLocator.CommandBus.Send(new InvestmentCreateCommand
             {
                 AccountId = accountId,
                 ProjectId = projectId,
                 InvestmentId = sequenceService.Next((int)SequenceID.CQRS_Investment, 1),
-                Amount = 10000
-            };
-            ServiceLocator.CommandBus.Send(command);
+                Amount = 100.00m
+            });
         }
     }
 }

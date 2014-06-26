@@ -49,15 +49,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\Account.cs" />
-    <Compile Include="Accounts\IAccountRepository.cs" />
-    <Compile Include="Accounts\IAccountWriteRepository.cs" />
-    <Compile Include="Investments\Events\InvestmentCreatedEvent.cs" />
-    <Compile Include="Investments\IInvestmentService.cs" />
-    <Compile Include="Investments\IInvestmentWriteService.cs" />
-    <Compile Include="Investments\InvestmentHandler.cs">
+    <Compile Include="Accounts\AccountHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Investments\Events\InvestmentCreateCommand.cs">
+    <Compile Include="Accounts\AccountService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Accounts\IAccountRepository.cs" />
+    <Compile Include="Accounts\IAccountService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Accounts\IAccountWriteRepository.cs" />
+    <Compile Include="Investments\IInvestmentService.cs" />
+    <Compile Include="Investments\InvestmentHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Investments\IInvestmentRepository.cs" />
@@ -66,6 +70,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Investments\InvestmentService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Projects\ProjectHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Projects\IProjectService.cs" />
@@ -105,6 +112,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Grit.CQRS.Demo.Contracts\Grit.CQRS.Demo.Contracts.csproj">
+      <Project>{65e698bd-e48c-4993-96c5-84ba6b54f442}</Project>
+      <Name>Grit.CQRS.Demo.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Grit.CQRS\Grit.CQRS.csproj">
       <Project>{81569f0a-133a-4e07-a66b-9efc8b5f7411}</Project>
       <Name>Grit.CQRS</Name>
@@ -113,10 +124,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Accounts\Events\" />
-    <Folder Include="Projects\Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
