@@ -24,7 +24,7 @@ namespace Grit.CQRS
             }
             else
             {
-                throw new UnregisteredDomainCommandException("no handler registered");
+                throw new UnregisteredDomainCommandException("no handler registered for command: " + command);
             }
         }
     }

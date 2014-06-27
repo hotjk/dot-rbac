@@ -10,18 +10,22 @@ namespace Grit.CQRS
     public class EventHandlerFactory : IEventHandlerFactory
     {
         private static IKernel _kernel;
-        private static IEnumerable<string> _assmblies;
+        private static IEnumerable<string> _eventAssmblies;
+        private static IEnumerable<string> _handlerAssmblies;
         private static IDictionary<Type, List<Type>> _handlers;
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
-        public static void Init(IKernel kernel, IEnumerable<string> assmblies)
+        public static void Init(IKernel kernel,
+            IEnumerable<string> eventAssmblies,
+            IEnumerable<string> handlerAssmblies)
         {
             if (!_isInitialized)
             {
                 lock (_lockThis)
                 {
-                    _assmblies = assmblies;
+                    _eventAssmblies = eventAssmblies;
+                    _handlerAssmblies = handlerAssmblies;
                     _kernel = kernel;
                     HookHandlers();
                     _isInitialized = true;
@@ -32,11 +36,18 @@ namespace Grit.CQRS
         private static void HookHandlers()
         {
             _handlers = new Dictionary<Type, List<Type>>();
+            List<Type> events = new List<Type>();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(n => _assmblies.Any(m => m == n.GetName().Name)))
+            foreach (var assembly in assemblies.Where(n => _eventAssmblies.Any(m => m == n.GetName().Name)))
             {
                 var types = assembly.GetExportedTypes();
-                var events = types.Where(x => x.IsSubclassOf(typeof(Event))).ToList();
+                events.AddRange(types.Where(x => x.IsSubclassOf(typeof(Event))));
+            }
+
+            foreach (var assembly in assemblies.Where(n => _handlerAssmblies.Any(m => m == n.GetName().Name)))
+            {
+                var types = assembly.GetExportedTypes();
                 var allHandlers = types.Where(x => x.GetInterfaces()
                         .Any(a => a.IsGenericType && a.GetGenericTypeDefinition() == typeof(IEventHandler<>)));
                 foreach (var @event in events)
@@ -46,7 +57,7 @@ namespace Grit.CQRS
                             .Any(ii => ii.GetGenericArguments()
                                 .Any(aa => aa == @event))).ToList();
                     List<Type> value;
-                    if(_handlers.TryGetValue(@event, out value))
+                    if (_handlers.TryGetValue(@event, out value))
                     {
                         _handlers[@event].AddRange(value);
                     }

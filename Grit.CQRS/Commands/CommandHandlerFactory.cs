@@ -10,18 +10,22 @@ namespace Grit.CQRS
     public class CommandHandlerFactory : ICommandHandlerFactory
     {
         private static IKernel _kernel;
-        private static IEnumerable<string> _assmblies;
-        private static IDictionary<Type, List<Type>> _handlers;
+        private static IEnumerable<string> _commandAssmblies;
+        private static IEnumerable<string> _handlerAssmblies;
+        private static IDictionary<Type, Type> _handlers;
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
-        public static void Init(IKernel kernel, IEnumerable<string> assmblies)
+        public static void Init(IKernel kernel, 
+            IEnumerable<string> commandAssmblies,
+            IEnumerable<string> handlerAssmblies)
         {
             if (!_isInitialized)
             {
                 lock (_lockThis)
                 {
-                    _assmblies = assmblies;
+                    _commandAssmblies = commandAssmblies;
+                    _handlerAssmblies = handlerAssmblies;
                     _kernel = kernel;
                     HookHandlers();
                     _isInitialized = true;
@@ -31,13 +35,18 @@ namespace Grit.CQRS
 
         private static void HookHandlers()
         {
-            _handlers = new Dictionary<Type, List<Type>>();
+            _handlers = new Dictionary<Type, Type>();
+            List<Type> commands = new List<Type>();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-            foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(n=>_assmblies.Any(m=>m == n.GetName().Name)))
+            foreach (var assembly in assemblies.Where(n => _commandAssmblies.Any(m => m == n.GetName().Name)))
             {
-                var types = assembly.GetExportedTypes();
-                var commands = types.Where(x => x.IsSubclassOf(typeof(Command))).ToList();
-                var allHandlers = types.Where(x => x.GetInterfaces()
+                commands.AddRange(assembly.GetExportedTypes().Where(x => x.IsSubclassOf(typeof(Command))));
+            }
+
+            foreach (var assembly in assemblies.Where(n => _handlerAssmblies.Any(m => m == n.GetName().Name)))
+            {
+                var allHandlers = assembly.GetExportedTypes().Where(x => x.GetInterfaces()
                         .Any(a => a.IsGenericType && a.GetGenericTypeDefinition() == typeof(ICommandHandler<>)));
                 foreach(var command in commands)
                 {
@@ -45,18 +54,26 @@ namespace Grit.CQRS
                         .Where(h => h.GetInterfaces()
                             .Any(ii => ii.GetGenericArguments()
                                 .Any(aa => aa == command))).ToList();
-                    if(_handlers.ContainsKey(command))
+                    if (handlers.Count > 1 ||
+                        (handlers.Count == 1 && _handlers.ContainsKey(command)))
                     {
                         throw new MoreThanOneDomainCommandHandlerException("more than one handler for command: " + command.Name);
                     }
-                    _handlers[command] = handlers;
+                    _handlers[command] = handlers.First();
+                }
+            }
+            foreach (var command in commands)
+            {
+                if(!_handlers.ContainsKey(command))
+                {
+                    throw new UnregisteredDomainCommandException("no handler registered for command: " + command.Name);
                 }
             }
         }
 
         public ICommandHandler<T> GetHandler<T>() where T : Command
         {
-            var handler = _handlers[typeof(T)].FirstOrDefault(); ;
+            var handler = _handlers[typeof(T)];
             return (ICommandHandler<T>)_kernel.GetService(handler);
         }
     }
