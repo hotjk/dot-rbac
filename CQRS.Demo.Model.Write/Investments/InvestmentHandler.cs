@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 using Grit.CQRS;
 using CQRS.Demo.Model.Investments;
 
-namespace CQRS.Demo.Model.Handlers
+namespace CQRS.Demo.Model.Investments
 {
     public class InvestmentHandler : 
-        ICommandHandler<InvestmentCreateCommand>
+        ICommandHandler<CreateInvestmentCommand>,
+        ICommandHandler<CompleteInvestmentCommand>
     {
         static InvestmentHandler()
         {
-            AutoMapper.Mapper.CreateMap<InvestmentCreateCommand, Investment>();
-            AutoMapper.Mapper.CreateMap<InvestmentCreateCommand, InvestmentCreatedEvent>();
+            AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, Investment>();
+            AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, InvestmentCreatedEvent>();
+            AutoMapper.Mapper.CreateMap<Investment, InvestmentCompletedEvent>();
         }
 
         private IInvestmentWriteRepository _repository;
@@ -25,11 +27,19 @@ namespace CQRS.Demo.Model.Handlers
             _repository = repository;
         }
 
-        public void Execute(InvestmentCreateCommand command)
+        public void Execute(CreateInvestmentCommand command)
         {
             _repository.Add(AutoMapper.Mapper.Map<Investment>(command));
 
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentCreatedEvent>(command));
+        }
+
+        public void Execute(CompleteInvestmentCommand command)
+        {
+            Investment investment = _repository.GetForUpdate(command.InvestmentId);
+            _repository.Complete(command.InvestmentId);
+
+            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentCompletedEvent>(investment));
         }
     }
 }

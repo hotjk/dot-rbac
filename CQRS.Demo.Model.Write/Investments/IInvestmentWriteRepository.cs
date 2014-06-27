@@ -9,5 +9,7 @@ namespace CQRS.Demo.Model.Investments
     public interface IInvestmentWriteRepository
     {
         bool Add(Investment investment);
+        Investment GetForUpdate(int investmentId);
+        bool Complete(int investmentId);
     }
 }

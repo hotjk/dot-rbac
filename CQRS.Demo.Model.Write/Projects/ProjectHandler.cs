@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Grit.CQRS;
+using Grit.CQRS.Exceptions;
 
-namespace CQRS.Demo.Model.Projects.Handlers
+namespace CQRS.Demo.Model.Projects
 {
     public class ProjectHandler : 
         ICommandHandler<InitProjectCommand>,
-        IEventHandler<InvestmentCreatedEvent>
+        IEventHandler<InvestmentCompletedEvent>
     {
         static ProjectHandler()
         {
@@ -24,9 +25,12 @@ namespace CQRS.Demo.Model.Projects.Handlers
             _repository = repository;
         }
 
-        public void Handle(InvestmentCreatedEvent @event)
+        public void Handle(InvestmentCompletedEvent @event)
         {
-            _repository.DecreaseAmount(@event.AccountId, @event.Amount);
+            if(!_repository.DecreaseAmount(@event.AccountId, @event.Amount))
+            {
+                throw new BusinessException("项目可投资金额不足。");
+            }
         }
 
         public void Execute(InitProjectCommand command)

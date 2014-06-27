@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Grit.CQRS;
+using Grit.CQRS.Exceptions;
 
 namespace CQRS.Demo.Model.Accounts
 {
     public class AccountHandler : 
-        IEventHandler<InvestmentCreatedEvent>,
+        IEventHandler<InvestmentCompletedEvent>,
         ICommandHandler<InitAccountCommand>
     {
         private IAccountWriteRepository _repository;
@@ -18,9 +19,12 @@ namespace CQRS.Demo.Model.Accounts
         {
             _repository = repository;
         }
-        public void Handle(InvestmentCreatedEvent @event)
+        public void Handle(InvestmentCompletedEvent @event)
         {
-            _repository.DecreaseAmount(@event.AccountId, @event.Amount);
+            if(!_repository.DecreaseAmount(@event.AccountId, @event.Amount))
+            {
+                throw new BusinessException("账户余额不足。");
+            }
         }
 
         public void Execute(InitAccountCommand command)

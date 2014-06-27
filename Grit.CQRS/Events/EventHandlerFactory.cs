@@ -41,39 +41,61 @@ namespace Grit.CQRS
 
             foreach (var assembly in assemblies.Where(n => _eventAssmblies.Any(m => m == n.GetName().Name)))
             {
-                var types = assembly.GetExportedTypes();
-                events.AddRange(types.Where(x => x.IsSubclassOf(typeof(Event))));
+                events.AddRange(assembly.GetExportedTypes().Where(x => x.IsSubclassOf(typeof(Event))));
             }
 
             foreach (var assembly in assemblies.Where(n => _handlerAssmblies.Any(m => m == n.GetName().Name)))
             {
-                var types = assembly.GetExportedTypes();
-                var allHandlers = types.Where(x => x.GetInterfaces()
+                var allHandlers = assembly.GetExportedTypes().Where(x => x.GetInterfaces()
                         .Any(a => a.IsGenericType && a.GetGenericTypeDefinition() == typeof(IEventHandler<>)));
                 foreach (var @event in events)
                 {
                     var handlers = allHandlers
                         .Where(h => h.GetInterfaces()
-                            .Any(ii => ii.GetGenericArguments()
-                                .Any(aa => aa == @event))).ToList();
+                            .Any(i => i.GetGenericArguments()
+                                .Any(e => e == @event))).ToList();
                     List<Type> value;
                     if (_handlers.TryGetValue(@event, out value))
                     {
                         _handlers[@event].AddRange(value);
                     }
-                    else
+                    else if(handlers.Count > 0)
                     {
                         _handlers[@event] = handlers;
                     }
                 }
             }
+            Log(events);
+        }
+
+        private static void Log(List<Type> events)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("EventBus:{0}", Environment.NewLine);
+            foreach (var @event in events)
+            {
+                sb.AppendFormat("{0}{1}", @event, Environment.NewLine);
+                List<Type> handlers;
+                if (_handlers.TryGetValue(@event, out handlers))
+                {
+                    foreach (var handler in handlers)
+                    {
+                        sb.AppendFormat("\t{0}{1}", handler, Environment.NewLine);
+                    }
+                }
+            }
+            sb.AppendLine();
+            log4net.LogManager.GetLogger("event.logger").Info(sb);
         }
 
         public IEnumerable<IEventHandler<T>> GetHandlers<T>() where T : Event
         {
-            var handlers = _handlers[typeof(T)];
-            var lstHandlers = handlers.Select(handler => (IEventHandler<T>)_kernel.GetService(handler)).ToList();
-            return lstHandlers;
+            List<Type> handlers;
+            if(_handlers.TryGetValue(typeof(T), out handlers))
+            {
+                return handlers.Select(handler => (IEventHandler<T>)_kernel.GetService(handler)).ToList();
+            }
+            return null;
         }
     }
 }

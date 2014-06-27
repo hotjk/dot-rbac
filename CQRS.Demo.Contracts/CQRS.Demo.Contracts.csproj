@@ -39,12 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CompleteInvestmentCommand.cs" />
     <Compile Include="Commands\InitAccountCommand.cs" />
     <Compile Include="Commands\InitProjectCommand.cs" />
-    <Compile Include="Commands\InvestmentCreateCommand.cs" />
+    <Compile Include="Commands\CreateInvestmentCommand.cs" />
     <Compile Include="EnsoureAssemblyLoaded.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Enum\InvestmentStatus.cs" />
+    <Compile Include="Events\InvestmentCompletedEvent.cs" />
     <Compile Include="Events\InvestmentCreatedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

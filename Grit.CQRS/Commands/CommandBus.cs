@@ -17,15 +17,9 @@ namespace Grit.CQRS
 
         public void Send<T>(T command) where T : Command
         {
+            log4net.LogManager.GetLogger("command.logger").Info(command);
             var handler = _commandHandlerFactory.GetHandler<T>();
-            if (handler != null)
-            {
-                handler.Execute(command);
-            }
-            else
-            {
-                throw new UnregisteredDomainCommandException("no handler registered for command: " + command);
-            }
+            handler.Execute(command);
         }
     }
 }

@@ -52,8 +52,8 @@ namespace Grit.CQRS
                 {
                     var handlers = allHandlers
                         .Where(h => h.GetInterfaces()
-                            .Any(ii => ii.GetGenericArguments()
-                                .Any(aa => aa == command))).ToList();
+                            .Any(i => i.GetGenericArguments()
+                                .Any(e => e == command))).ToList();
                     if (handlers.Count > 1 ||
                         (handlers.Count == 1 && _handlers.ContainsKey(command)))
                     {
@@ -69,11 +69,30 @@ namespace Grit.CQRS
                     throw new UnregisteredDomainCommandException("no handler registered for command: " + command.Name);
                 }
             }
+            Log(commands);
+        }
+
+        private static void Log(List<Type> commands)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("CommandBus:{0}", Environment.NewLine);
+            foreach (var command in commands)
+            {
+                sb.AppendFormat("{0}{1}", command, Environment.NewLine);
+                sb.AppendFormat("\t{0}{1}", _handlers[command], Environment.NewLine);
+            }
+            sb.AppendLine();
+            log4net.LogManager.GetLogger("command.logger").Info(sb);
         }
 
         public ICommandHandler<T> GetHandler<T>() where T : Command
         {
-            var handler = _handlers[typeof(T)];
+            Type handler ;
+            if(!_handlers.TryGetValue(typeof(T), out handler))
+            {
+                throw new UnregisteredDomainCommandException("no handler registered for command: " + typeof(T));
+            }
+
             return (ICommandHandler<T>)_kernel.GetService(handler);
         }
     }

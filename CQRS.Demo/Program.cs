@@ -11,6 +11,9 @@ using CQRS.Demo.Model.Accounts;
 using CQRS.Demo.Model.Projects;
 using CQRS.Demo.Model.Investments;
 using CQRS.Demo.Contracts;
+using System.Transactions;
+using CQRS.Demo.Contracts.Events;
+using Grit.CQRS.Exceptions;
 
 namespace Grit.CQRS.Demo
 {
@@ -18,9 +21,13 @@ namespace Grit.CQRS.Demo
     {
         static void Main(string[] args)
         {
-            //EnsoureAssemblyLoaded.Pike();
+            log4net.Config.XmlConfigurator.Configure();
+
+            // Pike a dummy method to ensoure Command/Event assembly been loaded
+            EnsoureAssemblyLoaded.Pike();
+
             BootStrapper.BootStrap();
-            //BasicTest();
+            
             InvestTest();
         }
         public enum SequenceID
@@ -32,20 +39,61 @@ namespace Grit.CQRS.Demo
 
         private static void InvestTest()
         {
-            int accountId = 1;
-            int projectId = 1;
             ISequenceService sequenceService = BootStrapper.Kernel.Get<ISequenceService>();
             IAccountService accountService = BootStrapper.Kernel.Get<IAccountService>();
             IProjectService projectService = BootStrapper.Kernel.Get<IProjectService>();
-            IInvestmentService investmentService = BootStrapper.Kernel.Get<IInvestmentService>();
 
-            ServiceLocator.CommandBus.Send(new InvestmentCreateCommand
+            int accountId = 1;
+            int projectId = 1;
+            decimal amount = 100.00m;
+            int investmentId = sequenceService.Next((int)SequenceID.CQRS_Investment, 1);
+
+            //var account = accountService.Get(accountId);
+            //if (account.Amount < amount)
+            //{
+            //    Console.WriteLine("No money.");
+            //}
+
+            //var project = projectService.Get(projectId);
+            //if(project.Amount < amount)
+            //{
+            //    Console.WriteLine("No space.");
+            //}
+
+            try
             {
-                AccountId = accountId,
-                ProjectId = projectId,
-                InvestmentId = sequenceService.Next((int)SequenceID.CQRS_Investment, 1),
-                Amount = 100.00m
-            });
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    ServiceLocator.CommandBus.Send(new CreateInvestmentCommand
+                    {
+                        AccountId = accountId,
+                        ProjectId = projectId,
+                        InvestmentId = investmentId,
+                        Amount = amount
+                    });
+                    scope.Complete();
+                }
+            }
+            catch(BusinessException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            try
+            {
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    ServiceLocator.CommandBus.Send(new CompleteInvestmentCommand
+                    {
+                        InvestmentId = investmentId
+                    });
+                    scope.Complete();
+                }
+            }
+            catch (BusinessException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

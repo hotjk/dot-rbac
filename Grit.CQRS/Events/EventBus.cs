@@ -17,10 +17,14 @@ namespace Grit.CQRS
 
         public void Publish<T>(T @event) where T : Event
         {
+            log4net.LogManager.GetLogger("event.logger").Info(@event);
             var handlers = _eventHandlerFactory.GetHandlers<T>();
-            foreach (var eventHandler in handlers)
+            if (handlers != null)
             {
-                eventHandler.Handle(@event);
+                foreach (var handler in handlers)
+                {
+                    handler.Handle(@event);
+                }
             }
         }
     }

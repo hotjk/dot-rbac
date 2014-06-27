@@ -54,7 +54,7 @@ namespace Grit.CQRS.Demo
             CommandHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
                 new string[] { "CQRS.Demo.Model.Write" });
             EventHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Model.Write" });
+                new string[] { "CQRS.Demo.Model.Write", "CQRS.Demo" });
         }
 
         private static void InitServiceLocator()

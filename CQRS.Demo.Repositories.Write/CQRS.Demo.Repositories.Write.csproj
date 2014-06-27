@@ -55,6 +55,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CQRS.Demo.Contracts\CQRS.Demo.Contracts.csproj">
+      <Project>{b9fcad5a-3e1d-4d44-9c70-a1b0759dd9a4}</Project>
+      <Name>CQRS.Demo.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CQRS.Demo.Model.Write\CQRS.Demo.Model.Write.csproj">
       <Project>{5ce82ece-3d69-46c7-9f10-7f28cfa52271}</Project>
       <Name>CQRS.Demo.Model.Write</Name>
