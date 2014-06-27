@@ -12,7 +12,7 @@ namespace CQRS.Demo.Repositories.Write
     {
         protected static IDbConnection OpenConnection()
         {
-            MySqlConnection connection = new MySqlConnection(Grit.Configuration.MySql.MySqlCQRSRead);
+            MySqlConnection connection = new MySqlConnection(Grit.Configuration.MySql.MySqlCQRSDemoRead);
             return connection;
         }
     }
