@@ -18,6 +18,8 @@ namespace CQRS.Demo.Model.Investments
         {
             AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, Investment>();
             AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, InvestmentCreatedEvent>();
+            AutoMapper.Mapper.CreateMap<Investment, DecreaseAccountAmountCommand>();
+            AutoMapper.Mapper.CreateMap<Investment, DecreaseProjectAmountCommand>();
             AutoMapper.Mapper.CreateMap<Investment, InvestmentCompletedEvent>();
         }
 
@@ -38,7 +40,8 @@ namespace CQRS.Demo.Model.Investments
         {
             Investment investment = _repository.GetForUpdate(command.InvestmentId);
             _repository.Complete(command.InvestmentId);
-
+            ServiceLocator.CommandBus.Send(AutoMapper.Mapper.Map<DecreaseAccountAmountCommand>(investment));
+            ServiceLocator.CommandBus.Send(AutoMapper.Mapper.Map<DecreaseProjectAmountCommand>(investment));
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentCompletedEvent>(investment));
         }
     }

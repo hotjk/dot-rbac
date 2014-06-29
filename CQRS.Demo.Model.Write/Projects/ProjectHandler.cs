@@ -12,7 +12,7 @@ namespace CQRS.Demo.Model.Projects
 {
     public class ProjectHandler : 
         ICommandHandler<InitProjectCommand>,
-        IEventHandler<InvestmentCompletedEvent>
+        ICommandHandler<DecreaseProjectAmountCommand>
     {
         static ProjectHandler()
         {
@@ -25,17 +25,17 @@ namespace CQRS.Demo.Model.Projects
             _repository = repository;
         }
 
-        public void Handle(InvestmentCompletedEvent @event)
-        {
-            if(!_repository.DecreaseAmount(@event.AccountId, @event.Amount))
-            {
-                throw new BusinessException("项目可投资金额不足。");
-            }
-        }
-
         public void Execute(InitProjectCommand command)
         {
             _repository.Init(AutoMapper.Mapper.Map<Project>(command));
+        }
+
+        public void Execute(DecreaseProjectAmountCommand command)
+        {
+            if (!_repository.DecreaseAmount(command.ProjectId, command.Amount))
+            {
+                throw new BusinessException("项目可投资金额不足。");
+            }
         }
     }
 }

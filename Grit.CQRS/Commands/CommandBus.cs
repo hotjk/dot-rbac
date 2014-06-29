@@ -18,7 +18,7 @@ namespace Grit.CQRS
 
         public void Send<T>(T command) where T : Command
         {
-            log4net.LogManager.GetLogger("command.logger").Info(
+            log4net.LogManager.GetLogger("command.logger").Debug(
                 string.Format("{0}{1}{2}",
                 command, Environment.NewLine,
                 JsonConvert.SerializeObject(command)));

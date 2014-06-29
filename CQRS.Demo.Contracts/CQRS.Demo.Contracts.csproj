@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CompleteInvestmentCommand.cs" />
+    <Compile Include="Commands\DecreaseAccountAmountCommand.cs" />
+    <Compile Include="Commands\DecreaseProjectAmountCommand.cs" />
     <Compile Include="Commands\InitAccountCommand.cs" />
     <Compile Include="Commands\InitProjectCommand.cs" />
     <Compile Include="Commands\CreateInvestmentCommand.cs" />

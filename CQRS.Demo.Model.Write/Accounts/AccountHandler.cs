@@ -10,8 +10,8 @@ using Grit.CQRS.Exceptions;
 
 namespace CQRS.Demo.Model.Accounts
 {
-    public class AccountHandler : 
-        IEventHandler<InvestmentCompletedEvent>,
+    public class AccountHandler :
+        ICommandHandler<DecreaseAccountAmountCommand>,
         ICommandHandler<InitAccountCommand>
     {
         private IAccountWriteRepository _repository;
@@ -19,9 +19,9 @@ namespace CQRS.Demo.Model.Accounts
         {
             _repository = repository;
         }
-        public void Handle(InvestmentCompletedEvent @event)
+        public void Execute(DecreaseAccountAmountCommand command)
         {
-            if(!_repository.DecreaseAmount(@event.AccountId, @event.Amount))
+            if (!_repository.DecreaseAmount(command.AccountId, command.Amount))
             {
                 throw new BusinessException("账户余额不足。");
             }
