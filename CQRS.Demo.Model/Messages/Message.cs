@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Grit.CQRS;
 
-namespace CQRS.Demo.Contracts.Commands
+namespace CQRS.Demo.Model.Messages
 {
-    public class InitAccountCommand : Command
+    public class Message
     {
+        public int MessageId { get; set; }
         public int AccountId { get; set; }
+        public string Content { get; set; }
     }
 }

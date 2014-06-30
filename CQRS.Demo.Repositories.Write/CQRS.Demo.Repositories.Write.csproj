@@ -48,6 +48,7 @@
     <Compile Include="AccountWriteRepository.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="InvestmentWriteRepository.cs" />
+    <Compile Include="MessageWriteRepository.cs" />
     <Compile Include="ProjectWriteRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

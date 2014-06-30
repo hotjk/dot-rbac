@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRS.Demo.Contracts.Commands
+namespace CQRS.Demo.Contracts.Events
 {
-    public class InitProjectCommand : Command
+    public class AccountAmountChangedEvent : Event
     {
-        public int ProjectId { get; set; }
-        public string Name { get; set; }
+        public int AccountId { get; set; }
         public decimal Amount { get; set; }
     }
 }

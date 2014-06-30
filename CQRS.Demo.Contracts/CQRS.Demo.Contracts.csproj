@@ -42,15 +42,19 @@
     <Compile Include="Commands\CompleteInvestmentCommand.cs" />
     <Compile Include="Commands\DecreaseAccountAmountCommand.cs" />
     <Compile Include="Commands\DecreaseProjectAmountCommand.cs" />
-    <Compile Include="Commands\InitAccountCommand.cs" />
-    <Compile Include="Commands\InitProjectCommand.cs" />
     <Compile Include="Commands\CreateInvestmentCommand.cs" />
     <Compile Include="EnsoureAssemblyLoaded.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Enum\InvestmentStatus.cs" />
+    <Compile Include="Events\AccountAmountChangedEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Events\InvestmentCompletedEvent.cs" />
     <Compile Include="Events\InvestmentCreatedEvent.cs" />
+    <Compile Include="Events\ProjectAmountChangedEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

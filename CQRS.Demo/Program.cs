@@ -62,7 +62,8 @@ namespace Grit.CQRS.Demo
 
             try
             {
-                using (TransactionScope scope = new TransactionScope())
+                using (TransactionScope scope = new TransactionScope(
+                    TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = IsolationLevel.RepeatableRead }))
                 {
                     ServiceLocator.CommandBus.Send(new CreateInvestmentCommand
                     {
@@ -81,7 +82,8 @@ namespace Grit.CQRS.Demo
 
             try
             {
-                using (TransactionScope scope = new TransactionScope())
+                using (TransactionScope scope = new TransactionScope(
+                    TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = IsolationLevel.RepeatableRead }))
                 {
                     ServiceLocator.CommandBus.Send(new CompleteInvestmentCommand
                     {

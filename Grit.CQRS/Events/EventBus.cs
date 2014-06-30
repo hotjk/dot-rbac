@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Grit.CQRS
@@ -28,7 +29,19 @@ namespace Grit.CQRS
             {
                 foreach (var handler in handlers)
                 {
-                    handler.Handle(@event);
+                    // Current thread OR thread pool?
+                    //handler.Handle(@event);
+                    ThreadPool.QueueUserWorkItem(x => 
+                        {
+                            try
+                            {
+                                handler.Handle(@event);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        });
                 }
             }
         }

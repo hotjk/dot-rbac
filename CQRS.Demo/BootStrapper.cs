@@ -2,6 +2,7 @@
 using CQRS.Demo.Model.Accounts;
 using CQRS.Demo.Model.Investments;
 using CQRS.Demo.Model.Projects;
+using CQRS.Demo.Model.Write.Messages;
 using CQRS.Demo.Repositories;
 using CQRS.Demo.Repositories.Write;
 using Grit.Sequence;
@@ -47,6 +48,7 @@ namespace Grit.CQRS.Demo
             Kernel.Bind<IAccountRepository>().To<AccountRepository>().InSingletonScope();
             Kernel.Bind<IAccountWriteRepository>().To<AccountWriteRepository>().InSingletonScope();
             Kernel.Bind<IAccountService>().To<AccountService>().InSingletonScope();
+            Kernel.Bind<IMessageWriteRepository>().To<MessageWriteRepository>().InSingletonScope();
         }
 
         private static void InitHandlerFactory()

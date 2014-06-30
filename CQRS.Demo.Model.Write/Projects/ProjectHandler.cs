@@ -11,12 +11,11 @@ using Grit.CQRS.Exceptions;
 namespace CQRS.Demo.Model.Projects
 {
     public class ProjectHandler : 
-        ICommandHandler<InitProjectCommand>,
         ICommandHandler<DecreaseProjectAmountCommand>
     {
         static ProjectHandler()
         {
-            AutoMapper.Mapper.CreateMap<InitProjectCommand, Project>();
+            AutoMapper.Mapper.CreateMap<DecreaseProjectAmountCommand, ProjectAmountChangedEvent>();
         }
 
         private IProjectWriteRepository _repository;
@@ -25,17 +24,13 @@ namespace CQRS.Demo.Model.Projects
             _repository = repository;
         }
 
-        public void Execute(InitProjectCommand command)
-        {
-            _repository.Init(AutoMapper.Mapper.Map<Project>(command));
-        }
-
         public void Execute(DecreaseProjectAmountCommand command)
         {
             if (!_repository.DecreaseAmount(command.ProjectId, command.Amount))
             {
                 throw new BusinessException("项目可投资金额不足。");
             }
+            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<ProjectAmountChangedEvent>(command));
         }
     }
 }

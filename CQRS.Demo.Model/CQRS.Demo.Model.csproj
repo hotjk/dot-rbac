@@ -56,6 +56,7 @@
     <Compile Include="Investments\IInvestmentService.cs" />
     <Compile Include="Investments\Investment.cs" />
     <Compile Include="Investments\InvestmentService.cs" />
+    <Compile Include="Messages\Message.cs" />
     <Compile Include="Projects\IProjectRepository.cs" />
     <Compile Include="Projects\IProjectService.cs" />
     <Compile Include="Projects\Project.cs" />

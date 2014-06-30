@@ -49,6 +49,12 @@
     <Compile Include="Accounts\IAccountWriteRepository.cs" />
     <Compile Include="Investments\IInvestmentWriteRepository.cs" />
     <Compile Include="Investments\InvestmentHandler.cs" />
+    <Compile Include="Messages\IMessageWriteRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Messages\MessageHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Projects\IProjectWriteRepository.cs" />
     <Compile Include="Projects\ProjectHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
