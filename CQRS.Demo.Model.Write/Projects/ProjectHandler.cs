@@ -15,7 +15,7 @@ namespace CQRS.Demo.Model.Projects
     {
         static ProjectHandler()
         {
-            AutoMapper.Mapper.CreateMap<DecreaseProjectAmountCommand, ProjectAmountChangedEvent>();
+            AutoMapper.Mapper.CreateMap<DecreaseProjectAmountCommand, ProjectAmountChanged>();
         }
 
         private IProjectWriteRepository _repository;
@@ -30,7 +30,7 @@ namespace CQRS.Demo.Model.Projects
             {
                 throw new BusinessException("项目可投资金额不足。");
             }
-            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<ProjectAmountChangedEvent>(command));
+            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<ProjectAmountChanged>(command));
         }
     }
 }

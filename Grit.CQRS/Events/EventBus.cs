@@ -19,29 +19,37 @@ namespace Grit.CQRS
 
         public void Publish<T>(T @event) where T : Event
         {
+            string json = JsonConvert.SerializeObject(@event);
             log4net.LogManager.GetLogger("event.logger").Debug(
                 string.Format("{0}{1}{2}",
                 @event, Environment.NewLine,
-                JsonConvert.SerializeObject(@event)));
+                json));
+
+            var channel = _eventHandlerFactory.GetChannel();
+            channel.BasicPublish(_eventHandlerFactory.GetExchange(),
+                @event.RoutingKey, null,
+                Encoding.UTF8.GetBytes(json));
 
             var handlers = _eventHandlerFactory.GetHandlers<T>();
             if (handlers != null)
             {
                 foreach (var handler in handlers)
                 {
-                    // Current thread OR thread pool?
-                    //handler.Handle(@event);
-                    ThreadPool.QueueUserWorkItem(x => 
+                    // handle event in current thread
+                    // handler.Handle(@event);
+
+                    // handle event in thread pool
+                    ThreadPool.QueueUserWorkItem(x =>
+                    {
+                        try
                         {
-                            try
-                            {
-                                handler.Handle(@event);
-                            }
-                            catch (Exception ex)
-                            {
-                                throw ex;
-                            }
-                        });
+                            handler.Handle(@event);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                    });
                 }
             }
         }

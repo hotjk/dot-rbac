@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace CQRS.Demo.Model.Write.Messages
 {
     public class MessageHandler : 
-        IEventHandler<InvestmentCreatedEvent>,
-        IEventHandler<AccountAmountChangedEvent>
+        IEventHandler<InvestmentStatusCreated>,
+        IEventHandler<AccountAmountChanged>
     {
         private IMessageWriteRepository _repository;
         public MessageHandler(IMessageWriteRepository repository)
@@ -19,7 +19,7 @@ namespace CQRS.Demo.Model.Write.Messages
             _repository = repository;
         }
 
-        public void Handle(InvestmentCreatedEvent handle)
+        public void Handle(InvestmentStatusCreated handle)
         {
             _repository.Add(new Message
             {
@@ -28,7 +28,7 @@ namespace CQRS.Demo.Model.Write.Messages
             });
         }
 
-        public void Handle(AccountAmountChangedEvent handle)
+        public void Handle(AccountAmountChanged handle)
         {
             _repository.Add(new Message
             {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CQRS.Demo.Contracts.Events
 {
-    public class AccountAmountChangedEvent : Event
+    public class AccountAmountChanged : Event
     {
         public int AccountId { get; set; }
         public decimal Amount { get; set; }

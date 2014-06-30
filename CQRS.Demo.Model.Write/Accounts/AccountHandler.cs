@@ -15,7 +15,7 @@ namespace CQRS.Demo.Model.Accounts
     {
         static AccountHandler()
         {
-            AutoMapper.Mapper.CreateMap<DecreaseAccountAmountCommand, AccountAmountChangedEvent>();
+            AutoMapper.Mapper.CreateMap<DecreaseAccountAmountCommand, AccountAmountChanged>();
         }
         private IAccountWriteRepository _repository;
         public AccountHandler(IAccountWriteRepository repository)
@@ -28,7 +28,7 @@ namespace CQRS.Demo.Model.Accounts
             {
                 throw new BusinessException("账户余额不足。");
             }
-            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<AccountAmountChangedEvent>(command));
+            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<AccountAmountChanged>(command));
         }
     }
 }

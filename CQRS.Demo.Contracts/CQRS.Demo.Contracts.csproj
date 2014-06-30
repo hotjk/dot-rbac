@@ -47,12 +47,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Enum\InvestmentStatus.cs" />
-    <Compile Include="Events\AccountAmountChangedEvent.cs">
+    <Compile Include="Events\AccountAmountChanged.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Events\InvestmentCompletedEvent.cs" />
-    <Compile Include="Events\InvestmentCreatedEvent.cs" />
-    <Compile Include="Events\ProjectAmountChangedEvent.cs">
+    <Compile Include="Events\InvestmentStatusCompleted.cs" />
+    <Compile Include="Events\InvestmentStatusCreated.cs" />
+    <Compile Include="Events\ProjectAmountChanged.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

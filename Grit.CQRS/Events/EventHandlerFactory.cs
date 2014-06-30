@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,16 @@ namespace Grit.CQRS
         private static IEnumerable<string> _eventAssmblies;
         private static IEnumerable<string> _handlerAssmblies;
         private static IDictionary<Type, List<Type>> _handlers;
+        private static IModel _channel;
+        private static string _exchange;
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
         public static void Init(IKernel kernel,
             IEnumerable<string> eventAssmblies,
-            IEnumerable<string> handlerAssmblies)
+            IEnumerable<string> handlerAssmblies,
+            IModel channel,
+            string exchange)
         {
             if (!_isInitialized)
             {
@@ -28,9 +33,21 @@ namespace Grit.CQRS
                     _handlerAssmblies = handlerAssmblies;
                     _kernel = kernel;
                     HookHandlers();
+                    _channel = channel;
+                    _exchange = exchange;
                     _isInitialized = true;
                 }
             }
+        }
+
+        public IModel GetChannel()
+        {
+            return _channel;
+        }
+
+        public string GetExchange()
+        {
+            return _exchange;
         }
 
         private static void HookHandlers()

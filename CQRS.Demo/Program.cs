@@ -96,6 +96,8 @@ namespace Grit.CQRS.Demo
             {
                 Console.WriteLine(ex.Message);
             }
+
+            BootStrapper.Dispose();
         }
     }
 }

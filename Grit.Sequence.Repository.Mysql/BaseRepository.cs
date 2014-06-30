@@ -12,7 +12,7 @@ namespace Grit.Sequence.Repository.MySql
     {
         protected static IDbConnection OpenConnection()
         {
-            MySqlConnection connection = new MySqlConnection(Grit.Configuration.MySql.MySqlSequence);
+            MySqlConnection connection = new MySqlConnection(Grit.Configuration.MySql.Sequence);
             connection.Open();
             return connection;
         }

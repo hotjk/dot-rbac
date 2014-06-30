@@ -17,10 +17,10 @@ namespace CQRS.Demo.Model.Investments
         static InvestmentHandler()
         {
             AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, Investment>();
-            AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, InvestmentCreatedEvent>();
+            AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, InvestmentStatusCreated>();
             AutoMapper.Mapper.CreateMap<Investment, DecreaseAccountAmountCommand>();
             AutoMapper.Mapper.CreateMap<Investment, DecreaseProjectAmountCommand>();
-            AutoMapper.Mapper.CreateMap<Investment, InvestmentCompletedEvent>();
+            AutoMapper.Mapper.CreateMap<Investment, InvestmentStatusCompleted>();
         }
 
         private IInvestmentWriteRepository _repository;
@@ -33,7 +33,7 @@ namespace CQRS.Demo.Model.Investments
         {
             _repository.Add(AutoMapper.Mapper.Map<Investment>(command));
 
-            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentCreatedEvent>(command));
+            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentStatusCreated>(command));
         }
 
         public void Execute(CompleteInvestmentCommand command)
@@ -42,7 +42,7 @@ namespace CQRS.Demo.Model.Investments
             _repository.Complete(command.InvestmentId);
             ServiceLocator.CommandBus.Send(AutoMapper.Mapper.Map<DecreaseAccountAmountCommand>(investment));
             ServiceLocator.CommandBus.Send(AutoMapper.Mapper.Map<DecreaseProjectAmountCommand>(investment));
-            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentCompletedEvent>(investment));
+            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentStatusCompleted>(investment));
         }
     }
 }

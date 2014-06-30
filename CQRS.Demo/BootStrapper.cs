@@ -8,6 +8,7 @@ using CQRS.Demo.Repositories.Write;
 using Grit.Sequence;
 using Grit.Sequence.Repository.MySql;
 using Ninject;
+using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,30 @@ namespace Grit.CQRS.Demo
     public static class BootStrapper
     {
         public static IKernel Kernel { get; private set; }
+        private static IConnection connection;
+        private static IModel channel;
 
         public static void BootStrap()
         {
             AddIocBindings();
             InitHandlerFactory();
             InitServiceLocator();
+        }
+
+        public static void Dispose()
+        {
+            if(channel != null)
+            {
+                channel.Dispose();
+            }
+            if(connection != null)
+            {
+                connection.Dispose();
+            }
+            if (Kernel != null)
+            {
+                Kernel.Dispose();
+            }
         }
 
         private static void AddIocBindings()
@@ -53,10 +72,16 @@ namespace Grit.CQRS.Demo
 
         private static void InitHandlerFactory()
         {
+            ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
+            connection = factory.CreateConnection();
+            channel = connection.CreateModel();
+            string exchangeName = "event";
+            channel.ExchangeDeclare(exchangeName, ExchangeType.Topic, true);
+
             CommandHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
                 new string[] { "CQRS.Demo.Model.Write" });
             EventHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Model.Write", "CQRS.Demo" });
+                new string[] { "CQRS.Demo.Model.Write", "CQRS.Demo" }, channel, exchangeName);
         }
 
         private static void InitServiceLocator()
