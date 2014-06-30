@@ -17,7 +17,7 @@ namespace CQRS.Demo.Repositories
             {
                 return connection.Query<Investment>(
                     "SELECT InvestmentId, ProjectId, AccountId, Amount, Status FROM cqrs_demo_investment WHERE InvestmentId = @InvestmentId;",
-                    new { id = id }).SingleOrDefault();
+                    new { InvestmentId = id }).SingleOrDefault();
             }
         }
     }

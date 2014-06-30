@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRS.Demo.Model
+namespace Grit.CQRS
 {
     public sealed class ServiceLocator
     {

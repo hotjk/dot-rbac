@@ -5,6 +5,7 @@ using CQRS.Demo.Model.Projects;
 using CQRS.Demo.Model.Write.Messages;
 using CQRS.Demo.Repositories;
 using CQRS.Demo.Repositories.Write;
+using Grit.CQRS;
 using Grit.Sequence;
 using Grit.Sequence.Repository.MySql;
 using Ninject;
@@ -15,7 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Demo
+namespace CQRS.Demo.Web
 {
     public static class BootStrapper
     {

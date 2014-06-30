@@ -48,18 +48,6 @@ namespace Grit.CQRS.Demo
             decimal amount = 100.00m;
             int investmentId = sequenceService.Next((int)SequenceID.CQRS_Investment, 1);
 
-            //var account = accountService.Get(accountId);
-            //if (account.Amount < amount)
-            //{
-            //    Console.WriteLine("No money.");
-            //}
-
-            //var project = projectService.Get(projectId);
-            //if(project.Amount < amount)
-            //{
-            //    Console.WriteLine("No space.");
-            //}
-
             try
             {
                 using (TransactionScope scope = new TransactionScope(

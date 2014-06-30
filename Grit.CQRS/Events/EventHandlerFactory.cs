@@ -19,6 +19,14 @@ namespace Grit.CQRS
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="kernel">Ninject kernel</param>
+        /// <param name="eventAssmblies">The assmbly name list that keep the domain command/event.</param>
+        /// <param name="handlerAssmblies">The assmbly name list that keep the domain command/event handlers</param>
+        /// <param name="channel">RabbitMQ queue channel</param>
+        /// <param name="exchange">RabbitMQ exchange name</param>
         public static void Init(IKernel kernel,
             IEnumerable<string> eventAssmblies,
             IEnumerable<string> handlerAssmblies,
