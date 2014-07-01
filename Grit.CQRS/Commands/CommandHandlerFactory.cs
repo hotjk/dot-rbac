@@ -54,12 +54,16 @@ namespace Grit.CQRS
                         .Where(h => h.GetInterfaces()
                             .Any(i => i.GetGenericArguments()
                                 .Any(e => e == command))).ToList();
+
                     if (handlers.Count > 1 ||
                         (handlers.Count == 1 && _handlers.ContainsKey(command)))
                     {
                         throw new MoreThanOneDomainCommandHandlerException("more than one handler for command: " + command.Name);
                     }
-                    _handlers[command] = handlers.First();
+                    if (handlers.Count == 1)
+                    {
+                        _handlers[command] = handlers.First();
+                    }
                 }
             }
             foreach (var command in commands)

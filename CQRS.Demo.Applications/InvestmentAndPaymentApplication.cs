@@ -17,26 +17,21 @@ namespace CQRS.Demo.Applications
     public class InvestmentAndPaymentApplication
     {
         public InvestmentAndPaymentApplication(
-            ISequenceService sequenceService,
             IAccountService accountService,
             IProjectService projectService,
             IInvestmentService investmentService)
         {
-            _sequenceService = sequenceService;
             _accountService = accountService;
             _projectService = projectService;
             _investmentService = investmentService;
         }
 
-        private ISequenceService _sequenceService;
         private IAccountService _accountService;
         private IProjectService _projectService;
         private IInvestmentService _investmentService;
 
         public void CreateInvestment(CreateInvestmentCommand command)
         {
-            command.InvestmentId = _sequenceService.Next((int)SequenceID.CQRS_Investment, 1);
-
             var account = _accountService.Get(command.AccountId);
             if (account.Amount < command.Amount)
             {
@@ -68,6 +63,16 @@ namespace CQRS.Demo.Applications
             {
                 throw new BusinessException("投资已经支付。");
             }
+            using (TransactionScope scope = new TransactionScope(
+                   TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = IsolationLevel.RepeatableRead }))
+            {
+                ServiceLocator.CommandBus.Send(command);
+                scope.Complete();
+            }
+        }
+
+        public void CreateAccount(CreateAccountCommand command)
+        {
             using (TransactionScope scope = new TransactionScope(
                    TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = IsolationLevel.RepeatableRead }))
             {

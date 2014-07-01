@@ -11,7 +11,7 @@ namespace CQRS.Demo.Repositories.Write
 {
     public class AccountWriteRepository : BaseRepository, IAccountWriteRepository
     {
-        public bool Init(Account account)
+        public bool Create(Account account)
         {
             using (IDbConnection connection = OpenConnection())
             {

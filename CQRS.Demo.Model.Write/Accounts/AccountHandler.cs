@@ -11,11 +11,14 @@ using Grit.CQRS.Exceptions;
 namespace CQRS.Demo.Model.Accounts
 {
     public class AccountHandler :
+        ICommandHandler<CreateAccountCommand>,
         ICommandHandler<ChangeAccountAmountCommand>
     {
         static AccountHandler()
         {
             AutoMapper.Mapper.CreateMap<ChangeAccountAmountCommand, AccountAmountChanged>();
+            AutoMapper.Mapper.CreateMap<CreateAccountCommand, Account>();
+            AutoMapper.Mapper.CreateMap<CreateAccountCommand, AccountStatusCreated>();
         }
         private IAccountWriteRepository _repository;
         public AccountHandler(IAccountWriteRepository repository)
@@ -29,6 +32,15 @@ namespace CQRS.Demo.Model.Accounts
                 throw new BusinessException("账户余额不足。");
             }
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<AccountAmountChanged>(command));
+        }
+
+        public void Execute(CreateAccountCommand command)
+        {
+            if (!_repository.Create(AutoMapper.Mapper.Map<Account>(command)))
+            {
+                throw new BusinessException("账户已存在。");
+            }
+            ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<AccountStatusCreated>(command));
         }
     }
 }

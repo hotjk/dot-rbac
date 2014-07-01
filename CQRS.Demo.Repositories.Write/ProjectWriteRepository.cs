@@ -11,7 +11,7 @@ namespace CQRS.Demo.Repositories.Write
 {
     public class ProjectWriteRepository : BaseRepository, IProjectWriteRepository
     {
-        public bool Init(Project project)
+        public bool Create(Project project)
         {
             using (IDbConnection connection = OpenConnection())
             {

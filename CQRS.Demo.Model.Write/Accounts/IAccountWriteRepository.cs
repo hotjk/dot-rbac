@@ -8,7 +8,7 @@ namespace CQRS.Demo.Model.Accounts
 {
     public interface IAccountWriteRepository
     {
-        bool Init(Account account);
+        bool Create(Account account);
         bool ChangeAmount(int accountId, decimal Amount);
     }
 }
