@@ -77,6 +77,10 @@ namespace CQRS.Demo.Web
 
         private static void InitMessageQueue()
         {
+            //rabbitmqctl add_vhost grit_demo_vhost
+            //rabbitmqctl add_user event_user event_password
+            //rabbitmqctl set_permissions -p grit_demo_vhost event_user ".*" ".*" ".*"
+            //rabbitmqctl list_queues -p grit_demo_vhost
             ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
