@@ -63,21 +63,19 @@ namespace CQRS.Demo.Applications
             {
                 throw new BusinessException("投资已经支付。");
             }
-            using (TransactionScope scope = new TransactionScope(
-                   TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = IsolationLevel.RepeatableRead }))
+            using (UnitOfWork u = new UnitOfWork())
             {
                 ServiceLocator.CommandBus.Send(command);
-                scope.Complete();
+                u.Complete();
             }
         }
 
         public void CreateAccount(CreateAccountCommand command)
         {
-            using (TransactionScope scope = new TransactionScope(
-                   TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = IsolationLevel.RepeatableRead }))
+            using (UnitOfWork u = new UnitOfWork())
             {
                 ServiceLocator.CommandBus.Send(command);
-                scope.Complete();
+                u.Complete();
             }
         }
     }
