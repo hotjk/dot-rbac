@@ -18,9 +18,7 @@ namespace CQRS.Demo.Web
             // Call a dummy method to ensoure Command/Event assembly been loaded
             EnsoureAssemblyLoaded.Pike();
             BootStrapper.BootStrap();
-            var resolver = new NinjectDependencyResolver();
-            resolver.kernel = BootStrapper.Kernel;
-            DependencyResolver.SetResolver(resolver);
+            DependencyResolver.SetResolver(new NinjectDependencyResolver { Kernel = BootStrapper.Kernel });
 
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);

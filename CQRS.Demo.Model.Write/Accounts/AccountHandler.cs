@@ -11,20 +11,20 @@ using Grit.CQRS.Exceptions;
 namespace CQRS.Demo.Model.Accounts
 {
     public class AccountHandler :
-        ICommandHandler<DecreaseAccountAmountCommand>
+        ICommandHandler<ChangeAccountAmountCommand>
     {
         static AccountHandler()
         {
-            AutoMapper.Mapper.CreateMap<DecreaseAccountAmountCommand, AccountAmountChanged>();
+            AutoMapper.Mapper.CreateMap<ChangeAccountAmountCommand, AccountAmountChanged>();
         }
         private IAccountWriteRepository _repository;
         public AccountHandler(IAccountWriteRepository repository)
         {
             _repository = repository;
         }
-        public void Execute(DecreaseAccountAmountCommand command)
+        public void Execute(ChangeAccountAmountCommand command)
         {
-            if (!_repository.DecreaseAmount(command.AccountId, command.Amount))
+            if (!_repository.ChangeAmount(command.AccountId, command.Change))
             {
                 throw new BusinessException("账户余额不足。");
             }

@@ -9,7 +9,6 @@ namespace CQRS.Demo.Model.Accounts
     public interface IAccountWriteRepository
     {
         bool Init(Account account);
-        bool IncreaseAmount(int accountId, decimal Amount);
-        bool DecreaseAmount(int accountId, decimal Amount);
+        bool ChangeAmount(int accountId, decimal Amount);
     }
 }

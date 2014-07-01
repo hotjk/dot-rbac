@@ -40,8 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CompleteInvestmentCommand.cs" />
-    <Compile Include="Commands\DecreaseAccountAmountCommand.cs" />
-    <Compile Include="Commands\DecreaseProjectAmountCommand.cs" />
+    <Compile Include="Commands\ChangeAccountAmountCommand.cs" />
+    <Compile Include="Commands\ChangeProjectAmountCommand.cs" />
+    <Compile Include="Commands\CreateAccountActivityCommand.cs" />
     <Compile Include="Commands\CreateInvestmentCommand.cs" />
     <Compile Include="EnsoureAssemblyLoaded.cs">
       <SubType>Code</SubType>

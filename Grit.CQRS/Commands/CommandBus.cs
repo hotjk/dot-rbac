@@ -16,7 +16,7 @@ namespace Grit.CQRS
             _commandHandlerFactory = commandHandlerFactory;
         }
 
-        public void Send<T>(T command) where T : Command
+        public ICommandBus Send<T>(T command) where T : Command
         {
             log4net.LogManager.GetLogger("command.logger").Debug(
                 string.Format("{0}{1}{2}",
@@ -25,6 +25,7 @@ namespace Grit.CQRS
 
             var handler = _commandHandlerFactory.GetHandler<T>();
             handler.Execute(command);
+            return this;
         }
     }
 }

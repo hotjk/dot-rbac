@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountActivityWriteRepository.cs" />
     <Compile Include="AccountWriteRepository.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="InvestmentWriteRepository.cs" />

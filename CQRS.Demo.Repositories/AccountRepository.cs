@@ -15,8 +15,8 @@ namespace CQRS.Demo.Repositories
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return connection.Query<Account>("SELECT AccountId, Amount FROM cqrs_demo_account;",
-                    new { id = id }).SingleOrDefault();
+                return connection.Query<Account>("SELECT AccountId, Amount FROM cqrs_demo_account WHERE AccountId = @AccountId;",
+                    new { AccountId = id }).SingleOrDefault();
             }
         }
     }

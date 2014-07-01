@@ -9,16 +9,16 @@ namespace CQRS.Demo.Web
 {
     public class NinjectDependencyResolver : IDependencyResolver
     {
-        public IKernel kernel { get; set; }
+        public IKernel Kernel { get; set; }
 
         public object GetService(Type serviceType)
         {
-            return kernel.TryGet(serviceType);
+            return Kernel.TryGet(serviceType);
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return kernel.GetAll(serviceType);
+            return Kernel.GetAll(serviceType);
         }
     }
 }

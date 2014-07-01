@@ -11,11 +11,11 @@ using Grit.CQRS.Exceptions;
 namespace CQRS.Demo.Model.Projects
 {
     public class ProjectHandler : 
-        ICommandHandler<DecreaseProjectAmountCommand>
+        ICommandHandler<ChangeProjectAmountCommand>
     {
         static ProjectHandler()
         {
-            AutoMapper.Mapper.CreateMap<DecreaseProjectAmountCommand, ProjectAmountChanged>();
+            AutoMapper.Mapper.CreateMap<ChangeProjectAmountCommand, ProjectAmountChanged>();
         }
 
         private IProjectWriteRepository _repository;
@@ -24,9 +24,9 @@ namespace CQRS.Demo.Model.Projects
             _repository = repository;
         }
 
-        public void Execute(DecreaseProjectAmountCommand command)
+        public void Execute(ChangeProjectAmountCommand command)
         {
-            if (!_repository.DecreaseAmount(command.ProjectId, command.Amount))
+            if (!_repository.ChangeAmount(command.ProjectId, command.Change))
             {
                 throw new BusinessException("项目可投资金额不足。");
             }

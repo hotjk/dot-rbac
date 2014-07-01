@@ -10,6 +10,6 @@ namespace CQRS.Demo.Contracts.Events
     public class ProjectAmountChanged : Event
     {
         public int ProjectId { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Change { get; set; }
     }
 }

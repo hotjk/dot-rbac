@@ -20,21 +20,12 @@ namespace CQRS.Demo.Repositories.Write
             }
         }
 
-        public bool IncreaseAmount(int accountId, decimal amount)
-        {
-            using (IDbConnection connection = OpenConnection())
-            {
-                return 1 == connection.Execute("UPDATE cqrs_demo_account SET Amount = Amount + @Amount WHERE AccountId = @AccountId;",
-                    new { AccountId = accountId, Amount = amount });
-            }
-        }
-
-        public bool DecreaseAmount(int accountId, decimal amount)
+        public bool ChangeAmount(int accountId, decimal amount)
         {
             using (IDbConnection connection = OpenConnection())
             {
                 return 1 == connection.Execute("UPDATE cqrs_demo_account SET Amount = Amount + @Amount WHERE AccountId = @AccountId AND Amount + @Amount >= 0;",
-                    new { AccountId = accountId, Amount = 0 - amount });
+                    new { AccountId = accountId, Amount = amount });
             }
         }
     }

@@ -15,7 +15,7 @@ namespace CQRS.Demo.Repositories
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return connection.Query<Project>("SELECT ProjectId, Name, Amount FROM cqrs_demo_project;",
+                return connection.Query<Project>("SELECT ProjectId, Name, Amount, BorrowerId FROM cqrs_demo_project;",
                     new { id = id }).SingleOrDefault();
             }
         }

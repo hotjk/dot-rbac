@@ -11,5 +11,6 @@ namespace CQRS.Demo.Model.Projects
         public int ProjectId { get; set; }
         public string Name { get; set; }
         public decimal Amount { get; set; }
+        public int BorrowerId { get; set; }
     }
 }

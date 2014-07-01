@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountActivities\AccountActivity.cs" />
     <Compile Include="Accounts\Account.cs" />
     <Compile Include="Accounts\AccountService.cs" />
     <Compile Include="Accounts\IAccountRepository.cs" />

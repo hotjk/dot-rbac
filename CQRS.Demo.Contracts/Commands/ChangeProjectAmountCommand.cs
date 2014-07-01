@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CQRS.Demo.Contracts.Commands
 {
-    public class DecreaseProjectAmountCommand : Command
+    public class ChangeProjectAmountCommand : Command
     {
         public int ProjectId { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Change { get; set; }
     }
 }

@@ -15,17 +15,17 @@ namespace CQRS.Demo.Repositories.Write
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return 1 == connection.Execute("INSERT INTO cqrs_demo_project (ProjectId, Name, Amount) VALUES (@ProjectId, @Name, @Amount);", 
+                return 1 == connection.Execute("INSERT INTO cqrs_demo_project (ProjectId, Name, Amount, BorrowerId) VALUES (@ProjectId, @Name, @Amount, @BorrowerId);", 
                     project);
             }
         }
 
-        public bool DecreaseAmount(int projectId, decimal amount)
+        public bool ChangeAmount(int projectId, decimal amount)
         {
             using (IDbConnection connection = OpenConnection())
             {
                 return 1 == connection.Execute("UPDATE cqrs_demo_project SET Amount = Amount + @Amount WHERE ProjectId = @ProjectId AND Amount + @Amount >= 0;",
-                    new { ProjectId = projectId, Amount = 0 - amount });
+                    new { ProjectId = projectId, Amount = amount });
             }
         }
     }

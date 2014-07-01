@@ -24,7 +24,7 @@ namespace CQRS.Demo.Web.Controllers
 
         public ActionResult Create()
         {
-            int accountId = 1;
+            int accountId = 2;
             int projectId = 1;
             decimal amount = 100.00m;
 

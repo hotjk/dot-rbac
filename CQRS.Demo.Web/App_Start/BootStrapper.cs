@@ -2,6 +2,7 @@
 using CQRS.Demo.Model.Accounts;
 using CQRS.Demo.Model.Investments;
 using CQRS.Demo.Model.Projects;
+using CQRS.Demo.Model.Write.AccountActivities;
 using CQRS.Demo.Model.Write.Messages;
 using CQRS.Demo.Repositories;
 using CQRS.Demo.Repositories.Write;
@@ -71,6 +72,7 @@ namespace CQRS.Demo.Web
             Kernel.Bind<IAccountWriteRepository>().To<AccountWriteRepository>().InSingletonScope();
             Kernel.Bind<IAccountService>().To<AccountService>().InSingletonScope();
             Kernel.Bind<IMessageWriteRepository>().To<MessageWriteRepository>().InSingletonScope();
+            Kernel.Bind<IAccountActivityWriteRepository>().To<AccountActivityWriteRepository>().InSingletonScope();
         }
 
         private static void InitMessageQueue()
@@ -78,8 +80,10 @@ namespace CQRS.Demo.Web
             ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            exchangeName = "event";
-            channel.ExchangeDeclare(exchangeName, ExchangeType.Topic, false);
+            exchangeName = "grit_demo_exchange";
+            channel.ExchangeDeclare(exchangeName, ExchangeType.Topic, true);
+            //channel.QueueDeclare("project_event_queue", true, false, false, null);
+            //channel.QueueDeclare("account_event_queue", true, false, false, null);
         }
 
         private static void InitHandlerFactory()

@@ -8,6 +8,6 @@ namespace Grit.CQRS
 {
     public interface ICommandBus
     {
-        void Send<T>(T command) where T : Command;
+        ICommandBus Send<T>(T command) where T : Command;
     }
 }

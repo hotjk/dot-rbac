@@ -33,7 +33,7 @@ namespace CQRS.Demo.Model.Write.Messages
             _repository.Add(new Message
             {
                 AccountId = handle.AccountId,
-                Content = string.Format("账户变动，变动金额{0:n}元。", handle.Amount)
+                Content = string.Format("账户变动，变动金额{0:n}元。", handle.Change)
             });
         }
     }
