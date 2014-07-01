@@ -82,8 +82,10 @@ namespace CQRS.Demo.Web
             channel = connection.CreateModel();
             exchangeName = "grit_demo_exchange";
             channel.ExchangeDeclare(exchangeName, ExchangeType.Topic, true);
-            //channel.QueueDeclare("project_event_queue", true, false, false, null);
-            //channel.QueueDeclare("account_event_queue", true, false, false, null);
+            channel.QueueDeclare("project_event_queue", true, false, false, null);
+            channel.QueueDeclare("account_event_queue", true, false, false, null);
+            channel.QueueBind("project_event_queue", "grit_demo_exchange", "project.*.*");
+            channel.QueueBind("account_event_queue", "grit_demo_exchange", "account.*.*");
         }
 
         private static void InitHandlerFactory()

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RabbitMQ.Client.Framing.v0_9_1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,12 @@ namespace Grit.CQRS
                 json));
 
             var channel = _eventHandlerFactory.GetChannel();
+
             channel.BasicPublish(_eventHandlerFactory.GetExchange(),
-                @event.RoutingKey, null,
+                @event.RoutingKey, 
+                new BasicProperties { 
+                    DeliveryMode = 2
+                },
                 Encoding.UTF8.GetBytes(json));
 
             var handlers = _eventHandlerFactory.GetHandlers<T>();
