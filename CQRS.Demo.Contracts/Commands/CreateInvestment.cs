@@ -7,7 +7,7 @@ using Grit.CQRS;
 
 namespace CQRS.Demo.Contracts.Commands
 {
-    public class CreateInvestmentCommand : Command
+    public class CreateInvestment : Command
     {
         public int InvestmentId { get; set; }
         public int AccountId { get; set; }

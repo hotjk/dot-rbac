@@ -11,21 +11,21 @@ using Grit.CQRS.Exceptions;
 namespace CQRS.Demo.Model.Accounts
 {
     public class AccountHandler :
-        ICommandHandler<CreateAccountCommand>,
-        ICommandHandler<ChangeAccountAmountCommand>
+        ICommandHandler<CreateAccount>,
+        ICommandHandler<ChangeAccountAmount>
     {
         static AccountHandler()
         {
-            AutoMapper.Mapper.CreateMap<ChangeAccountAmountCommand, AccountAmountChanged>();
-            AutoMapper.Mapper.CreateMap<CreateAccountCommand, Account>();
-            AutoMapper.Mapper.CreateMap<CreateAccountCommand, AccountStatusCreated>();
+            AutoMapper.Mapper.CreateMap<ChangeAccountAmount, AccountAmountChanged>();
+            AutoMapper.Mapper.CreateMap<CreateAccount, Account>();
+            AutoMapper.Mapper.CreateMap<CreateAccount, AccountStatusCreated>();
         }
         private IAccountWriteRepository _repository;
         public AccountHandler(IAccountWriteRepository repository)
         {
             _repository = repository;
         }
-        public void Execute(ChangeAccountAmountCommand command)
+        public void Execute(ChangeAccountAmount command)
         {
             if (!_repository.ChangeAmount(command.AccountId, command.Change))
             {
@@ -34,7 +34,7 @@ namespace CQRS.Demo.Model.Accounts
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<AccountAmountChanged>(command));
         }
 
-        public void Execute(CreateAccountCommand command)
+        public void Execute(CreateAccount command)
         {
             if (!_repository.Create(AutoMapper.Mapper.Map<Account>(command)))
             {

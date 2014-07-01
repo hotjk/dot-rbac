@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CQRS.Demo.Contracts.Commands
 {
-    public class CreateAccountCommand : Command
+    public class CreateAccount : Command
     {
         public int AccountId { get; set; }
     }

@@ -39,12 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CompleteInvestmentCommand.cs" />
-    <Compile Include="Commands\ChangeAccountAmountCommand.cs" />
-    <Compile Include="Commands\ChangeProjectAmountCommand.cs" />
-    <Compile Include="Commands\CreateAccountActivityCommand.cs" />
-    <Compile Include="Commands\CreateAccountCommand.cs" />
-    <Compile Include="Commands\CreateInvestmentCommand.cs" />
+    <Compile Include="Commands\CompleteInvestment.cs" />
+    <Compile Include="Commands\ChangeAccountAmount.cs" />
+    <Compile Include="Commands\ChangeProjectAmount.cs" />
+    <Compile Include="Commands\CreateAccountActivity.cs" />
+    <Compile Include="Commands\CreateAccount.cs" />
+    <Compile Include="Commands\CreateInvestment.cs" />
     <Compile Include="EnsoureAssemblyLoaded.cs">
       <SubType>Code</SubType>
     </Compile>

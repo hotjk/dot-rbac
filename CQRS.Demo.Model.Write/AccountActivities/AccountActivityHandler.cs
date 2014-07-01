@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace CQRS.Demo.Model.Write.AccountActivities
 {
-    public class AccountActivityHandler : ICommandHandler<CreateAccountActivityCommand>
+    public class AccountActivityHandler : ICommandHandler<CreateAccountActivity>
     {
         static AccountActivityHandler()
         {
-            AutoMapper.Mapper.CreateMap<CreateAccountActivityCommand, AccountActivity>();
+            AutoMapper.Mapper.CreateMap<CreateAccountActivity, AccountActivity>();
         }
         public AccountActivityHandler(IAccountActivityWriteRepository repository)
         {
             _repository = repository;
         }
         private IAccountActivityWriteRepository _repository;
-        public void Execute(CreateAccountActivityCommand command)
+        public void Execute(CreateAccountActivity command)
         {
             if(command.FromAccountId == null && command.ToAccountId == null)
             {

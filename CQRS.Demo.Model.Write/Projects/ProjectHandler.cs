@@ -11,11 +11,11 @@ using Grit.CQRS.Exceptions;
 namespace CQRS.Demo.Model.Projects
 {
     public class ProjectHandler : 
-        ICommandHandler<ChangeProjectAmountCommand>
+        ICommandHandler<ChangeProjectAmount>
     {
         static ProjectHandler()
         {
-            AutoMapper.Mapper.CreateMap<ChangeProjectAmountCommand, ProjectAmountChanged>();
+            AutoMapper.Mapper.CreateMap<ChangeProjectAmount, ProjectAmountChanged>();
         }
 
         private IProjectWriteRepository _repository;
@@ -24,7 +24,7 @@ namespace CQRS.Demo.Model.Projects
             _repository = repository;
         }
 
-        public void Execute(ChangeProjectAmountCommand command)
+        public void Execute(ChangeProjectAmount command)
         {
             if (!_repository.ChangeAmount(command.ProjectId, command.Change))
             {

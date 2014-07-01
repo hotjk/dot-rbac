@@ -12,15 +12,15 @@ using CQRS.Demo.Model.Projects;
 namespace CQRS.Demo.Model.Investments
 {
     public class InvestmentHandler :
-        ICommandHandler<CreateInvestmentCommand>,
-        ICommandHandler<CompleteInvestmentCommand>
+        ICommandHandler<CreateInvestment>,
+        ICommandHandler<CompleteInvestment>
     {
         static InvestmentHandler()
         {
-            AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, Investment>();
-            AutoMapper.Mapper.CreateMap<CreateInvestmentCommand, InvestmentStatusCreated>();
-            AutoMapper.Mapper.CreateMap<Investment, ChangeAccountAmountCommand>();
-            AutoMapper.Mapper.CreateMap<Investment, ChangeProjectAmountCommand>();
+            AutoMapper.Mapper.CreateMap<CreateInvestment, Investment>();
+            AutoMapper.Mapper.CreateMap<CreateInvestment, InvestmentStatusCreated>();
+            AutoMapper.Mapper.CreateMap<Investment, ChangeAccountAmount>();
+            AutoMapper.Mapper.CreateMap<Investment, ChangeProjectAmount>();
             AutoMapper.Mapper.CreateMap<Investment, InvestmentStatusCompleted>();
         }
 
@@ -34,36 +34,36 @@ namespace CQRS.Demo.Model.Investments
             _projectService = projectService;
         }
 
-        public void Execute(CreateInvestmentCommand command)
+        public void Execute(CreateInvestment command)
         {
             _repository.Add(AutoMapper.Mapper.Map<Investment>(command));
 
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentStatusCreated>(command));
         }
 
-        public void Execute(CompleteInvestmentCommand command)
+        public void Execute(CompleteInvestment command)
         {
             Investment investment = _repository.GetForUpdate(command.InvestmentId);
             Project project = _projectService.Get(investment.ProjectId);
             _repository.Complete(command.InvestmentId);
 
             ServiceLocator.CommandBus
-                .Send(new ChangeProjectAmountCommand
+                .Send(new ChangeProjectAmount
                 {
                     ProjectId = project.ProjectId,
                     Change = 0 - investment.Amount
                 })
-                .Send(new ChangeAccountAmountCommand
+                .Send(new ChangeAccountAmount
                 {
                     AccountId = investment.AccountId,
                     Change = 0 - investment.Amount
                 })
-                .Send(new ChangeAccountAmountCommand
+                .Send(new ChangeAccountAmount
                 {
                     AccountId = project.BorrowerId,
                     Change = investment.Amount
                 })
-                .Send(new CreateAccountActivityCommand
+                .Send(new CreateAccountActivity
                 {
                     FromAccountId = investment.AccountId,
                     ToAccountId = project.BorrowerId,

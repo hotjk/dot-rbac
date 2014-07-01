@@ -24,7 +24,7 @@ namespace CQRS.Demo.Web.Controllers
 
         public ActionResult Create()
         {
-            var command = new CreateAccountCommand
+            var command = new CreateAccount
             {
                 AccountId = _sequenceService.Next(SequenceID.CQRS_Account, 1),
             };

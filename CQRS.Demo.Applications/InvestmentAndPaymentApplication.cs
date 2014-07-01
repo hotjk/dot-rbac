@@ -30,7 +30,7 @@ namespace CQRS.Demo.Applications
         private IProjectService _projectService;
         private IInvestmentService _investmentService;
 
-        public void CreateInvestment(CreateInvestmentCommand command)
+        public void CreateInvestment(CreateInvestment command)
         {
             var account = _accountService.Get(command.AccountId);
             if (account.Amount < command.Amount)
@@ -52,7 +52,7 @@ namespace CQRS.Demo.Applications
             }
         }
 
-        public void CompleteInvestment(CompleteInvestmentCommand command)
+        public void CompleteInvestment(CompleteInvestment command)
         {
             var investment = _investmentService.Get(command.InvestmentId);
             if (investment == null)
@@ -70,7 +70,7 @@ namespace CQRS.Demo.Applications
             }
         }
 
-        public void CreateAccount(CreateAccountCommand command)
+        public void CreateAccount(CreateAccount command)
         {
             using (UnitOfWork u = new UnitOfWork())
             {

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace CQRS.Demo.Contracts.Commands
 {
-    public class ChangeAccountAmountCommand : Command
+    public class CreateAccountActivity : Command
     {
-        public int AccountId { get; set; }
-        public decimal Change { get; set; }
+        public int? FromAccountId { get; set; }
+        public int? ToAccountId { get; set; }
+        public decimal Amount { get; set; }
     }
 }

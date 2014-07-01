@@ -28,7 +28,7 @@ namespace CQRS.Demo.Web.Controllers
             int projectId = 1;
             decimal amount = 100.00m;
 
-            var command = new CreateInvestmentCommand
+            var command = new CreateInvestment
             {
                 InvestmentId = _sequenceService.Next(SequenceID.CQRS_Investment, 1),
                 AccountId = accountId,
@@ -49,7 +49,7 @@ namespace CQRS.Demo.Web.Controllers
 
         public string Completed(int id)
         {
-            var command = new CompleteInvestmentCommand
+            var command = new CompleteInvestment
             {
                 InvestmentId = id
             };
