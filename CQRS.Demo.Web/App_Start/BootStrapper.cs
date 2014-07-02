@@ -81,6 +81,8 @@ namespace CQRS.Demo.Web
             //rabbitmqctl add_user event_user event_password
             //rabbitmqctl set_permissions -p grit_demo_vhost event_user ".*" ".*" ".*"
             //rabbitmqctl list_queues -p grit_demo_vhost
+            //rabbitmq-plugins enable rabbitmq_management
+            //http://localhost:15672
             ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
