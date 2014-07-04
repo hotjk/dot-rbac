@@ -79,12 +79,16 @@ namespace Grit.CQRS
                         .Where(h => h.GetInterfaces()
                             .Any(i => i.GetGenericArguments()
                                 .Any(e => e == @event))).ToList();
+                    if (handlers.Count() == 0)
+                    {
+                        continue;
+                    }
                     List<Type> value;
                     if (_handlers.TryGetValue(@event, out value))
                     {
-                        _handlers[@event].AddRange(value);
+                        _handlers[@event].AddRange(handlers);
                     }
-                    else if(handlers.Count > 0)
+                    else
                     {
                         _handlers[@event] = handlers;
                     }
