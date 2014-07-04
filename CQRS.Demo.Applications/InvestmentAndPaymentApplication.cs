@@ -63,9 +63,33 @@ namespace CQRS.Demo.Applications
             {
                 throw new BusinessException("投资已经支付。");
             }
+
+            Project project = _projectService.Get(investment.ProjectId);
             using (UnitOfWork u = new UnitOfWork())
             {
                 ServiceLocator.CommandBus.Send(command);
+                ServiceLocator.CommandBus
+                .Send(new ChangeProjectAmount
+                {
+                    ProjectId = project.ProjectId,
+                    Change = 0 - investment.Amount
+                })
+                .Send(new ChangeAccountAmount
+                {
+                    AccountId = investment.AccountId,
+                    Change = 0 - investment.Amount
+                })
+                .Send(new ChangeAccountAmount
+                {
+                    AccountId = project.BorrowerId,
+                    Change = investment.Amount
+                })
+                .Send(new CreateAccountActivity
+                {
+                    FromAccountId = investment.AccountId,
+                    ToAccountId = project.BorrowerId,
+                    Amount = investment.Amount
+                });
                 u.Complete();
             }
         }

@@ -19,8 +19,6 @@ namespace CQRS.Demo.Model.Investments
         {
             AutoMapper.Mapper.CreateMap<CreateInvestment, Investment>();
             AutoMapper.Mapper.CreateMap<CreateInvestment, InvestmentStatusCreated>();
-            AutoMapper.Mapper.CreateMap<Investment, ChangeAccountAmount>();
-            AutoMapper.Mapper.CreateMap<Investment, ChangeProjectAmount>();
             AutoMapper.Mapper.CreateMap<Investment, InvestmentStatusCompleted>();
         }
 
@@ -44,31 +42,8 @@ namespace CQRS.Demo.Model.Investments
         public void Execute(CompleteInvestment command)
         {
             Investment investment = _repository.GetForUpdate(command.InvestmentId);
-            Project project = _projectService.Get(investment.ProjectId);
+            
             _repository.Complete(command.InvestmentId);
-
-            ServiceLocator.CommandBus
-                .Send(new ChangeProjectAmount
-                {
-                    ProjectId = project.ProjectId,
-                    Change = 0 - investment.Amount
-                })
-                .Send(new ChangeAccountAmount
-                {
-                    AccountId = investment.AccountId,
-                    Change = 0 - investment.Amount
-                })
-                .Send(new ChangeAccountAmount
-                {
-                    AccountId = project.BorrowerId,
-                    Change = investment.Amount
-                })
-                .Send(new CreateAccountActivity
-                {
-                    FromAccountId = investment.AccountId,
-                    ToAccountId = project.BorrowerId,
-                    Amount = investment.Amount
-                });
 
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentStatusCompleted>(investment));
         }
