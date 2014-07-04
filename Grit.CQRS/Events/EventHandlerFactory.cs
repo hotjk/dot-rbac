@@ -127,7 +127,7 @@ namespace Grit.CQRS
                 }
             }
             sb.AppendLine();
-            log4net.LogManager.GetLogger("event.logger").Info(sb);
+            log4net.LogManager.GetLogger("event.logger").Debug(sb);
         }
 
         public IEnumerable<IEventHandler<T>> GetHandlers<T>() where T : Event

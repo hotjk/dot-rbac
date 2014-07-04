@@ -28,7 +28,7 @@ namespace CQRS.Demo.Model.Projects
         {
             if (!_repository.ChangeAmount(command.ProjectId, command.Change))
             {
-                throw new BusinessException("项目可投资金额不足。");
+                throw new BusinessException(command, "项目可投资金额不足。");
             }
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<ProjectAmountChanged>(command));
         }

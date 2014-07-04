@@ -20,5 +20,15 @@ namespace CQRS.Demo.Repositories
                     new { InvestmentId = id }).SingleOrDefault();
             }
         }
+
+        public IEnumerable<Investment> GetAll()
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                return connection.Query<Investment>(
+                    "SELECT InvestmentId, ProjectId, AccountId, Amount, Status FROM cqrs_demo_investment ORDER BY InvestmentId DESC;"
+                    );
+            }
+        }
     }
 }

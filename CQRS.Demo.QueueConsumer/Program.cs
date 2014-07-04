@@ -19,6 +19,7 @@ namespace CQRS.Demo.QueueConsumer
                 {
                     var consumer = new QueueingBasicConsumer(channel);
                     channel.BasicConsume("account_event_queue", false, consumer);
+                    //channel.BasicConsume("project_event_queue", false, consumer);
 
                     while (true)
                     {

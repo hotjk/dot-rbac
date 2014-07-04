@@ -25,7 +25,7 @@ namespace CQRS.Demo.Model.Write.AccountActivities
         {
             if(command.FromAccountId == null && command.ToAccountId == null)
             {
-                throw new BusinessException("账户交易双方不能同时为空。");
+                throw new BusinessException(command, "账户交易双方不能同时为空。");
             }
             _repository.Save(AutoMapper.Mapper.Map<AccountActivity>(command));
         }

@@ -86,7 +86,7 @@ namespace Grit.CQRS
                 sb.AppendFormat("\t{0}{1}", _handlers[command], Environment.NewLine);
             }
             sb.AppendLine();
-            log4net.LogManager.GetLogger("command.logger").Info(sb);
+            log4net.LogManager.GetLogger("command.logger").Debug(sb);
         }
 
         public ICommandHandler<T> GetHandler<T>() where T : Command

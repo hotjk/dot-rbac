@@ -5,6 +5,7 @@ using Grit.CQRS.Exceptions;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,13 @@ namespace CQRS.Demo.Sagas
     {
         static void Main(string[] args)
         {
+            using (RedisClient redis = new RedisClient())
+            {
+                redis.Set<string>("hello", "world");
+                var world = redis.Get<string>("hello");
+                Console.WriteLine(world);
+            }
+
             log4net.Config.XmlConfigurator.Configure();
             // Pike a dummy method to ensoure Command/Event assembly been loaded
             CQRS.Demo.Contracts.EnsoureAssemblyLoaded.Pike();
@@ -45,11 +53,16 @@ namespace CQRS.Demo.Sagas
 
                         try
                         {
+
                             ServiceLocator.EventBus.DirectHandle(@event);
                         }
-                        catch(BusinessException ex)
+                        catch (BusinessException ex)
                         {
                             Console.WriteLine(ex.Message);
+                            using (RedisClient redis = new RedisClient())
+                            {
+                                redis.Set<string>(@event.Id.ToString(), ex.Message, DateTime.Now.AddHours(1));
+                            }
                         }
                     }
                 }

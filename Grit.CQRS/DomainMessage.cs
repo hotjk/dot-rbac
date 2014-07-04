@@ -8,7 +8,7 @@ namespace Grit.CQRS
 {
     public class DomainMessage
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
         public DomainMessage()
         {
             this.Id = Guid.NewGuid();

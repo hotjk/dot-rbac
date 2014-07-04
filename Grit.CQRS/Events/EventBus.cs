@@ -21,7 +21,7 @@ namespace Grit.CQRS
         public void Publish<T>(T @event) where T : Event
         {
             string json = JsonConvert.SerializeObject(@event);
-            log4net.LogManager.GetLogger("event.logger").Debug(
+            log4net.LogManager.GetLogger("event.logger").Info(
                 string.Format("{0}{1}{2}",
                 @event, Environment.NewLine,
                 json));

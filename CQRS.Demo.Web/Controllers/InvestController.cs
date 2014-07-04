@@ -6,6 +6,7 @@ using CQRS.Demo.Web.Models;
 using Grit.CQRS;
 using Grit.CQRS.Exceptions;
 using Grit.Sequence;
+using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,8 @@ namespace CQRS.Demo.Web.Controllers
             {
                  C = "invest",
                  A = "index",
-                 Id = @event.InvestmentId 
+                 Id = @event.InvestmentId,
+                 E = @event.Id
             });
         }
 
@@ -73,9 +75,17 @@ namespace CQRS.Demo.Web.Controllers
             return View();
         }
 
-        public ActionResult Index(int id)
+        public ActionResult Index(int id, string e)
         {
             var investment = _investmentService.Get(id);
+            if(investment == null)
+            {
+                using (RedisClient redis = new RedisClient())
+                {
+                    var message = redis.Get<string>(e);
+                    return Content(message);
+                }
+            }
             return View(investment);
         }
 
@@ -92,14 +102,24 @@ namespace CQRS.Demo.Web.Controllers
             {
                 C = "invest",
                 A = "index",
-                Id = @event.InvestmentId
+                Id = @event.InvestmentId,
+                E = @event.Id,
             });
         }
 
-        public ActionResult Paying(int id)
+        public ActionResult Paying(int id, string e)
         {
             ViewBag.Id = id;
-            return View();
+            var investment = _investmentService.Get(id);
+            if (investment == null)
+            {
+                using (RedisClient redis = new RedisClient())
+                {
+                    var message = redis.Get<string>(e);
+                    return Content(message);
+                }
+            }
+            return View(investment);
         }
     }
 }

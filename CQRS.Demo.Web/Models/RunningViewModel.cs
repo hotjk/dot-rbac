@@ -19,12 +19,13 @@ namespace CQRS.Demo.Web.Models
         /// id
         /// </summary>
         public int Id { get; set; }
-        public IDictionary<string,string> P {get;set;}
 
-        public string Url()
+        public Guid E { get; set; }
+
+        public HtmlString Url()
         {
             // todo: Parameters
-            return string.Format("{0}/{1}?id={2}", C, A, Id);
+            return new HtmlString(string.Format("{0}/{1}?id={2}&e={3}", C, A, Id, E));
         }
     }
 }

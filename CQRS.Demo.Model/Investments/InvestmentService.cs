@@ -18,5 +18,10 @@ namespace CQRS.Demo.Model.Investments
         {
             return _repository.Get(id);
         }
+
+        public IEnumerable<Investment> GetAll()
+        {
+            return _repository.GetAll();
+        }
     }
 }

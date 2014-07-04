@@ -9,5 +9,6 @@ namespace CQRS.Demo.Model.Investments
     public interface IInvestmentService
     {
         Investment Get(int id);
+        IEnumerable<Investment> GetAll();
     }
 }

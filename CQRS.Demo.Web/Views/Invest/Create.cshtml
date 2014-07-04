@@ -2,13 +2,21 @@
 @{
     ViewBag.Title = "Create";
 }
-<p>
-    @using (Html.BeginForm("Create", "Invest", FormMethod.Post))
-    {
-        @Html.TextAreaFor(x => x.AccountId)
-        @Html.TextAreaFor(x => x.ProjectId)
-        @Html.TextAreaFor(x => x.Amount)
+@using (Html.BeginForm("Create", "Invest", FormMethod.Post))
+{
+    <p>
+        <label>AccountId</label>
+        @Html.TextBoxFor(x => x.AccountId)
+    </p>
+    <p>
+        <label>ProjectId</label>
+        @Html.TextBoxFor(x => x.ProjectId)
+    </p>
+    <p>
+        <label>Amount</label>
+        @Html.TextBoxFor(x => x.Amount)
+    </p>
+    <p>
         <input type="submit" value="投资" />
-    }
-</p>
-
+    </p>
+}
