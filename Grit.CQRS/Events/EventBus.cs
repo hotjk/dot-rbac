@@ -12,6 +12,7 @@ namespace Grit.CQRS
     public class EventBus : IEventBus
     {
         private IEventHandlerFactory _eventHandlerFactory;
+        private IList<Event> _events = new List<Event>();
 
         public EventBus(IEventHandlerFactory eventHandlerFactory)
         {
@@ -19,6 +20,20 @@ namespace Grit.CQRS
         }
 
         public void Publish<T>(T @event) where T : Event
+        {
+            _events.Add(@event);
+        }
+
+        public void FlushAll()
+        {
+            foreach(Event @event in _events)
+            {
+                Flush(@event);
+            }
+            _events.Clear();
+        }
+
+        private void Flush<T>(T @event) where T : Event
         {
             string json = JsonConvert.SerializeObject(@event);
             log4net.LogManager.GetLogger("event.logger").Debug(

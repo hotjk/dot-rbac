@@ -9,5 +9,6 @@ namespace Grit.CQRS
     public interface IEventBus
     {
         void Publish<T>(T @event) where T : Event;
+        void FlushAll();
     }
 }
