@@ -19,6 +19,8 @@ namespace Grit.CQRS
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
+        private static IDictionary<string, Type> _eventTypes;
+
         /// <summary>
         /// 
         /// </summary>
@@ -58,9 +60,15 @@ namespace Grit.CQRS
             return _exchange;
         }
 
+        public Type GetEventType(string eventName)
+        {
+            return _eventTypes[eventName];
+        }
+
         private static void HookHandlers()
         {
             _handlers = new Dictionary<Type, List<Type>>();
+            
             List<Type> events = new List<Type>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -79,16 +87,25 @@ namespace Grit.CQRS
                         .Where(h => h.GetInterfaces()
                             .Any(i => i.GetGenericArguments()
                                 .Any(e => e == @event))).ToList();
+                    if (handlers.Count() == 0)
+                    {
+                        continue;
+                    }
                     List<Type> value;
                     if (_handlers.TryGetValue(@event, out value))
                     {
-                        _handlers[@event].AddRange(value);
+                        _handlers[@event].AddRange(handlers);
                     }
-                    else if(handlers.Count > 0)
+                    else
                     {
                         _handlers[@event] = handlers;
                     }
                 }
+            }
+            _eventTypes = new Dictionary<string, Type>();
+            foreach(Type type in events)
+            {
+                _eventTypes[type.Name] = type;
             }
             Log(events);
         }

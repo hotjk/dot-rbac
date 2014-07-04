@@ -58,5 +58,22 @@ namespace Grit.CQRS
                 }
             }
         }
+
+        public void DirectHandle<T>(T @event) where T : Event
+        {
+            var handlers = _eventHandlerFactory.GetHandlers<T>();
+            if (handlers != null)
+            {
+                foreach (var handler in handlers)
+                {
+                    // handle event in current thread
+                    handler.Handle(@event);
+                }
+            }
+        }
+        public Type GetEventType(string eventName)
+        {
+            return _eventHandlerFactory.GetEventType(eventName);
+        }
     }
 }

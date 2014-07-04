@@ -53,6 +53,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Events\AccountStatusCreated.cs" />
+    <Compile Include="Events\InvestmentOrderPaied.cs" />
+    <Compile Include="Events\InvestmentRequestCreated.cs" />
     <Compile Include="Events\InvestmentStatusCompleted.cs" />
     <Compile Include="Events\InvestmentStatusCreated.cs" />
     <Compile Include="Events\ProjectAmountChanged.cs">

@@ -8,12 +8,17 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public class Event : IEvent
+    public class Event : DomainMessage, IEvent
     {
         private static Regex _regexCamel = new Regex("[a-z][A-Z]");
-        private static string ToDotString(string str)
+        public static string ToDotString(string str)
         {
             return _regexCamel.Replace(str, m => m.Value[0] + "." + m.Value[1]).ToLower();
+        }
+
+        public static string ToCamelString(string str)
+        {
+            return string.Join("", str.Split(new char[] { '.' }).Select(n => char.ToUpper(n[0]) + n.Substring(1)));
         }
 
         [JsonIgnore]

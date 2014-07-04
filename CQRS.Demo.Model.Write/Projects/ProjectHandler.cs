@@ -15,7 +15,7 @@ namespace CQRS.Demo.Model.Projects
     {
         static ProjectHandler()
         {
-            AutoMapper.Mapper.CreateMap<ChangeProjectAmount, ProjectAmountChanged>();
+            AutoMapper.Mapper.CreateMap<ChangeProjectAmount, ProjectAmountChanged>().ForMember(dest => dest.Id, opt => opt.Ignore());
         }
 
         private IProjectWriteRepository _repository;

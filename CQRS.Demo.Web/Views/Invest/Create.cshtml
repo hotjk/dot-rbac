@@ -1,0 +1,14 @@
+﻿@model CQRS.Demo.Web.Models.InvestViewModel
+@{
+    ViewBag.Title = "Create";
+}
+<p>
+    @using (Html.BeginForm("Create", "Invest", FormMethod.Post))
+    {
+        @Html.TextAreaFor(x => x.AccountId)
+        @Html.TextAreaFor(x => x.ProjectId)
+        @Html.TextAreaFor(x => x.Amount)
+        <input type="submit" value="投资" />
+    }
+</p>
+

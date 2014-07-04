@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRS.Demo.Web
+namespace CQRS.Demo.Sagas
 {
     public static class BootStrapper
     {
@@ -92,6 +92,9 @@ namespace CQRS.Demo.Web
             channel.QueueDeclare("account_event_queue", true, false, false, null);
             channel.QueueBind("project_event_queue", "grit_demo_exchange", "project.*.*");
             channel.QueueBind("account_event_queue", "grit_demo_exchange", "account.*.*");
+
+            channel.QueueDeclare("saga_event_queue", true, false, false, null);
+            channel.QueueBind("saga_event_queue", "grit_demo_exchange", "*.*.*");
         }
 
         private static void InitHandlerFactory()
@@ -99,7 +102,7 @@ namespace CQRS.Demo.Web
             CommandHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
                 new string[] { "CQRS.Demo.Model.Write" });
             EventHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Model.Write" }, channel, exchangeName);
+                new string[] { "CQRS.Demo.Model.Write", "CQRS.Demo.Applications" }, channel, exchangeName);
         }
 
         private static void InitServiceLocator()

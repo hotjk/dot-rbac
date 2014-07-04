@@ -12,5 +12,6 @@ namespace Grit.CQRS
         IEnumerable<IEventHandler<T>> GetHandlers<T>() where T : Event;
         IModel GetChannel();
         string GetExchange();
+        Type GetEventType(string eventName);
     }
 }

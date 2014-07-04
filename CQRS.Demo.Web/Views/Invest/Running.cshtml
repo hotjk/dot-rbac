@@ -1,0 +1,11 @@
+﻿@model CQRS.Demo.Web.Models.RunningViewModel
+@{
+    ViewBag.Title = "Running";
+}
+
+<script>
+    setTimeout(function () {
+        window.location.href = "/@Model.Url()";
+    }, 10000);
+</script>
+<h2>玩命处理中……</h2>
