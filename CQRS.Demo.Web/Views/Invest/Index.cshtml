@@ -6,7 +6,7 @@
 @if (Model.Status == CQRS.Demo.Contracts.Enum.InvestmentStatus.Initial)
 {
     <p>
-        投资已发起，现在
+        投资已发起
         @using (Html.BeginForm("Pay", "Invest", FormMethod.Post))
         {
             @Html.Hidden("id", @Model.InvestmentId)
@@ -20,4 +20,3 @@ else if (Model.Status == CQRS.Demo.Contracts.Enum.InvestmentStatus.Paied)
         投资已支付，Bingo
     </p>
 }
-
