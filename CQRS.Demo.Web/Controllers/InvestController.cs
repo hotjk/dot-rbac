@@ -58,7 +58,7 @@ namespace CQRS.Demo.Web.Controllers
                 Amount = vm.Amount
             };
 
-            ServiceLocator.EventBus.Publish(@event);
+            ServiceLocator.EventBus.Flush(@event);
 
             return RedirectToAction("Running", new RunningViewModel
             {
@@ -96,7 +96,7 @@ namespace CQRS.Demo.Web.Controllers
                 InvestmentId = id
             };
 
-            ServiceLocator.EventBus.Publish(@event);
+            ServiceLocator.EventBus.Flush(@event);
 
             return RedirectToAction("Running", new RunningViewModel
             {
@@ -111,7 +111,7 @@ namespace CQRS.Demo.Web.Controllers
         {
             ViewBag.Id = id;
             var investment = _investmentService.Get(id);
-            if (investment == null)
+            if (investment == null || investment.Status != Contracts.Enum.InvestmentStatus.Paied)
             {
                 using (RedisClient redis = new RedisClient())
                 {

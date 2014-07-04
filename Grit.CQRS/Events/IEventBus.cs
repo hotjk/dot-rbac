@@ -9,6 +9,8 @@ namespace Grit.CQRS
     public interface IEventBus
     {
         void Publish<T>(T @event) where T : Event;
+        void FlushAll();
+        void Flush<T>(T @event) where T : Event;
         void DirectHandle<T>(T @event) where T : Event;
         Type GetEventType(string eventName);
     }

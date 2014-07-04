@@ -60,7 +60,7 @@ namespace CQRS.Demo.Web
             Kernel.Bind<ICommandHandlerFactory>().To<CommandHandlerFactory>().InSingletonScope();
             Kernel.Bind<ICommandBus>().To<CommandBus>().InSingletonScope();
             Kernel.Bind<IEventHandlerFactory>().To<EventHandlerFactory>().InSingletonScope();
-            Kernel.Bind<IEventBus>().To<EventBus>().InSingletonScope();
+            Kernel.Bind<IEventBus>().To<EventBus>().InThreadScope(); // EventBus must be thread scope
 
             Kernel.Bind<IInvestmentRepository>().To<InvestmentRepository>().InSingletonScope();
             Kernel.Bind<IInvestmentWriteRepository>().To<InvestmentWriteRepository>().InSingletonScope();
