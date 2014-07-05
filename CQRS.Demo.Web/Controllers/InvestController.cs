@@ -10,6 +10,7 @@ using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -47,8 +48,30 @@ namespace CQRS.Demo.Web.Controllers
             });
         }
 
+        //[HttpPost]
+        //public ActionResult Create(InvestViewModel vm)
+        //{
+        //    var @event = new InvestmentRequestCreated
+        //    {
+        //        InvestmentId = _sequenceService.Next(SequenceID.CQRS_Investment, 1),
+        //        AccountId = vm.AccountId,
+        //        ProjectId = vm.ProjectId,
+        //        Amount = vm.Amount
+        //    };
+
+        //    ServiceLocator.EventBus.Flush(@event);
+
+        //    return RedirectToAction("Running", new RunningViewModel
+        //    {
+        //         C = "invest",
+        //         A = "index",
+        //         Id = @event.InvestmentId,
+        //         E = @event.Id
+        //    });
+        //}
+
         [HttpPost]
-        public ActionResult Create(InvestViewModel vm)
+        public async Task<ActionResult> Create(InvestViewModel vm)
         {
             var @event = new InvestmentRequestCreated
             {
@@ -60,19 +83,13 @@ namespace CQRS.Demo.Web.Controllers
 
             ServiceLocator.EventBus.Flush(@event);
 
-            return RedirectToAction("Running", new RunningViewModel
-            {
-                 C = "invest",
-                 A = "index",
-                 Id = @event.InvestmentId,
-                 E = @event.Id
-            });
-        }
+            await Task.Delay(1000);
 
-        public ActionResult Creating(int id)
-        {
-            ViewBag.Id = id;
-            return View();
+            return RedirectToAction("Index", new 
+            {
+                id = @event.InvestmentId,
+                e = @event.Id
+            });
         }
 
         public ActionResult Index(int id, string e)
