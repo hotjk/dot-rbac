@@ -53,7 +53,6 @@ namespace CQRS.Demo.Sagas
 
                         try
                         {
-
                             ServiceLocator.EventBus.DirectHandle(@event);
                         }
                         catch (BusinessException ex)
@@ -67,13 +66,6 @@ namespace CQRS.Demo.Sagas
                     }
                 }
             }
-        }
-
-        public enum SequenceID
-        {
-            CQRS_Account = 100,
-            CQRS_Project = 101,
-            CQRS_Investment = 102,
         }
     }
 }
