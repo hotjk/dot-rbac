@@ -13,5 +13,7 @@ namespace Grit.CQRS
         void Flush<T>(T @event) where T : Event;
         void DirectHandle<T>(T @event) where T : Event;
         Type GetEventType(string eventName);
+
+        void Clear();
     }
 }
