@@ -94,15 +94,16 @@ namespace CQRS.Demo.Web.Controllers
 
         public ActionResult Index(int id, string e)
         {
-            var investment = _investmentService.Get(id);
-            if(investment == null)
+            using (RedisClient redis = new RedisClient())
             {
-                using (RedisClient redis = new RedisClient())
+                var message = redis.Get<string>(e);
+                if (!string.IsNullOrEmpty(message))
                 {
-                    var message = redis.Get<string>(e);
                     return Content(message);
                 }
             }
+
+            var investment = _investmentService.Get(id);
             return View(investment);
         }
 
