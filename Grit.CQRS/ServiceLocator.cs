@@ -12,7 +12,16 @@ namespace Grit.CQRS
     {
         public static IKernel Kernel { get; private set; }
         public static ICommandBus CommandBus { get; private set; }
-        public static IEventBus EventBus { get; private set; }
+        public static IEventBus EventBus
+        {
+            get
+            {
+                return Kernel.GetService(typeof(IEventBus)) as IEventBus;
+            }
+            private set
+            {
+            }
+        }
 
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();

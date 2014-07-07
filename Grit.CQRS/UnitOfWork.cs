@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace CQRS.Demo.Applications
+namespace Grit.CQRS
 {
     public class UnitOfWork : IDisposable
     {
@@ -30,6 +30,7 @@ namespace CQRS.Demo.Applications
         public void Complete()
         {
             scope.Complete();
+            Grit.CQRS.ServiceLocator.EventBus.FlushAll();
         }
     }
 }
