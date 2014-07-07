@@ -37,7 +37,7 @@ CREATE TABLE `cqrs_demo_account` (
 
 LOCK TABLES `cqrs_demo_account` WRITE;
 /*!40000 ALTER TABLE `cqrs_demo_account` DISABLE KEYS */;
-INSERT INTO `cqrs_demo_account` VALUES (0,0.00),(1,1100.00),(2,8900.00);
+INSERT INTO `cqrs_demo_account` VALUES (1,201.00),(2,9799.00);
 /*!40000 ALTER TABLE `cqrs_demo_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,7 +54,7 @@ CREATE TABLE `cqrs_demo_account_activity` (
   `ToAccountId` int(11) DEFAULT NULL,
   `Amount` decimal(20,2) NOT NULL,
   PRIMARY KEY (`ActivityId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `cqrs_demo_account_activity` (
 
 LOCK TABLES `cqrs_demo_account_activity` WRITE;
 /*!40000 ALTER TABLE `cqrs_demo_account_activity` DISABLE KEYS */;
-INSERT INTO `cqrs_demo_account_activity` VALUES (1,2,1,100.00),(2,2,1,100.00),(3,2,1,100.00),(4,2,1,100.00),(5,2,1,100.00),(6,2,1,100.00),(7,2,1,100.00),(8,2,1,100.00),(9,2,1,100.00),(10,2,1,100.00);
+INSERT INTO `cqrs_demo_account_activity` VALUES (18,2,1,100.00),(19,2,1,1.00),(20,2,1,100.00);
 /*!40000 ALTER TABLE `cqrs_demo_account_activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +90,7 @@ CREATE TABLE `cqrs_demo_investment` (
 
 LOCK TABLES `cqrs_demo_investment` WRITE;
 /*!40000 ALTER TABLE `cqrs_demo_investment` DISABLE KEYS */;
-INSERT INTO `cqrs_demo_investment` VALUES (65,1,2,100.00,1),(67,1,2,100.00,1),(69,1,2,100.00,1),(71,1,2,100.00,1),(73,1,2,100.00,1),(75,1,2,100.00,1),(76,1,2,100.00,1),(77,1,2,100.00,1),(78,1,2,100.00,1),(79,1,2,100.00,1),(80,1,2,100.00,0),(81,1,2,100.00,0),(82,1,2,100.00,0),(83,1,2,100.00,0),(84,1,2,100.00,1);
+INSERT INTO `cqrs_demo_investment` VALUES (128,1,2,100.00,1),(138,1,2,1.00,1),(141,1,2,100.00,0),(142,1,2,100.00,0),(143,1,2,100.00,1);
 /*!40000 ALTER TABLE `cqrs_demo_investment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +106,7 @@ CREATE TABLE `cqrs_demo_message` (
   `AccountId` int(11) NOT NULL,
   `Content` varchar(1024) NOT NULL,
   PRIMARY KEY (`MessageId`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +115,7 @@ CREATE TABLE `cqrs_demo_message` (
 
 LOCK TABLES `cqrs_demo_message` WRITE;
 /*!40000 ALTER TABLE `cqrs_demo_message` DISABLE KEYS */;
-INSERT INTO `cqrs_demo_message` VALUES (36,2,'投资成功，投资金额100.00元。'),(37,2,'账户变动，变动金额-100.00元。'),(38,1,'账户变动，变动金额100.00元。'),(39,2,'投资成功，投资金额100.00元。'),(40,2,'账户变动，变动金额-100.00元。'),(41,1,'账户变动，变动金额100.00元。'),(42,1,'账户变动，变动金额100.00元。'),(43,2,'账户变动，变动金额-100.00元。'),(44,2,'投资成功，投资金额100.00元。'),(45,2,'账户变动，变动金额-100.00元。'),(46,1,'账户变动，变动金额100.00元。'),(47,2,'投资成功，投资金额100.00元。'),(48,2,'账户变动，变动金额-100.00元。'),(49,1,'账户变动，变动金额100.00元。'),(50,2,'投资成功，投资金额100.00元。'),(51,2,'账户变动，变动金额-100.00元。'),(52,1,'账户变动，变动金额100.00元。'),(53,2,'投资成功，投资金额100.00元。'),(54,1,'账户变动，变动金额100.00元。'),(55,2,'账户变动，变动金额-100.00元。'),(56,2,'投资成功，投资金额100.00元。'),(57,2,'账户变动，变动金额-100.00元。'),(58,1,'账户变动，变动金额100.00元。'),(59,2,'投资成功，投资金额100.00元。'),(60,2,'账户变动，变动金额-100.00元。'),(61,1,'账户变动，变动金额100.00元。'),(62,2,'投资成功，投资金额100.00元。'),(63,2,'账户变动，变动金额-100.00元。'),(64,1,'账户变动，变动金额100.00元。'),(65,2,'投资成功，投资金额100.00元。'),(66,2,'账户变动，变动金额-100.00元。'),(67,1,'账户变动，变动金额100.00元。'),(68,2,'投资成功，投资金额100.00元。'),(69,2,'账户变动，变动金额-100.00元。'),(70,2,'投资成功，投资金额100.00元。'),(71,2,'投资成功，投资金额100.00元。'),(72,2,'账户变动，变动金额-100.00元。'),(73,2,'投资成功，投资金额100.00元。'),(74,2,'投资成功，投资金额100.00元。'),(75,2,'账户变动，变动金额-100.00元。'),(76,1,'账户变动，变动金额100.00元。');
+INSERT INTO `cqrs_demo_message` VALUES (145,2,'投资成功，投资金额100.00元。'),(146,2,'投资成功，投资金额100.00元。'),(147,2,'账户变动，变动金额-100.00元。'),(148,1,'账户变动，变动金额100.00元。'),(149,2,'账户变动，变动金额-100.00元。'),(150,1,'账户变动，变动金额100.00元。'),(151,2,'投资成功，投资金额1.00元。'),(152,2,'投资成功，投资金额1.00元。'),(153,2,'账户变动，变动金额-1.00元。'),(154,1,'账户变动，变动金额1.00元。'),(155,2,'账户变动，变动金额-1.00元。'),(156,1,'账户变动，变动金额1.00元。'),(157,2,'投资成功，投资金额100.00元。'),(158,2,'投资成功，投资金额100.00元。'),(159,2,'投资成功，投资金额100.00元。'),(160,2,'投资成功，投资金额100.00元。'),(161,2,'投资成功，投资金额100.00元。'),(162,2,'账户变动，变动金额-100.00元。'),(163,1,'账户变动，变动金额100.00元。');
 /*!40000 ALTER TABLE `cqrs_demo_message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +141,7 @@ CREATE TABLE `cqrs_demo_project` (
 
 LOCK TABLES `cqrs_demo_project` WRITE;
 /*!40000 ALTER TABLE `cqrs_demo_project` DISABLE KEYS */;
-INSERT INTO `cqrs_demo_project` VALUES (1,'Test Project',8900.00,1);
+INSERT INTO `cqrs_demo_project` VALUES (1,'Test Project',9900.00,1);
 /*!40000 ALTER TABLE `cqrs_demo_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +286,7 @@ CREATE TABLE `sequence` (
 
 LOCK TABLES `sequence` WRITE;
 /*!40000 ALTER TABLE `sequence` DISABLE KEYS */;
-INSERT INTO `sequence` VALUES (1,4155,'Test'),(100,3,'CQRS_Account'),(101,2,'CQRS_Project'),(102,85,'CQRS_Investment');
+INSERT INTO `sequence` VALUES (1,4155,'Test'),(100,3,'CQRS_Account'),(101,2,'CQRS_Project'),(102,144,'CQRS_Investment');
 /*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,4 +327,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-01 16:49:55
+-- Dump completed on 2014-07-07  9:39:07

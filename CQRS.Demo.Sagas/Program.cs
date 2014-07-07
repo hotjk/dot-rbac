@@ -18,13 +18,6 @@ namespace CQRS.Demo.Sagas
     {
         static void Main(string[] args)
         {
-            using (RedisClient redis = new RedisClient())
-            {
-                redis.Set<string>("hello", "world");
-                var world = redis.Get<string>("hello");
-                Console.WriteLine(world);
-            }
-
             log4net.Config.XmlConfigurator.Configure();
             // Pike a dummy method to ensoure Command/Event assembly been loaded
             CQRS.Demo.Contracts.EnsoureAssemblyLoaded.Pike();
