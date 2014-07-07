@@ -1,29 +1,26 @@
-# README #
+# Grit.Demo.CQRS #
 
-True Grit
+### Setup RabbitMQ ###
 
-### What is this repository for? ###
+* Install RabblitMQ
+* Start RabbitMQ service
+* Add vhost/user/permission, run below commands
+rabbitmqctl add_vhost grit_demo_vhost
+rabbitmqctl add_user event_user event_password
+rabbitmqctl set_permissions -p grit_demo_vhost event_user ".*" ".*" ".*"
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Setup Redis ###
 
-### How do I get set up? ###
+* Install Redis
+* Start Redis service
+redis-server
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+### Setup MySQL ###
 
-### Contribution guidelines ###
+* Install MySQL
+* Inport Dump20140707.sql
 
-* Writing tests
-* Code review
-* Other guidelines
+### Run ###
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* CQRS.Demo.Sagas
+* CQRS.Demo.Web
