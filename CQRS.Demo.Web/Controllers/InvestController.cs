@@ -8,7 +8,6 @@ using Grit.CQRS;
 using Grit.CQRS.Actions;
 using Grit.CQRS.Exceptions;
 using Grit.Sequence;
-using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
