@@ -1,8 +1,8 @@
 ﻿@model CQRS.Demo.Model.Investments.Investment
-@using Grit.CQRS.Calls
+@using Grit.CQRS.Actions
 @{
     ViewBag.Title = "Index";
-    CallResponse response = TempData["CallResponse"] as CallResponse;
+    ActionResponse response = TempData["ActionResponse"] as ActionResponse;
 }
 @if (response != null)
 {

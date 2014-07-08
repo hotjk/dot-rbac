@@ -1,4 +1,4 @@
-﻿using Grit.CQRS.Calls;
+﻿using Grit.CQRS.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public interface ICallBus
+    public interface IActionBus
     {
-        void Invoke<T>(T call) where T : Call;
-        CallResponse Send<T>(T call) where T : Call;
+        void Invoke<T>(T action) where T : Action;
+        ActionResponse Send<T>(T action) where T : Action;
         Type GetType(string name);
         string GetQueue();
     }

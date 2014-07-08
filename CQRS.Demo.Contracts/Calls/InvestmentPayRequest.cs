@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRS.Demo.Contracts.Calls
+namespace CQRS.Demo.Contracts.Actions
 {
-    public class InvestmentPayRequest : Call
+    public class InvestmentPayRequest : Grit.CQRS.Action
     {
         public int InvestmentId { get; set; }
     }

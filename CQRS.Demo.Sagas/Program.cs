@@ -1,7 +1,7 @@
 ﻿using CQRS.Demo.Contracts;
 using CQRS.Demo.Contracts.Events;
 using Grit.CQRS;
-using Grit.CQRS.Calls;
+using Grit.CQRS.Actions;
 using Grit.CQRS.Exceptions;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -31,7 +31,7 @@ namespace CQRS.Demo.Sagas
                 using (var channel = connection.CreateModel())
                 {
                     var consumer = new QueueingBasicConsumer(channel);
-                    channel.BasicConsume(ServiceLocator.CallBus.GetQueue(), false, consumer);
+                    channel.BasicConsume(ServiceLocator.ActionBus.GetQueue(), false, consumer);
 
                     while (true)
                     {
@@ -42,18 +42,18 @@ namespace CQRS.Demo.Sagas
                         var props = ea.BasicProperties;
                         var replyProps = channel.CreateBasicProperties();
                         replyProps.CorrelationId = props.CorrelationId;
-                        Type type = ServiceLocator.CallBus.GetType(props.Type);
-                        dynamic call = JsonConvert.DeserializeObject(message,type);
-                        CallResponse response = new CallResponse { Result = CallResponse.CallResponseResult.OK };
+                        Type type = ServiceLocator.ActionBus.GetType(props.Type);
+                        dynamic action = JsonConvert.DeserializeObject(message,type);
+                        ActionResponse response = new ActionResponse { Result = ActionResponse.ActionResponseResult.OK };
                         Console.WriteLine("---- '{0}':'{1}'", routingKey, message);
 
                         try
                         {
-                            ServiceLocator.CallBus.Invoke(call);
+                            ServiceLocator.ActionBus.Invoke(action);
                         }
                         catch (BusinessException ex)
                         {
-                            response.Result = CallResponse.CallResponseResult.NG;
+                            response.Result = ActionResponse.ActionResponseResult.NG;
                             response.Message = ex.Message;
                             Console.WriteLine(ex.Message);
                         }

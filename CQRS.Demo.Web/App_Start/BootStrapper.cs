@@ -56,15 +56,6 @@ namespace CQRS.Demo.Web
             Kernel.Bind<ISequenceRepository>().To<SequenceRepository>().InSingletonScope();
             Kernel.Bind<ISequenceService>().To<SequenceService>().InSingletonScope();
 
-            Kernel.Bind<ICommandHandlerFactory>().To<CommandHandlerFactory>().InSingletonScope();
-            Kernel.Bind<ICommandBus>().To<CommandBus>().InSingletonScope();
-            Kernel.Bind<IEventHandlerFactory>().To<EventHandlerFactory>().InSingletonScope();
-            // EventBus must be thread scope, published events will be saved in thread EventBus._events, until FlushAll/Clear.
-            Kernel.Bind<IEventBus>().To<EventBus>().InThreadScope(); 
-            Kernel.Bind<ICallHandlerFactory>().To<CallHandlerFactory>().InSingletonScope();
-            // CallBus must be thread scope, single thread bind to use single anonymous RabbitMQ queue for reply.
-            Kernel.Bind<ICallBus>().To<CallBus>(); 
-
             Kernel.Bind<IInvestmentRepository>().To<InvestmentRepository>().InSingletonScope();
             Kernel.Bind<IInvestmentWriteRepository>().To<InvestmentWriteRepository>().InSingletonScope();
             Kernel.Bind<IInvestmentService>().To<InvestmentService>().InSingletonScope();
@@ -80,22 +71,23 @@ namespace CQRS.Demo.Web
 
         private static void InitMessageQueue()
         {
-            //rabbitmqctl add_vhost grit_demo_vhost
+            //rabbitmqctl add_vhost event_bus_exchange
             //rabbitmqctl add_user event_user event_password
-            //rabbitmqctl set_permissions -p grit_demo_vhost event_user ".*" ".*" ".*"
-            //rabbitmqctl list_queues -p grit_demo_vhost
+            //rabbitmqctl set_permissions -p event_bus_exchange event_user ".*" ".*" ".*"
+            //rabbitmqctl set_permissions -p event_bus_exchange guest ".*" ".*" ".*"
+            //rabbitmqctl list_queues -p event_bus_exchange
             //rabbitmq-plugins enable rabbitmq_management
             //http://localhost:15672
             ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            channel.ExchangeDeclare("grit_demo_exchange", ExchangeType.Topic, true);
+            channel.ExchangeDeclare(Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, ExchangeType.Topic, true);
             channel.QueueDeclare("project_event_queue", true, false, false, null);
             channel.QueueDeclare("account_event_queue", true, false, false, null);
-            channel.QueueBind("project_event_queue", "grit_demo_exchange", "project.*.*");
-            channel.QueueBind("account_event_queue", "grit_demo_exchange", "account.*.*");
+            channel.QueueBind("project_event_queue", Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, "project.*.*");
+            channel.QueueBind("account_event_queue", Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, "account.*.*");
 
-            channel.QueueDeclare("saga", true, false, false, null);
+            channel.QueueDeclare(Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue, true, false, false, null);
         }
 
         private static void InitHandlerFactory()
@@ -103,9 +95,11 @@ namespace CQRS.Demo.Web
             CommandHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
                 new string[] { "CQRS.Demo.Model.Write" });
             EventHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Model.Write" }, channel, "grit_demo_exchange");
-            CallHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Applications" }, channel, "saga");
+                new string[] { "CQRS.Demo.Model.Write", "CQRS.Demo.Applications" }, channel,
+                Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange);
+            ActionHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
+                new string[] { "CQRS.Demo.Applications" }, channel,
+                Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue);
         }
 
         private static void InitServiceLocator()

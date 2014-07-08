@@ -15,7 +15,7 @@ namespace CQRS.Demo.Web
         protected void Application_Start()
         {
             log4net.Config.XmlConfigurator.Configure();
-            // Call a dummy method to ensoure Command/Event assembly been loaded
+            // Action a dummy method to ensoure Command/Event assembly been loaded
             EnsoureAssemblyLoaded.Pike();
             BootStrapper.BootStrap();
             DependencyResolver.SetResolver(new NinjectDependencyResolver { Kernel = BootStrapper.Kernel });

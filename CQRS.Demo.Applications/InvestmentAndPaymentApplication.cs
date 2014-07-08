@@ -1,4 +1,4 @@
-﻿using CQRS.Demo.Contracts.Calls;
+﻿using CQRS.Demo.Contracts.Actions;
 using CQRS.Demo.Contracts.Commands;
 using CQRS.Demo.Contracts.Events;
 using CQRS.Demo.Model.Accounts;
@@ -17,8 +17,8 @@ using System.Transactions;
 namespace CQRS.Demo.Applications
 {
     public class InvestmentAndPaymentApplication :
-        ICallHandler<InvestmentCreateRequest>,
-        ICallHandler<InvestmentPayRequest>
+        IActionHandler<InvestmentCreateRequest>,
+        IActionHandler<InvestmentPayRequest>
     {
         public InvestmentAndPaymentApplication(
             IAccountService accountService,

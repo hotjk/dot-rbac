@@ -1,11 +1,11 @@
 ﻿using CQRS.Demo.Applications;
-using CQRS.Demo.Contracts.Calls;
+using CQRS.Demo.Contracts.Actions;
 using CQRS.Demo.Contracts.Commands;
 using CQRS.Demo.Contracts.Events;
 using CQRS.Demo.Model.Investments;
 using CQRS.Demo.Web.Models;
 using Grit.CQRS;
-using Grit.CQRS.Calls;
+using Grit.CQRS.Actions;
 using Grit.CQRS.Exceptions;
 using Grit.Sequence;
 using ServiceStack.Redis;
@@ -53,7 +53,7 @@ namespace CQRS.Demo.Web.Controllers
         [HttpPost]
         public ActionResult Create(InvestViewModel vm)
         {
-            var call = new InvestmentCreateRequest
+            var action = new InvestmentCreateRequest
             {
                 InvestmentId = _sequenceService.Next(SequenceID.CQRS_Investment, 1),
                 AccountId = vm.AccountId,
@@ -61,9 +61,9 @@ namespace CQRS.Demo.Web.Controllers
                 Amount = vm.Amount
             };
 
-            CallResponse response = ServiceLocator.CallBus.Send(call);
-            TempData["CallResponse"] = response;
-            return RedirectToAction("Index", new { id = call.InvestmentId });
+            ActionResponse response = ServiceLocator.ActionBus.Send(action);
+            TempData["ActionResponse"] = response;
+            return RedirectToAction("Index", new { id = action.InvestmentId });
         }
 
         public ActionResult Index(int id)
@@ -74,14 +74,14 @@ namespace CQRS.Demo.Web.Controllers
 
         public ActionResult Pay(int id)
         {
-            var call = new InvestmentPayRequest
+            var action = new InvestmentPayRequest
             {
                 InvestmentId = id
             };
 
-            CallResponse response = ServiceLocator.CallBus.Send(call);
-            TempData["CallResponse"] = response;
-            return RedirectToAction("Index", new { id = call.InvestmentId });
+            ActionResponse response = ServiceLocator.ActionBus.Send(action);
+            TempData["ActionResponse"] = response;
+            return RedirectToAction("Index", new { id = action.InvestmentId });
         }
     }
 }

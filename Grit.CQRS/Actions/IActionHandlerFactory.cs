@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public interface ICallHandlerFactory
+    public interface IActionHandlerFactory
     {
-        ICallHandler<T> GetHandler<T>() where T : Call;
+        IActionHandler<T> GetHandler<T>() where T : Action;
         IModel GetChannel();
         string GetQueue();
         Type GetType(string name);

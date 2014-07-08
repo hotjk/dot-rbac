@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public interface ICall
+    public interface IAction
     {
     }
 }

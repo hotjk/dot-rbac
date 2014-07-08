@@ -52,14 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calls\Call.cs" />
-    <Compile Include="Calls\CallBus.cs" />
-    <Compile Include="Calls\CallHandlerFactory.cs" />
-    <Compile Include="Calls\CallResponse.cs" />
-    <Compile Include="Calls\ICall.cs" />
-    <Compile Include="Calls\ICallBus.cs" />
-    <Compile Include="Calls\ICallHandler.cs" />
-    <Compile Include="Calls\ICallHandlerFactory.cs" />
+    <Compile Include="Actions\Action.cs" />
+    <Compile Include="Actions\ActionBus.cs" />
+    <Compile Include="Actions\ActionHandlerFactory.cs" />
+    <Compile Include="Actions\ActionResponse.cs" />
+    <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Actions\IActionBus.cs" />
+    <Compile Include="Actions\IActionHandler.cs" />
+    <Compile Include="Actions\IActionHandlerFactory.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandBus.cs" />
     <Compile Include="Commands\CommandHandlerFactory.cs" />

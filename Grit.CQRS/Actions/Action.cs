@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public interface ICallHandler<T> where T : Call
+    public class Action : DomainMessage, IAction
     {
-        void Invoke(T call);
     }
 }

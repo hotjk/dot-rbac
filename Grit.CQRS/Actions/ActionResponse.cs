@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.CQRS.Calls
+namespace Grit.CQRS.Actions
 {
-    public class CallResponse : DomainMessage
+    public class ActionResponse : DomainMessage
     {
-        public enum CallResponseResult
+        public enum ActionResponseResult
         {
             OK = 0,
             NG = 1,
         }
-        public CallResponseResult Result { get; set; }
+        public ActionResponseResult Result { get; set; }
         public string Message { get; set; }
     }
 }

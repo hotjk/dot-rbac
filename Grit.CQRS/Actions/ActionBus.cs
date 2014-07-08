@@ -1,4 +1,4 @@
-﻿using Grit.CQRS.Calls;
+﻿using Grit.CQRS.Actions;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -12,41 +12,41 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public class CallBus : ICallBus
+    public class ActionBus : IActionBus
     {
-        private ICallHandlerFactory _callHandlerFactory;
+        private IActionHandlerFactory _actionHandlerFactory;
         private string _replyQueueName = null;
         private QueueingBasicConsumer _consumer = null;
 
-        public CallBus(ICallHandlerFactory CallHandlerFactory)
+        public ActionBus(IActionHandlerFactory ActionHandlerFactory)
         {
-            _callHandlerFactory = CallHandlerFactory;
+            _actionHandlerFactory = ActionHandlerFactory;
         }
 
-        public void Invoke<T>(T call) where T : Call
+        public void Invoke<T>(T action) where T : Action
         {
-            var handler = _callHandlerFactory.GetHandler<T>();
+            var handler = _actionHandlerFactory.GetHandler<T>();
             if (handler != null)
             {
-                handler.Invoke(call);
+                handler.Invoke(action);
             }
         }
 
         public Type GetType(string name)
         {
-            return _callHandlerFactory.GetType(name);
+            return _actionHandlerFactory.GetType(name);
         }
 
         public string GetQueue()
         {
-            return _callHandlerFactory.GetQueue();
+            return _actionHandlerFactory.GetQueue();
         }
 
         private void DelcareReplyQueue()
         {
             if(_replyQueueName == null)
             {
-                var channel = _callHandlerFactory.GetChannel();
+                var channel = _actionHandlerFactory.GetChannel();
                 string name = channel.QueueDeclare();
                 _consumer = new QueueingBasicConsumer(channel);
                 channel.BasicConsume(name, true, _consumer);
@@ -54,37 +54,41 @@ namespace Grit.CQRS
             }
             else
             {
-                // todo: empty queue
+                BasicDeliverEventArgs result = null;
+                while (_consumer.Queue.DequeueNoWait(result) != null)
+                {
+                    ;
+                }
             }
         }
 
-        public CallResponse Send<T>(T call) where T : Call
+        public ActionResponse Send<T>(T action) where T : Action
         {
-            string json = JsonConvert.SerializeObject(call);
-            log4net.LogManager.GetLogger("call.logger").Info(
+            string json = JsonConvert.SerializeObject(action);
+            log4net.LogManager.GetLogger("action.logger").Info(
                 string.Format("{0}{1}{2}",
-                call, Environment.NewLine,
+                action, Environment.NewLine,
                 json));
             
-            var channel = _callHandlerFactory.GetChannel();
+            var channel = _actionHandlerFactory.GetChannel();
 
             DelcareReplyQueue();
 
             var props = channel.CreateBasicProperties();
             props.ReplyTo = _replyQueueName;
-            props.CorrelationId = call.Id.ToString();
+            props.CorrelationId = action.Id.ToString();
             props.DeliveryMode = 2;
-            props.Type = call.GetType().Name;
+            props.Type = action.GetType().Name;
            
             channel.BasicPublish(string.Empty,
-                _callHandlerFactory.GetQueue(),
+                _actionHandlerFactory.GetQueue(),
                 props,
                 Encoding.UTF8.GetBytes(json));
 
             BasicDeliverEventArgs result;
             if (_consumer.Queue.Dequeue(10000, out result))
             {
-                return JsonConvert.DeserializeObject<CallResponse>(Encoding.UTF8.GetString(result.Body));
+                return JsonConvert.DeserializeObject<ActionResponse>(Encoding.UTF8.GetString(result.Body));
             }
             throw new ApplicationException();
         }

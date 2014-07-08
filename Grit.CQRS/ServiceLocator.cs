@@ -18,19 +18,13 @@ namespace Grit.CQRS
             {
                 return Kernel.GetService(typeof(IEventBus)) as IEventBus;
             }
-            private set
-            {
-            }
         }
 
-        public static ICallBus CallBus
+        public static IActionBus ActionBus
         {
             get
             {
-                return Kernel.GetService(typeof(ICallBus)) as ICallBus;
-            }
-            private set
-            {
+                return Kernel.GetService(typeof(IActionBus)) as IActionBus;
             }
         }
 
@@ -44,6 +38,16 @@ namespace Grit.CQRS
                 lock (_lockThis)
                 {
                     Kernel = kernel;
+
+                    Kernel.Bind<ICommandHandlerFactory>().To<CommandHandlerFactory>().InSingletonScope();
+                    Kernel.Bind<ICommandBus>().To<CommandBus>().InSingletonScope();
+                    Kernel.Bind<IEventHandlerFactory>().To<EventHandlerFactory>().InSingletonScope();
+                    // EventBus must be thread scope, published events will be saved in thread EventBus._events, until FlushAll/Clear.
+                    Kernel.Bind<IEventBus>().To<EventBus>().InThreadScope();
+                    Kernel.Bind<IActionHandlerFactory>().To<ActionHandlerFactory>().InSingletonScope();
+                    // ActionBus must be thread scope, single thread bind to use single anonymous RabbitMQ queue for reply.
+                    Kernel.Bind<IActionBus>().To<ActionBus>().InThreadScope(); 
+
                     CommandBus = kernel.Get<ICommandBus>();
                     _isInitialized = true;
                 }
