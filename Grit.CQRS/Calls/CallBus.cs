@@ -1,6 +1,7 @@
 ﻿using Grit.CQRS.Calls;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Framing.v0_9_1;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,10 @@ namespace Grit.CQRS
                 channel.BasicConsume(name, true, _consumer);
                 _replyQueueName = name;
             }
+            else
+            {
+                // todo: empty queue
+            }
         }
 
         public CallResponse Send<T>(T call) where T : Call
@@ -76,10 +81,10 @@ namespace Grit.CQRS
                 props,
                 Encoding.UTF8.GetBytes(json));
 
-            var ea = _consumer.Queue.Dequeue();
-            if (ea.BasicProperties.CorrelationId == call.Id.ToString())
+            BasicDeliverEventArgs result;
+            if (_consumer.Queue.Dequeue(10000, out result))
             {
-                return JsonConvert.DeserializeObject<CallResponse>(Encoding.UTF8.GetString(ea.Body));
+                return JsonConvert.DeserializeObject<CallResponse>(Encoding.UTF8.GetString(result.Body));
             }
             throw new ApplicationException();
         }

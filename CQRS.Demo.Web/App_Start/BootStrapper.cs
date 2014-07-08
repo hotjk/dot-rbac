@@ -63,7 +63,7 @@ namespace CQRS.Demo.Web
             Kernel.Bind<IEventBus>().To<EventBus>().InThreadScope(); 
             Kernel.Bind<ICallHandlerFactory>().To<CallHandlerFactory>().InSingletonScope();
             // CallBus must be thread scope, single thread bind to use single anonymous RabbitMQ queue for reply.
-            Kernel.Bind<ICallBus>().To<CallBus>().InThreadScope(); 
+            Kernel.Bind<ICallBus>().To<CallBus>(); 
 
             Kernel.Bind<IInvestmentRepository>().To<InvestmentRepository>().InSingletonScope();
             Kernel.Bind<IInvestmentWriteRepository>().To<InvestmentWriteRepository>().InSingletonScope();
