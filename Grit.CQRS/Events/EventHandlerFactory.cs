@@ -60,7 +60,7 @@ namespace Grit.CQRS
             return _exchange;
         }
 
-        public Type GetEventType(string eventName)
+        public Type GetType(string eventName)
         {
             return _eventTypes[eventName];
         }

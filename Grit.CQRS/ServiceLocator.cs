@@ -12,6 +12,7 @@ namespace Grit.CQRS
     {
         public static IKernel Kernel { get; private set; }
         public static ICommandBus CommandBus { get; private set; }
+        public static ICallBus CallBus { get; private set; }
         public static IEventBus EventBus
         {
             get
@@ -34,7 +35,8 @@ namespace Grit.CQRS
                 {
                     Kernel = kernel;
                     CommandBus = kernel.Get<ICommandBus>();
-                    EventBus = kernel.Get<IEventBus>();
+                    //EventBus = kernel.Get<IEventBus>();
+                    CallBus = kernel.Get<ICallBus>();
                     _isInitialized = true;
                 }
             }

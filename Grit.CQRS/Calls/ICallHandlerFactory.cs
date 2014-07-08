@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public interface IEventHandlerFactory
+    public interface ICallHandlerFactory
     {
-        IEnumerable<IEventHandler<T>> GetHandlers<T>() where T : Event;
+        ICallHandler<T> GetHandler<T>() where T : Call;
         IModel GetChannel();
-        string GetExchange();
+        string GetQueue();
         Type GetType(string name);
     }
 }

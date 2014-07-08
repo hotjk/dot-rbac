@@ -24,7 +24,6 @@ namespace CQRS.Demo.Web
         public static IKernel Kernel { get; private set; }
         private static IConnection connection;
         private static IModel channel;
-        private static string exchangeName;
 
         public static void BootStrap()
         {
@@ -60,7 +59,11 @@ namespace CQRS.Demo.Web
             Kernel.Bind<ICommandHandlerFactory>().To<CommandHandlerFactory>().InSingletonScope();
             Kernel.Bind<ICommandBus>().To<CommandBus>().InSingletonScope();
             Kernel.Bind<IEventHandlerFactory>().To<EventHandlerFactory>().InSingletonScope();
-            Kernel.Bind<IEventBus>().To<EventBus>().InThreadScope(); // EventBus must be thread scope
+            // EventBus must be thread scope, published events will be saved in thread EventBus._events, until FlushAll/Clear.
+            Kernel.Bind<IEventBus>().To<EventBus>().InThreadScope(); 
+            Kernel.Bind<ICallHandlerFactory>().To<CallHandlerFactory>().InSingletonScope();
+            // CallBus must be thread scope, single thread bind to use single anonymous RabbitMQ queue for reply.
+            Kernel.Bind<ICallBus>().To<CallBus>().InThreadScope(); 
 
             Kernel.Bind<IInvestmentRepository>().To<InvestmentRepository>().InSingletonScope();
             Kernel.Bind<IInvestmentWriteRepository>().To<InvestmentWriteRepository>().InSingletonScope();
@@ -86,12 +89,13 @@ namespace CQRS.Demo.Web
             ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            exchangeName = "grit_demo_exchange";
-            channel.ExchangeDeclare(exchangeName, ExchangeType.Topic, true);
+            channel.ExchangeDeclare("grit_demo_exchange", ExchangeType.Topic, true);
             channel.QueueDeclare("project_event_queue", true, false, false, null);
             channel.QueueDeclare("account_event_queue", true, false, false, null);
             channel.QueueBind("project_event_queue", "grit_demo_exchange", "project.*.*");
             channel.QueueBind("account_event_queue", "grit_demo_exchange", "account.*.*");
+
+            channel.QueueDeclare("saga", true, false, false, null);
         }
 
         private static void InitHandlerFactory()
@@ -99,7 +103,9 @@ namespace CQRS.Demo.Web
             CommandHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
                 new string[] { "CQRS.Demo.Model.Write" });
             EventHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Model.Write" }, channel, exchangeName);
+                new string[] { "CQRS.Demo.Model.Write" }, channel, "grit_demo_exchange");
+            CallHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
+                new string[] { "CQRS.Demo.Applications" }, channel, "saga");
         }
 
         private static void InitServiceLocator()

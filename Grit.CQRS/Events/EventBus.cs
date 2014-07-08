@@ -86,9 +86,9 @@ namespace Grit.CQRS
                 }
             }
         }
-        public Type GetEventType(string eventName)
+        public Type GetType(string eventName)
         {
-            return _eventHandlerFactory.GetEventType(eventName);
+            return _eventHandlerFactory.GetType(eventName);
         }
 
         public void Clear()

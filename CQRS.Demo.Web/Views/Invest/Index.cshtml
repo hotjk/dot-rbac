@@ -1,22 +1,31 @@
 ﻿@model CQRS.Demo.Model.Investments.Investment
+@using Grit.CQRS.Calls
 @{
     ViewBag.Title = "Index";
+    CallResponse response = TempData["CallResponse"] as CallResponse;
 }
-
-@if (Model.Status == CQRS.Demo.Contracts.Enum.InvestmentStatus.Initial)
+@if (response != null)
 {
-    <p>
-        投资已发起
-        @using (Html.BeginForm("Pay", "Invest", FormMethod.Post))
-        {
-            @Html.Hidden("id", @Model.InvestmentId)
-            <input type="submit" value="支付" />
-        }
-    </p>
+    <h2>
+        @response.Message
+    </h2>
 }
-else if (Model.Status == CQRS.Demo.Contracts.Enum.InvestmentStatus.Paied)
-{
-    <p>
-        投资已支付，Bingo
-    </p>
+@if (Model != null) { 
+    if (Model.Status == CQRS.Demo.Contracts.Enum.InvestmentStatus.Initial)
+    {
+        <p>
+            投资已发起
+            @using (Html.BeginForm("Pay", "Invest", FormMethod.Post))
+            {
+                @Html.Hidden("id", @Model.InvestmentId)
+                <input type="submit" value="支付" />
+            }
+        </p>
+    }
+    else if (Model.Status == CQRS.Demo.Contracts.Enum.InvestmentStatus.Paied)
+    {
+        <p>
+            投资已支付
+        </p>
+    }
 }

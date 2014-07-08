@@ -1,6 +1,7 @@
 ﻿using CQRS.Demo.Contracts;
 using CQRS.Demo.Contracts.Events;
 using Grit.CQRS;
+using Grit.CQRS.Calls;
 using Grit.CQRS.Exceptions;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -30,7 +31,7 @@ namespace CQRS.Demo.Sagas
                 using (var channel = connection.CreateModel())
                 {
                     var consumer = new QueueingBasicConsumer(channel);
-                    channel.BasicConsume("saga_event_queue", false, consumer);
+                    channel.BasicConsume(ServiceLocator.CallBus.GetQueue(), false, consumer);
 
                     while (true)
                     {
@@ -38,23 +39,30 @@ namespace CQRS.Demo.Sagas
                         var body = ea.Body;
                         var message = Encoding.UTF8.GetString(body);
                         var routingKey = ea.RoutingKey;
-                        channel.BasicAck(ea.DeliveryTag, false);
+                        var props = ea.BasicProperties;
+                        var replyProps = channel.CreateBasicProperties();
+                        replyProps.CorrelationId = props.CorrelationId;
+                        Type type = ServiceLocator.CallBus.GetType(props.Type);
+                        dynamic call = JsonConvert.DeserializeObject(message,type);
+                        CallResponse response = new CallResponse { Result = CallResponse.CallResponseResult.OK };
                         Console.WriteLine("---- '{0}':'{1}'", routingKey, message);
-
-                        Type type = ServiceLocator.EventBus.GetEventType(Grit.CQRS.Event.ToCamelString(routingKey));
-                        dynamic @event = JsonConvert.DeserializeObject(message,type);
 
                         try
                         {
-                            ServiceLocator.EventBus.DirectHandle(@event);
+                            ServiceLocator.CallBus.Invoke(call);
                         }
                         catch (BusinessException ex)
                         {
+                            response.Result = CallResponse.CallResponseResult.NG;
+                            response.Message = ex.Message;
                             Console.WriteLine(ex.Message);
-                            using (RedisClient redis = new RedisClient())
-                            {
-                                redis.Set<string>(@event.Id.ToString(), ex.Message, DateTime.Now.AddHours(1));
-                            }
+                        }
+                        finally
+                        {
+                            var responseBytes =
+                            Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response));
+                            channel.BasicPublish("", props.ReplyTo, replyProps, responseBytes);
+                            channel.BasicAck(ea.DeliveryTag, false);
                         }
                     }
                 }

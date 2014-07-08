@@ -1,4 +1,5 @@
-﻿using CQRS.Demo.Contracts.Commands;
+﻿using CQRS.Demo.Contracts.Calls;
+using CQRS.Demo.Contracts.Commands;
 using CQRS.Demo.Contracts.Events;
 using CQRS.Demo.Model.Accounts;
 using CQRS.Demo.Model.Investments;
@@ -16,8 +17,8 @@ using System.Transactions;
 namespace CQRS.Demo.Applications
 {
     public class InvestmentAndPaymentApplication :
-        IEventHandler<InvestmentRequestCreated>,
-        IEventHandler<InvestmentOrderPaied>
+        ICallHandler<InvestmentCreateRequest>,
+        ICallHandler<InvestmentPayRequest>
     {
         public InvestmentAndPaymentApplication(
             IAccountService accountService,
@@ -35,11 +36,11 @@ namespace CQRS.Demo.Applications
 
         static InvestmentAndPaymentApplication()
         {
-            AutoMapper.Mapper.CreateMap<InvestmentRequestCreated, CreateInvestment>();
-            AutoMapper.Mapper.CreateMap<InvestmentOrderPaied, CompleteInvestment>();
+            AutoMapper.Mapper.CreateMap<InvestmentCreateRequest, CreateInvestment>();
+            AutoMapper.Mapper.CreateMap<InvestmentPayRequest, CompleteInvestment>();
         }
 
-        public void Handle(InvestmentRequestCreated @event)
+        public void Invoke(InvestmentCreateRequest @event)
         {
             var account = _accountService.Get(@event.AccountId);
             if (account.Amount < @event.Amount)
@@ -60,7 +61,7 @@ namespace CQRS.Demo.Applications
             }
         }
 
-        public void Handle(InvestmentOrderPaied @event)
+        public void Invoke(InvestmentPayRequest @event)
         {
             var investment = _investmentService.Get(@event.InvestmentId);
             if (investment == null)

@@ -1,9 +1,11 @@
 ﻿using CQRS.Demo.Applications;
+using CQRS.Demo.Contracts.Calls;
 using CQRS.Demo.Contracts.Commands;
 using CQRS.Demo.Contracts.Events;
 using CQRS.Demo.Model.Investments;
 using CQRS.Demo.Web.Models;
 using Grit.CQRS;
+using Grit.CQRS.Calls;
 using Grit.CQRS.Exceptions;
 using Grit.Sequence;
 using ServiceStack.Redis;
@@ -48,32 +50,10 @@ namespace CQRS.Demo.Web.Controllers
             });
         }
 
-        //[HttpPost]
-        //public ActionResult Create(InvestViewModel vm)
-        //{
-        //    var @event = new InvestmentRequestCreated
-        //    {
-        //        InvestmentId = _sequenceService.Next(SequenceID.CQRS_Investment, 1),
-        //        AccountId = vm.AccountId,
-        //        ProjectId = vm.ProjectId,
-        //        Amount = vm.Amount
-        //    };
-
-        //    ServiceLocator.EventBus.Flush(@event);
-
-        //    return RedirectToAction("Running", new RunningViewModel
-        //    {
-        //         C = "invest",
-        //         A = "index",
-        //         Id = @event.InvestmentId,
-        //         E = @event.Id
-        //    });
-        //}
-
         [HttpPost]
-        public async Task<ActionResult> Create(InvestViewModel vm)
+        public ActionResult Create(InvestViewModel vm)
         {
-            var @event = new InvestmentRequestCreated
+            var call = new InvestmentCreateRequest
             {
                 InvestmentId = _sequenceService.Next(SequenceID.CQRS_Investment, 1),
                 AccountId = vm.AccountId,
@@ -81,63 +61,27 @@ namespace CQRS.Demo.Web.Controllers
                 Amount = vm.Amount
             };
 
-            ServiceLocator.EventBus.Flush(@event);
-
-            await Task.Delay(1000);
-
-            return RedirectToAction("Index", new 
-            {
-                id = @event.InvestmentId,
-                e = @event.Id
-            });
+            CallResponse response = ServiceLocator.CallBus.Send(call);
+            TempData["CallResponse"] = response;
+            return RedirectToAction("Index", new { id = call.InvestmentId });
         }
 
-        public ActionResult Index(int id, string e)
+        public ActionResult Index(int id)
         {
-            using (RedisClient redis = new RedisClient())
-            {
-                var message = redis.Get<string>(e);
-                if (!string.IsNullOrEmpty(message))
-                {
-                    return Content(message);
-                }
-            }
-
             var investment = _investmentService.Get(id);
             return View(investment);
         }
 
         public ActionResult Pay(int id)
         {
-            var @event = new InvestmentOrderPaied
+            var call = new InvestmentPayRequest
             {
                 InvestmentId = id
             };
 
-            ServiceLocator.EventBus.Flush(@event);
-
-            return RedirectToAction("Running", new RunningViewModel
-            {
-                C = "invest",
-                A = "index",
-                Id = @event.InvestmentId,
-                E = @event.Id,
-            });
-        }
-
-        public ActionResult Paying(int id, string e)
-        {
-            ViewBag.Id = id;
-            var investment = _investmentService.Get(id);
-            if (investment == null || investment.Status != Contracts.Enum.InvestmentStatus.Paied)
-            {
-                using (RedisClient redis = new RedisClient())
-                {
-                    var message = redis.Get<string>(e);
-                    return Content(message);
-                }
-            }
-            return View(investment);
+            CallResponse response = ServiceLocator.CallBus.Send(call);
+            TempData["CallResponse"] = response;
+            return RedirectToAction("Index", new { id = call.InvestmentId });
         }
     }
 }
