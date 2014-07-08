@@ -75,9 +75,7 @@ namespace CQRS.Demo.Sagas
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
             channel.ExchangeDeclare(Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, ExchangeType.Topic, true);
-            channel.QueueDeclare("project_event_queue", true, false, false, null);
             channel.QueueDeclare("account_event_queue", true, false, false, null);
-            channel.QueueBind("project_event_queue", Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, "project.*.*");
             channel.QueueBind("account_event_queue", Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, "account.*.*");
 
             channel.QueueDeclare(Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue, true, false, false, null);

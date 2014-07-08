@@ -27,6 +27,14 @@ namespace Grit.CQRS
             return string.Join("", str.Split(new char[] { '.' }).Select(n => char.ToUpper(n[0]) + n.Substring(1)));
         }
 
+        public string Type
+        {
+            get
+            {
+                return this.GetType().Name;
+            }
+        }
+
         [JsonIgnore]
         public string RoutingKey
         {

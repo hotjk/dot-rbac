@@ -77,8 +77,7 @@ namespace Grit.CQRS
             var props = channel.CreateBasicProperties();
             props.ReplyTo = _replyQueueName;
             props.CorrelationId = action.Id.ToString();
-            props.DeliveryMode = 2;
-            props.Type = action.GetType().Name;
+            props.Type = action.Type;
            
             channel.BasicPublish(string.Empty,
                 _actionHandlerFactory.GetQueue(),

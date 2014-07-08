@@ -43,7 +43,7 @@ namespace CQRS.Demo.Sagas
                         var replyProps = channel.CreateBasicProperties();
                         replyProps.CorrelationId = props.CorrelationId;
                         Type type = ServiceLocator.ActionBus.GetType(props.Type);
-                        dynamic action = JsonConvert.DeserializeObject(message,type);
+                        dynamic action = JsonConvert.DeserializeObject(message, type);
                         ActionResponse response = new ActionResponse { Result = ActionResponse.ActionResponseResult.OK };
                         Console.WriteLine("---- '{0}':'{1}'", routingKey, message);
 
@@ -56,6 +56,10 @@ namespace CQRS.Demo.Sagas
                             response.Result = ActionResponse.ActionResponseResult.NG;
                             response.Message = ex.Message;
                             Console.WriteLine(ex.Message);
+                        }
+                        catch (Exception ex)
+                        {
+                            log4net.LogManager.GetLogger("exception.logger").Error(ex);
                         }
                         finally
                         {
