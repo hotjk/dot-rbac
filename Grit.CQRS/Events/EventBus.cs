@@ -46,7 +46,8 @@ namespace Grit.CQRS
             channel.BasicPublish(_eventHandlerFactory.GetExchange(),
                 @event.RoutingKey, 
                 new BasicProperties { 
-                    DeliveryMode = 2
+                    DeliveryMode = 2,
+                    Type = @event.Type
                 },
                 Encoding.UTF8.GetBytes(json));
 
@@ -55,9 +56,6 @@ namespace Grit.CQRS
             {
                 foreach (var handler in handlers)
                 {
-                    // handle event in current thread
-                    // handler.Handle(@event);
-
                     // handle event in thread pool
                     ThreadPool.QueueUserWorkItem(x =>
                     {

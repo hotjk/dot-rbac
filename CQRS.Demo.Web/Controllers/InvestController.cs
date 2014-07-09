@@ -45,7 +45,7 @@ namespace CQRS.Demo.Web.Controllers
             {
                 ProjectId = 1,
                 AccountId = 2,
-                Amount = 100,
+                Amount = 1,
             });
         }
 
