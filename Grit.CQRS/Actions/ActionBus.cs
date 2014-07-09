@@ -48,7 +48,7 @@ namespace Grit.CQRS
             return _queue;
         }
 
-        private void DelcareReplyQueue()
+        private void DeclareReplyQueue()
         {
             if(_replyQueueName == null)
             {
@@ -76,7 +76,7 @@ namespace Grit.CQRS
                 action, Environment.NewLine,
                 json));
             
-            DelcareReplyQueue();
+            DeclareReplyQueue();
 
             var props = ServiceLocator.Channel.CreateBasicProperties();
             props.ReplyTo = _replyQueueName;
@@ -89,7 +89,7 @@ namespace Grit.CQRS
                 Encoding.UTF8.GetBytes(json));
 
             BasicDeliverEventArgs result;
-            if (_consumer.Queue.Dequeue(10000, out result))
+            if (_consumer.Queue.Dequeue(_timeoutSeconds, out result))
             {
                 return JsonConvert.DeserializeObject<ActionResponse>(Encoding.UTF8.GetString(result.Body));
             }

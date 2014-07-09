@@ -33,7 +33,7 @@ namespace Grit.CQRS
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
-        public static void Init(IKernel kernel, IModel channel, string eventExchange, string actionQueue, int timeoutSeconds)
+        public static void Init(IKernel kernel, IModel channel, string eventExchange, string actionQueue, int timeoutSeconds = 10)
         {
             if (!_isInitialized)
             {
@@ -44,11 +44,13 @@ namespace Grit.CQRS
 
                     Kernel.Bind<ICommandHandlerFactory>().To<CommandHandlerFactory>().InSingletonScope();
                     Kernel.Bind<ICommandBus>().To<CommandBus>().InSingletonScope();
+                    
                     Kernel.Bind<IEventHandlerFactory>().To<EventHandlerFactory>().InSingletonScope();
-                    // EventBus must be thread scope, published events will be saved in thread EventBus._events, until FlushAll/Clear.
+                    // EventBus must be thread scope, published events will be saved in thread EventBus._events, until Flush/Clear.
                     Kernel.Bind<IEventBus>().To<EventBus>()
                         .InThreadScope()
                         .WithConstructorArgument("exchange", eventExchange);
+                    
                     Kernel.Bind<IActionHandlerFactory>().To<ActionHandlerFactory>().InSingletonScope();
                     // ActionBus must be thread scope, single thread bind to use single anonymous RabbitMQ queue for reply.
                     Kernel.Bind<IActionBus>().To<ActionBus>()
