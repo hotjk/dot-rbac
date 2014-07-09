@@ -14,7 +14,6 @@ namespace Grit.CQRS
 
         public UnitOfWork()
         {
-            ServiceLocator.EventBus.Clear();
             scope = new TransactionScope(TransactionScopeOption.RequiresNew, defaultTransactionOptions);
         }
 
@@ -25,6 +24,7 @@ namespace Grit.CQRS
 
         public void Dispose()
         {
+            Grit.CQRS.ServiceLocator.EventBus.Clear();
             scope.Dispose();
         }
 
