@@ -40,7 +40,7 @@ namespace CQRS.Demo.EventConsumer
                         Console.WriteLine("---- '{0}':'{1}'", routingKey, message);
                         try
                         {
-                            ServiceLocator.EventBus.DirectHandle(@event);
+                            ServiceLocator.EventBus.Handle(@event);
                         }
                         catch (Exception ex)
                         {

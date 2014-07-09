@@ -31,7 +31,7 @@ namespace Grit.CQRS
         public void Complete()
         {
             scope.Complete();
-            Grit.CQRS.ServiceLocator.EventBus.FlushAll();
+            Grit.CQRS.ServiceLocator.EventBus.Flush();
         }
     }
 }

@@ -24,16 +24,16 @@ namespace Grit.CQRS
             _events.Add(@event);
         }
 
-        public void FlushAll()
+        public void Flush()
         {
             foreach (Event @event in _events)
             {
-                Flush(@event);
+                FlushAnEvent(@event);
             }
             _events.Clear();
         }
 
-        public void Flush<T>(T @event) where T : Event
+        private void FlushAnEvent<T>(T @event) where T : Event
         {
             string json = JsonConvert.SerializeObject(@event);
             log4net.LogManager.GetLogger("event.logger").Info(
@@ -72,7 +72,7 @@ namespace Grit.CQRS
             }
         }
 
-        public void DirectHandle<T>(T @event) where T : Event
+        public void Handle<T>(T @event) where T : Event
         {
             var handlers = _eventHandlerFactory.GetHandlers<T>();
             if (handlers != null)
