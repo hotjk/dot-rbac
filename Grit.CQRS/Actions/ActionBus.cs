@@ -31,6 +31,9 @@ namespace Grit.CQRS
 
         public void Invoke<T>(T action) where T : Action
         {
+            log4net.LogManager.GetLogger("action.logger").Info(
+                string.Format("Action Invoke {0}", action.Id));
+
             var handler = _actionHandlerFactory.GetHandler<T>();
             if (handler != null)
             {
@@ -72,9 +75,7 @@ namespace Grit.CQRS
         {
             string json = JsonConvert.SerializeObject(action);
             log4net.LogManager.GetLogger("action.logger").Info(
-                string.Format("{0}{1}{2}",
-                action, Environment.NewLine,
-                json));
+                string.Format("Action Send {0} {1}", action, json));
             
             DeclareReplyQueue();
 

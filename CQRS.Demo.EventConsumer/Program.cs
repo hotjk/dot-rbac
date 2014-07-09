@@ -37,7 +37,6 @@ namespace CQRS.Demo.EventConsumer
                         var props = ea.BasicProperties;
                         Type type = ServiceLocator.EventBus.GetType(props.Type);
                         dynamic @event = JsonConvert.DeserializeObject(message, type);
-                        Console.WriteLine("---- '{0}':'{1}'", routingKey, message);
                         try
                         {
                             ServiceLocator.EventBus.Handle(@event);

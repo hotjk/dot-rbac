@@ -40,16 +40,13 @@ namespace Grit.CQRS
         {
             string json = JsonConvert.SerializeObject(@event);
             log4net.LogManager.GetLogger("event.logger").Info(
-                string.Format("{0}{1}{2}",
-                @event, Environment.NewLine,
-                json));
+                string.Format("Event Publish {0} {1}", @event, json));
 
             var channel = ServiceLocator.Channel;
-
             channel.BasicPublish(_exchange,
                 @event.RoutingKey, 
                 new BasicProperties { 
-                    DeliveryMode = 2,
+                    DeliveryMode = 2, // durable
                     Type = @event.Type
                 },
                 Encoding.UTF8.GetBytes(json));
@@ -77,6 +74,9 @@ namespace Grit.CQRS
 
         public void Handle<T>(T @event) where T : Event
         {
+            log4net.LogManager.GetLogger("event.logger").Info(
+                string.Format("Event Handle {0}", @event.Id));
+
             var handlers = _eventHandlerFactory.GetHandlers<T>();
             if (handlers != null)
             {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CQRS.Demo.Applications
+namespace CQRS.Demo.Contracts
 {
     public static class SequenceID
     {

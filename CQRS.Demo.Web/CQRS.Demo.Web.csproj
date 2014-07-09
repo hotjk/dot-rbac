@@ -166,25 +166,13 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CQRS.Demo.Applications\CQRS.Demo.Applications.csproj">
-      <Project>{44f55475-7ab3-41f4-801e-e185294ab1f3}</Project>
-      <Name>CQRS.Demo.Applications</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CQRS.Demo.Contracts\CQRS.Demo.Contracts.csproj">
       <Project>{b9fcad5a-3e1d-4d44-9c70-a1b0759dd9a4}</Project>
       <Name>CQRS.Demo.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CQRS.Demo.Model.Write\CQRS.Demo.Model.Write.csproj">
-      <Project>{5ce82ece-3d69-46c7-9f10-7f28cfa52271}</Project>
-      <Name>CQRS.Demo.Model.Write</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CQRS.Demo.Model\CQRS.Demo.Model.csproj">
       <Project>{b2959bf3-9baf-4452-a94f-cee2886dae07}</Project>
       <Name>CQRS.Demo.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CQRS.Demo.Repositories.Write\CQRS.Demo.Repositories.Write.csproj">
-      <Project>{fceadcaa-d1dc-478c-a032-f43064ea43c2}</Project>
-      <Name>CQRS.Demo.Repositories.Write</Name>
     </ProjectReference>
     <ProjectReference Include="..\CQRS.Demo.Repositories\CQRS.Demo.Repositories.csproj">
       <Project>{fe904a73-61f7-4e93-8bd0-6aa4fd879baf}</Project>
@@ -215,6 +203,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

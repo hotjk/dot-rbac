@@ -89,7 +89,9 @@ namespace CQRS.Demo.EventConsumer
 
         private static void InitServiceLocator()
         {
-            ServiceLocator.Init(Kernel, channel,
+            ServiceLocator.Init(
+                Kernel,
+                channel,
                 Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange,
                 Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue,
                 10);

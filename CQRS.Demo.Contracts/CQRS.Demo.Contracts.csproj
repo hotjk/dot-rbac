@@ -61,6 +61,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceID.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Grit.CQRS\Grit.CQRS.csproj">

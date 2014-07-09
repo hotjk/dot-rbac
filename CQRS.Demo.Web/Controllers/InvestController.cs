@@ -1,4 +1,4 @@
-﻿using CQRS.Demo.Applications;
+﻿using CQRS.Demo.Contracts;
 using CQRS.Demo.Contracts.Actions;
 using CQRS.Demo.Contracts.Commands;
 using CQRS.Demo.Contracts.Events;
@@ -19,7 +19,7 @@ namespace CQRS.Demo.Web.Controllers
 {
     public class InvestController : Controller
     {
-        public InvestController(ISequenceService sequenceService, 
+        public InvestController(ISequenceService sequenceService,
             IInvestmentService investmentService)
         {
             _sequenceService = sequenceService;
@@ -29,7 +29,7 @@ namespace CQRS.Demo.Web.Controllers
         private ISequenceService _sequenceService;
         private IInvestmentService _investmentService;
 
-                [HttpGet]
+        [HttpGet]
         public ActionResult Create()
         {
             return View(new InvestViewModel

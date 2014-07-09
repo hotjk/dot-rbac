@@ -44,7 +44,7 @@ namespace CQRS.Demo.Sagas
                         Type type = ServiceLocator.ActionBus.GetType(props.Type);
                         dynamic action = JsonConvert.DeserializeObject(message, type);
                         ActionResponse response = new ActionResponse { Result = ActionResponse.ActionResponseResult.OK };
-                        Console.WriteLine("---- '{0}':'{1}'", routingKey, message);
+                        //Console.WriteLine("{0} {1}", routingKey, message);
 
                         try
                         {

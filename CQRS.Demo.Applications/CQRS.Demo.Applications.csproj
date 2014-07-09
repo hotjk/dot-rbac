@@ -51,7 +51,6 @@
     <Compile Include="EnsoureAssemblyLoaded.cs" />
     <Compile Include="InvestmentAndPaymentApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequenceID.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CQRS.Demo.Contracts\CQRS.Demo.Contracts.csproj">
