@@ -29,7 +29,7 @@ namespace CQRS.Demo.Model.Accounts
         {
             if (!_repository.ChangeAmount(command.AccountId, command.Change))
             {
-                throw new BusinessException(command, "账户余额不足。");
+                throw new BusinessException("账户余额不足。");
             }
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<AccountAmountChanged>(command));
         }
@@ -38,7 +38,7 @@ namespace CQRS.Demo.Model.Accounts
         {
             if (!_repository.Create(AutoMapper.Mapper.Map<Account>(command)))
             {
-                throw new BusinessException(command, "账户已存在。");
+                throw new BusinessException("账户已存在。");
             }
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<AccountStatusCreated>(command));
         }

@@ -140,7 +140,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\InvestViewModel.cs" />
-    <Compile Include="Models\RunningViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Invest\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Invest\Running.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Invest\Create.cshtml" />

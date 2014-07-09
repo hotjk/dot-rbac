@@ -45,13 +45,13 @@ namespace CQRS.Demo.Applications
             var account = _accountService.Get(@event.AccountId);
             if (account.Amount < @event.Amount)
             {
-                throw new BusinessException(@event, "用户账户余额不足。");
+                throw new BusinessException("用户账户余额不足。");
             }
 
             var project = _projectService.Get(@event.ProjectId);
             if (project.Amount < @event.Amount)
             {
-                throw new BusinessException(@event, "项目可投资金额不足。");
+                throw new BusinessException("项目可投资金额不足。");
             }
 
             using (UnitOfWork u = new UnitOfWork())
@@ -66,13 +66,14 @@ namespace CQRS.Demo.Applications
             var investment = _investmentService.Get(@event.InvestmentId);
             if (investment == null)
             {
-                throw new BusinessException(@event, "投资不存在。");
+                throw new BusinessException("投资不存在。");
             }
             if (investment.Status != Contracts.Enum.InvestmentStatus.Initial)
             {
-                throw new BusinessException(@event, "投资已经支付。");
+                throw new BusinessException("投资已经支付。");
             }
             Project project = _projectService.Get(investment.ProjectId);
+
             using (UnitOfWork u = new UnitOfWork())
             {
                 ServiceLocator.CommandBus

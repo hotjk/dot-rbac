@@ -20,25 +20,16 @@ namespace CQRS.Demo.Web.Controllers
     public class InvestController : Controller
     {
         public InvestController(ISequenceService sequenceService, 
-            InvestmentAndPaymentApplication application,
             IInvestmentService investmentService)
         {
-            _application = application;
             _sequenceService = sequenceService;
             _investmentService = investmentService;
         }
 
         private ISequenceService _sequenceService;
-        private InvestmentAndPaymentApplication _application;
         private IInvestmentService _investmentService;
 
-        [HttpGet]
-        public ActionResult Running(RunningViewModel vm)
-        {
-            return View(vm);
-        }
-
-        [HttpGet]
+                [HttpGet]
         public ActionResult Create()
         {
             return View(new InvestViewModel
