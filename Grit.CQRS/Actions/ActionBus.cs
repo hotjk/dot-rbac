@@ -89,7 +89,7 @@ namespace Grit.CQRS
                 Encoding.UTF8.GetBytes(json));
 
             BasicDeliverEventArgs result;
-            if (_consumer.Queue.Dequeue(_timeoutSeconds, out result))
+            if (_consumer.Queue.Dequeue(_timeoutSeconds * 1000, out result))
             {
                 return JsonConvert.DeserializeObject<ActionResponse>(Encoding.UTF8.GetString(result.Body));
             }
