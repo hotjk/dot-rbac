@@ -10,8 +10,6 @@ namespace Grit.CQRS
     public interface IActionHandlerFactory
     {
         IActionHandler<T> GetHandler<T>() where T : Action;
-        IModel GetChannel();
-        string GetQueue();
         Type GetType(string name);
     }
 }

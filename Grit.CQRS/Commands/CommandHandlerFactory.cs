@@ -9,15 +9,13 @@ namespace Grit.CQRS
 {
     public class CommandHandlerFactory : ICommandHandlerFactory
     {
-        private static IKernel _kernel;
         private static IEnumerable<string> _commandAssmblies;
         private static IEnumerable<string> _handlerAssmblies;
         private static IDictionary<Type, Type> _handlers;
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
-        public static void Init(IKernel kernel, 
-            IEnumerable<string> commandAssmblies,
+        public static void Init(IEnumerable<string> commandAssmblies,
             IEnumerable<string> handlerAssmblies)
         {
             if (!_isInitialized)
@@ -26,7 +24,6 @@ namespace Grit.CQRS
                 {
                     _commandAssmblies = commandAssmblies;
                     _handlerAssmblies = handlerAssmblies;
-                    _kernel = kernel;
                     HookHandlers();
                     _isInitialized = true;
                 }
@@ -97,7 +94,7 @@ namespace Grit.CQRS
                 throw new UnregisteredDomainCommandException("no handler registered for command: " + typeof(T));
             }
 
-            return (ICommandHandler<T>)_kernel.GetService(handler);
+            return (ICommandHandler<T>)ServiceLocator.Kernel.GetService(handler);
         }
     }
 }

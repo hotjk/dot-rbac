@@ -81,16 +81,18 @@ namespace CQRS.Demo.EventConsumer
 
         private static void InitHandlerFactory()
         {
-            CommandHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
+            CommandHandlerFactory.Init(new string[] { "CQRS.Demo.Contracts" },
                 new string[] { "CQRS.Demo.Model.Write" });
-            EventHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Model.Write" }, channel, 
-                Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange);
+            EventHandlerFactory.Init(new string[] { "CQRS.Demo.Contracts" },
+                new string[] { "CQRS.Demo.Model.Write" });
         }
 
         private static void InitServiceLocator()
         {
-            ServiceLocator.Init(Kernel);
+            ServiceLocator.Init(Kernel, channel,
+                Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange,
+                Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue,
+                10);
         }
     }
 }

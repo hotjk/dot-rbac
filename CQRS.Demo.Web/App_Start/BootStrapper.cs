@@ -90,19 +90,20 @@ namespace CQRS.Demo.Web
 
         private static void InitHandlerFactory()
         {
-            CommandHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
+            CommandHandlerFactory.Init(new string[] { "CQRS.Demo.Contracts" },
                 new string[] { "CQRS.Demo.Model.Write" });
-            EventHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Model.Write", "CQRS.Demo.Applications" }, channel,
-                Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange);
-            ActionHandlerFactory.Init(Kernel, new string[] { "CQRS.Demo.Contracts" },
-                new string[] { "CQRS.Demo.Applications" }, channel,
-                Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue);
+            EventHandlerFactory.Init(new string[] { "CQRS.Demo.Contracts" },
+                new string[] { "CQRS.Demo.Model.Write", "CQRS.Demo.Applications" } );
+            ActionHandlerFactory.Init(new string[] { "CQRS.Demo.Contracts" },
+                new string[] { "CQRS.Demo.Applications" } );
         }
 
         private static void InitServiceLocator()
         {
-            ServiceLocator.Init(Kernel);
+            ServiceLocator.Init(Kernel, channel,
+                Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange,
+                Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue,
+                10);
         }
     }
 }

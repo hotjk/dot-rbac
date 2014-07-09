@@ -10,12 +10,9 @@ namespace Grit.CQRS
 {
     public class ActionHandlerFactory : IActionHandlerFactory
     {
-        private static IKernel _kernel;
         private static IEnumerable<string> _actionAssmblies;
         private static IEnumerable<string> _handlerAssmblies;
         private static IDictionary<Type, Type> _handlers;
-        private static IModel _channel;
-        private static string _queue;
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
@@ -24,16 +21,12 @@ namespace Grit.CQRS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="kernel">Ninject kernel</param>
         /// <param name="actionAssmblies">The assmbly name list that keep the domain command/action.</param>
         /// <param name="handlerAssmblies">The assmbly name list that keep the domain command/action handlers</param>
         /// <param name="channel">RabbitMQ queue channel</param>
         /// <param name="queue">RabbitMQ exchange name</param>
-        public static void Init(IKernel kernel,
-            IEnumerable<string> actionAssmblies,
-            IEnumerable<string> handlerAssmblies,
-            IModel channel,
-            string queue)
+        public static void Init(IEnumerable<string> actionAssmblies,
+            IEnumerable<string> handlerAssmblies)
         {
             if (!_isInitialized)
             {
@@ -41,39 +34,10 @@ namespace Grit.CQRS
                 {
                     _actionAssmblies = actionAssmblies;
                     _handlerAssmblies = handlerAssmblies;
-                    _kernel = kernel;
                     HookHandlers();
-                    _channel = channel;
-                    _queue = queue;
                     _isInitialized = true;
                 }
             }
-        }
-
-        public static void Init(IKernel kernel,
-            IModel channel,
-            string queue)
-        {
-            if (!_isInitialized)
-            {
-                lock (_lockThis)
-                {
-                    _kernel = kernel;
-                    _channel = channel;
-                    _queue = queue;
-                    _isInitialized = true;
-                }
-            }
-        }
-
-        public IModel GetChannel()
-        {
-            return _channel;
-        }
-
-        public string GetQueue()
-        {
-            return _queue;
         }
 
         public Type GetType(string actionName)
@@ -154,7 +118,7 @@ namespace Grit.CQRS
                 throw new UnregisteredDomainCommandException("no handler registered for action: " + typeof(T));
             }
 
-            return (IActionHandler<T>)_kernel.GetService(handler);
+            return (IActionHandler<T>)ServiceLocator.Kernel.GetService(handler);
         }
     }
 }

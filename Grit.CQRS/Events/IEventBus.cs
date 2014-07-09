@@ -29,7 +29,11 @@ namespace Grit.CQRS
         /// <typeparam name="T"></typeparam>
         /// <param name="event"></param>
         void Handle<T>(T @event) where T : Event;
-        Type GetType(string name);
+
+        /// <summary>
+        /// Clear all cached events in thread.
+        /// </summary>
         void Clear();
+        Type GetType(string name);
     }
 }

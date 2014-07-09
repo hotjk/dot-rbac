@@ -10,8 +10,6 @@ namespace Grit.CQRS
     public interface IEventHandlerFactory
     {
         IEnumerable<IEventHandler<T>> GetHandlers<T>() where T : Event;
-        IModel GetChannel();
-        string GetExchange();
         Type GetType(string name);
     }
 }

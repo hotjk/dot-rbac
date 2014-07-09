@@ -15,11 +15,17 @@ namespace Grit.CQRS
     public class ActionBus : IActionBus
     {
         private IActionHandlerFactory _actionHandlerFactory;
+        private string _queue;
+        private int _timeoutSeconds;
         private string _replyQueueName = null;
         private QueueingBasicConsumer _consumer = null;
 
-        public ActionBus(IActionHandlerFactory ActionHandlerFactory)
+        public ActionBus(string queue,
+            int timeoutSeconds,
+            IActionHandlerFactory ActionHandlerFactory)
         {
+            _queue = queue;
+            _timeoutSeconds = timeoutSeconds;
             _actionHandlerFactory = ActionHandlerFactory;
         }
 
@@ -39,14 +45,14 @@ namespace Grit.CQRS
 
         public string GetQueue()
         {
-            return _actionHandlerFactory.GetQueue();
+            return _queue;
         }
 
         private void DelcareReplyQueue()
         {
             if(_replyQueueName == null)
             {
-                var channel = _actionHandlerFactory.GetChannel();
+                var channel = ServiceLocator.Channel;
                 string name = channel.QueueDeclare();
                 _consumer = new QueueingBasicConsumer(channel);
                 channel.BasicConsume(name, true, _consumer);
@@ -70,17 +76,15 @@ namespace Grit.CQRS
                 action, Environment.NewLine,
                 json));
             
-            var channel = _actionHandlerFactory.GetChannel();
-
             DelcareReplyQueue();
 
-            var props = channel.CreateBasicProperties();
+            var props = ServiceLocator.Channel.CreateBasicProperties();
             props.ReplyTo = _replyQueueName;
             props.CorrelationId = action.Id.ToString();
             props.Type = action.Type;
-           
-            channel.BasicPublish(string.Empty,
-                _actionHandlerFactory.GetQueue(),
+
+            ServiceLocator.Channel.BasicPublish(string.Empty,
+                _queue,
                 props,
                 Encoding.UTF8.GetBytes(json));
 

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
+    /// <summary>
+    /// ACE, Action/Command/Event
+    /// </summary>
     public class DomainMessage
     {
         public Guid Id { get; private set; }

@@ -10,12 +10,9 @@ namespace Grit.CQRS
 {
     public class EventHandlerFactory : IEventHandlerFactory
     {
-        private static IKernel _kernel;
         private static IEnumerable<string> _eventAssmblies;
         private static IEnumerable<string> _handlerAssmblies;
         private static IDictionary<Type, List<Type>> _handlers;
-        private static IModel _channel;
-        private static string _exchange;
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
@@ -24,16 +21,10 @@ namespace Grit.CQRS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="kernel">Ninject kernel</param>
         /// <param name="eventAssmblies">The assmbly name list that keep the domain command/event.</param>
         /// <param name="handlerAssmblies">The assmbly name list that keep the domain command/event handlers</param>
-        /// <param name="channel">RabbitMQ queue channel</param>
-        /// <param name="exchange">RabbitMQ exchange name</param>
-        public static void Init(IKernel kernel,
-            IEnumerable<string> eventAssmblies,
-            IEnumerable<string> handlerAssmblies,
-            IModel channel,
-            string exchange)
+        public static void Init(IEnumerable<string> eventAssmblies,
+            IEnumerable<string> handlerAssmblies)
         {
             if (!_isInitialized)
             {
@@ -41,23 +32,10 @@ namespace Grit.CQRS
                 {
                     _eventAssmblies = eventAssmblies;
                     _handlerAssmblies = handlerAssmblies;
-                    _kernel = kernel;
                     HookHandlers();
-                    _channel = channel;
-                    _exchange = exchange;
                     _isInitialized = true;
                 }
             }
-        }
-
-        public IModel GetChannel()
-        {
-            return _channel;
-        }
-
-        public string GetExchange()
-        {
-            return _exchange;
         }
 
         public Type GetType(string eventName)
@@ -135,7 +113,7 @@ namespace Grit.CQRS
             List<Type> handlers;
             if(_handlers.TryGetValue(typeof(T), out handlers))
             {
-                return handlers.Select(handler => (IEventHandler<T>)_kernel.GetService(handler)).ToList();
+                return handlers.Select(handler => (IEventHandler<T>)ServiceLocator.Kernel.GetService(handler)).ToList();
             }
             return null;
         }
