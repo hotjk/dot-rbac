@@ -28,6 +28,5 @@ namespace Grit.CQRS
         ActionResponse Send<T>(T action) where T : Action;
 
         Type GetType(string name);
-        string GetQueue();
     }
 }

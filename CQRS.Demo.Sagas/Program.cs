@@ -30,7 +30,7 @@ namespace CQRS.Demo.Sagas
                 using (var channel = connection.CreateModel())
                 {
                     var consumer = new QueueingBasicConsumer(channel);
-                    channel.BasicConsume(ServiceLocator.ActionBus.GetQueue(), false, consumer);
+                    channel.BasicConsume(ServiceLocator.ActionBusQueue, false, consumer);
 
                     while (true)
                     {

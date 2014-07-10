@@ -15,18 +15,11 @@ namespace Grit.CQRS
     public class ActionBus : IActionBus
     {
         private IActionHandlerFactory _actionHandlerFactory;
-        private string _exchange;
-        private string _queue; // Queue is also the routing key in direct exchange
-        private int _timeoutSeconds;
         private string _replyQueueName = null;
         private QueueingBasicConsumer _consumer = null;
 
-        public ActionBus(string exchange, string queue, int timeoutSeconds,
-            IActionHandlerFactory ActionHandlerFactory)
+        public ActionBus(IActionHandlerFactory ActionHandlerFactory)
         {
-            _exchange = exchange;
-            _queue = queue;
-            _timeoutSeconds = timeoutSeconds;
             _actionHandlerFactory = ActionHandlerFactory;
         }
 
@@ -47,11 +40,6 @@ namespace Grit.CQRS
             return _actionHandlerFactory.GetType(name);
         }
 
-        public string GetQueue()
-        {
-            return _queue;
-        }
-
         private void DeclareReplyQueue()
         {
             if(_replyQueueName == null)
@@ -64,10 +52,9 @@ namespace Grit.CQRS
             }
             else
             {
-                BasicDeliverEventArgs result = null;
-                while (_consumer.Queue.DequeueNoWait(result) != null)
+                while (_consumer.Queue.DequeueNoWait(null) != null)
                 {
-                    ;
+                    // give up old response.
                 }
             }
         }
@@ -85,17 +72,19 @@ namespace Grit.CQRS
             props.CorrelationId = action.Id.ToString();
             props.Type = action.Type;
 
-            ServiceLocator.Channel.BasicPublish(_exchange,
-                _queue,
+            ServiceLocator.Channel.BasicPublish(
+                ServiceLocator.ActionBusExchange,
+                ServiceLocator.ActionBusQueue, //Queue is also the routing key in direct exchange
                 props,
                 Encoding.UTF8.GetBytes(json));
 
             BasicDeliverEventArgs result;
-            if (_consumer.Queue.Dequeue(_timeoutSeconds * 1000, out result))
+            if (_consumer.Queue.Dequeue(ServiceLocator.ActionResponseTimeoutSeconds * 1000, out result))
             {
                 return JsonConvert.DeserializeObject<ActionResponse>(Encoding.UTF8.GetString(result.Body));
             }
-            throw new ApplicationException(string.Format("ActionResponse timeout in {0} seconds, Action.Id = {1}", _timeoutSeconds, action.Id));
+            throw new ApplicationException(string.Format("ActionResponse timeout in {0} seconds, Action.Id = {1}", 
+                ServiceLocator.ActionResponseTimeoutSeconds, action.Id));
         }
     }
 }

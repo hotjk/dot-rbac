@@ -30,6 +30,11 @@ namespace Grit.CQRS
             }
         }
 
+        public static string EventBusExchange { get; private set; }
+        public static string ActionBusExchange { get; private set; }
+        public static string ActionBusQueue { get; private set; }
+        public static int ActionResponseTimeoutSeconds { get; private set; }
+
         private static bool _isInitialized;
         private static readonly object _lockThis = new object();
 
@@ -47,22 +52,21 @@ namespace Grit.CQRS
                     Kernel = kernel;
                     Channel = channel;
 
+                    EventBusExchange = eventBusExchange;
+                    ActionBusExchange = actionBusExchange;
+                    ActionBusQueue = actionBusQueue;
+                    ActionResponseTimeoutSeconds = timeoutSeconds;
+
                     Kernel.Bind<ICommandHandlerFactory>().To<CommandHandlerFactory>().InSingletonScope();
                     Kernel.Bind<ICommandBus>().To<CommandBus>().InSingletonScope();
                     
                     Kernel.Bind<IEventHandlerFactory>().To<EventHandlerFactory>().InSingletonScope();
                     // EventBus must be thread scope, published events will be saved in thread EventBus._events, until Flush/Clear.
-                    Kernel.Bind<IEventBus>().To<EventBus>()
-                        .InThreadScope()
-                        .WithConstructorArgument("exchange", eventBusExchange);
+                    Kernel.Bind<IEventBus>().To<EventBus>().InThreadScope();
                     
                     Kernel.Bind<IActionHandlerFactory>().To<ActionHandlerFactory>().InSingletonScope();
                     // ActionBus must be thread scope, single thread bind to use single anonymous RabbitMQ queue for reply.
-                    Kernel.Bind<IActionBus>().To<ActionBus>()
-                        .InThreadScope()
-                        .WithConstructorArgument("exchange", actionBusExchange)
-                        .WithConstructorArgument("queue", actionBusQueue)
-                        .WithConstructorArgument("timeoutSeconds", timeoutSeconds);
+                    Kernel.Bind<IActionBus>().To<ActionBus>().InThreadScope();
 
                     CommandBus = kernel.Get<ICommandBus>();
                     _isInitialized = true;

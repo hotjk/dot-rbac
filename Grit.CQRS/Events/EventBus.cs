@@ -13,12 +13,9 @@ namespace Grit.CQRS
     {
         private IEventHandlerFactory _eventHandlerFactory;
         private IList<Event> _events = new List<Event>();
-        private string _exchange;
 
-        public EventBus(string exchange, 
-            IEventHandlerFactory eventHandlerFactory)
+        public EventBus(IEventHandlerFactory eventHandlerFactory)
         {
-            _exchange = exchange;
             _eventHandlerFactory = eventHandlerFactory;
         }
 
@@ -43,7 +40,7 @@ namespace Grit.CQRS
                 string.Format("Event Publish {0} {1}", @event, json));
 
             var channel = ServiceLocator.Channel;
-            channel.BasicPublish(_exchange,
+            channel.BasicPublish(ServiceLocator.EventBusExchange,
                 @event.RoutingKey, 
                 new BasicProperties { 
                     DeliveryMode = 2, // durable
