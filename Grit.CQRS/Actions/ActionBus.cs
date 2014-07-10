@@ -15,15 +15,16 @@ namespace Grit.CQRS
     public class ActionBus : IActionBus
     {
         private IActionHandlerFactory _actionHandlerFactory;
-        private string _queue;
+        private string _exchange;
+        private string _queue; // Queue is also the routing key in direct exchange
         private int _timeoutSeconds;
         private string _replyQueueName = null;
         private QueueingBasicConsumer _consumer = null;
 
-        public ActionBus(string queue,
-            int timeoutSeconds,
+        public ActionBus(string exchange, string queue, int timeoutSeconds,
             IActionHandlerFactory ActionHandlerFactory)
         {
+            _exchange = exchange;
             _queue = queue;
             _timeoutSeconds = timeoutSeconds;
             _actionHandlerFactory = ActionHandlerFactory;
@@ -84,7 +85,7 @@ namespace Grit.CQRS
             props.CorrelationId = action.Id.ToString();
             props.Type = action.Type;
 
-            ServiceLocator.Channel.BasicPublish(string.Empty,
+            ServiceLocator.Channel.BasicPublish(_exchange,
                 _queue,
                 props,
                 Encoding.UTF8.GetBytes(json));

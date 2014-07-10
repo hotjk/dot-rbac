@@ -16,7 +16,11 @@ namespace Grit.Configuration
         //rabbitmq-plugins enable rabbitmq_management
         //RabbitMQ Management Web http://localhost:15672
         public static readonly string CQRSDemoEventBusExchange = "event_bus_exchange";
-        public static readonly string CQRSDemoSagaQueue = "core_saga_action_queue";
+        public static readonly string CQRSDemoAccountEventQueue = "account_event_queue";
+        public static readonly string CQRSDemoAccountEventRoutingKey = "account.*.*";
+
+        public static readonly string CQRSDemoActionBusExchange = "action_bus_exchange";
+        public static readonly string CQRSDemoCoreActionQueue = "core_action_queue";
         public static readonly string CQRSDemo = "amqp://event_user:event_password@localhost:5672/" + CQRSDemoEventBusExchange;
     }
 }

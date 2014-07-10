@@ -75,6 +75,11 @@ namespace CQRS.Demo.Sagas
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
             channel.ExchangeDeclare(Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, ExchangeType.Topic, true);
+            channel.ExchangeDeclare(Grit.Configuration.RabbitMQ.CQRSDemoActionBusExchange, ExchangeType.Direct, true);
+            channel.QueueDeclare(Grit.Configuration.RabbitMQ.CQRSDemoCoreActionQueue, true, false, false, null);
+            channel.QueueBind(Grit.Configuration.RabbitMQ.CQRSDemoCoreActionQueue,
+                Grit.Configuration.RabbitMQ.CQRSDemoActionBusExchange,
+                Grit.Configuration.RabbitMQ.CQRSDemoCoreActionQueue);
         }
 
         private static void InitHandlerFactory()
@@ -90,10 +95,11 @@ namespace CQRS.Demo.Sagas
         private static void InitServiceLocator()
         {
             ServiceLocator.Init(
-                Kernel, 
+                Kernel,
                 channel,
                 Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange,
-                Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue,
+                Grit.Configuration.RabbitMQ.CQRSDemoActionBusExchange,
+                Grit.Configuration.RabbitMQ.CQRSDemoCoreActionQueue,
                 10);
         }
     }

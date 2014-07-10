@@ -92,7 +92,7 @@ namespace Grit.CQRS
             return _eventHandlerFactory.GetType(eventName);
         }
 
-        public void Clear()
+        public void Purge()
         {
             _events.Clear();
         }

@@ -65,7 +65,8 @@ namespace CQRS.Demo.Web
             ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            channel.QueueDeclare(Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue, true, false, false, null);
+            channel.ExchangeDeclare(Grit.Configuration.RabbitMQ.CQRSDemoActionBusExchange, ExchangeType.Direct, true);
+            channel.QueueDeclare(Grit.Configuration.RabbitMQ.CQRSDemoCoreActionQueue, true, false, false, null);
         }
 
         private static void InitServiceLocator()
@@ -74,7 +75,8 @@ namespace CQRS.Demo.Web
                 Kernel,
                 channel,
                 Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange,
-                Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue,
+                Grit.Configuration.RabbitMQ.CQRSDemoActionBusExchange,
+                Grit.Configuration.RabbitMQ.CQRSDemoCoreActionQueue,
                 10);
         }
     }

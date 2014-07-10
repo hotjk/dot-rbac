@@ -24,7 +24,7 @@ namespace Grit.CQRS
 
         public void Dispose()
         {
-            Grit.CQRS.ServiceLocator.EventBus.Clear();
+            Grit.CQRS.ServiceLocator.EventBus.Purge();
             scope.Dispose();
         }
 

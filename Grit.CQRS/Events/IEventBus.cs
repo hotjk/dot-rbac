@@ -33,7 +33,7 @@ namespace Grit.CQRS
         /// <summary>
         /// Clear all cached events in thread.
         /// </summary>
-        void Clear();
+        void Purge();
         Type GetType(string name);
     }
 }

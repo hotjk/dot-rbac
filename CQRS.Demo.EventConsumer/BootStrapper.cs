@@ -74,9 +74,12 @@ namespace CQRS.Demo.EventConsumer
             ConnectionFactory factory = new ConnectionFactory { Uri = Grit.Configuration.RabbitMQ.CQRSDemo };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
+
             channel.ExchangeDeclare(Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, ExchangeType.Topic, true);
-            channel.QueueDeclare("account_event_queue", true, false, false, null);
-            channel.QueueBind("account_event_queue", Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange, "account.*.*");
+            channel.QueueDeclare(Grit.Configuration.RabbitMQ.CQRSDemoAccountEventQueue, true, false, false, null);
+            channel.QueueBind(Grit.Configuration.RabbitMQ.CQRSDemoAccountEventQueue, 
+                Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange,
+                Grit.Configuration.RabbitMQ.CQRSDemoAccountEventRoutingKey);
         }
 
         private static void InitHandlerFactory()
@@ -93,7 +96,8 @@ namespace CQRS.Demo.EventConsumer
                 Kernel,
                 channel,
                 Grit.Configuration.RabbitMQ.CQRSDemoEventBusExchange,
-                Grit.Configuration.RabbitMQ.CQRSDemoSagaQueue,
+                Grit.Configuration.RabbitMQ.CQRSDemoActionBusExchange,
+                Grit.Configuration.RabbitMQ.CQRSDemoCoreActionQueue,
                 10);
         }
     }
