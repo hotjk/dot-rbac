@@ -62,7 +62,9 @@ namespace Grit.CQRS
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            var newEx = new Exception(string.Format("{0} {1} {2}",
+                            handler.GetType().Name, @event.Type, @event.Id), ex);
+                            log4net.LogManager.GetLogger("exception.logger").Error(newEx);
                         }
                     });
                 }
@@ -79,8 +81,17 @@ namespace Grit.CQRS
             {
                 foreach (var handler in handlers)
                 {
-                    // handle event in current thread
-                    handler.Handle(@event);
+                    try
+                    {
+                        // handle event in current thread
+                        handler.Handle(@event);
+                    }
+                    catch(Exception ex)
+                    {
+                        var newEx = new Exception(string.Format("{0} {1} {2}",
+                            handler.GetType().Name, @event.Type, @event.Id), ex);
+                        log4net.LogManager.GetLogger("exception.logger").Error(newEx);
+                    }
                 }
             }
         }

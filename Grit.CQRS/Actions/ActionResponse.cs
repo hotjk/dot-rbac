@@ -12,6 +12,7 @@ namespace Grit.CQRS.Actions
         {
             OK = 0,
             NG = 1,
+            Exception = 2,
         }
         public ActionResponseResult Result { get; set; }
         public string Message { get; set; }

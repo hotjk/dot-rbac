@@ -54,11 +54,13 @@ namespace CQRS.Demo.Sagas
                         {
                             response.Result = ActionResponse.ActionResponseResult.NG;
                             response.Message = ex.Message;
-                            Console.WriteLine(ex.Message);
                         }
                         catch (Exception ex)
                         {
-                            log4net.LogManager.GetLogger("exception.logger").Error(ex);
+                            response.Result = ActionResponse.ActionResponseResult.Exception;
+                            response.Message = ex.Message;
+                            Exception newEx = new Exception(string.Format("{0} {1}", action.Type, action.Id), ex);
+                            log4net.LogManager.GetLogger("exception.logger").Error(newEx);
                         }
                         finally
                         {
