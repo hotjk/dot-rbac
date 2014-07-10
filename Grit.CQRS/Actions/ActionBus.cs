@@ -94,7 +94,7 @@ namespace Grit.CQRS
             {
                 return JsonConvert.DeserializeObject<ActionResponse>(Encoding.UTF8.GetString(result.Body));
             }
-            throw new ApplicationException();
+            throw new ApplicationException(string.Format("ActionResponse timeout in {0} seconds, Action.Id = {1}", _timeoutSeconds, action.Id));
         }
     }
 }
