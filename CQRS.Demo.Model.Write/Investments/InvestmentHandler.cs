@@ -41,7 +41,6 @@ namespace CQRS.Demo.Model.Investments
 
         public void Execute(CreateInvestment command)
         {
-            throw new ApplicationException("fds");
             _repository.Add(AutoMapper.Mapper.Map<Investment>(command));
             ServiceLocator.EventBus.Publish(AutoMapper.Mapper.Map<InvestmentStatusCreated>(command));
         }
