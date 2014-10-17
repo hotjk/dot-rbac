@@ -12,14 +12,14 @@ namespace Grit.RBAC.Configuration
     {
         public static IKernel Kernel { get; private set; }
 
-        public static void BootStrap()
+        public static void BootStrap(IKernel kernel)
         {
+            Kernel = kernel;
             AddIocBindings();
         }
 
         private static void AddIocBindings()
         {
-            Kernel = new StandardKernel();
             Kernel.Bind<IRBACRepository>().To<RBACRepository>().InSingletonScope();
             Kernel.Bind<IRBACService>().To<RBACService>().InSingletonScope();
         }

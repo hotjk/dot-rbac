@@ -8,9 +8,9 @@ namespace Grit.Sequence
 {
     public class SequenceService : ISequenceService
     {
-        public SequenceService(ISequenceRepository SequenceRepository)
+        public SequenceService(ISequenceRepository sequenceRepository)
         {
-            this.SequenceRepository = SequenceRepository;
+            this.SequenceRepository = sequenceRepository;
         }
 
         public static readonly int DEFAULT_STEP = 100;
