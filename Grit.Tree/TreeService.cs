@@ -19,19 +19,26 @@ namespace Grit.Tree
         private ISequenceRepository SequenceRepository { get; set; }
         private ITreeRepository TreeRepository { get; set; }
 
-        public Node GetTree(int treeId)
+        public Node GetTree(int tree)
         {
-            var nodes = TreeRepository.GetTreeNodes(treeId);
+            var nodes = TreeRepository.GetTreeNodes(tree);
             Node root = nodes.FirstOrDefault();
             if(root == null)
             {
-                root = new Node { Root = treeId };
+                root = new Node(tree);
             }
             foreach(var node in nodes.Skip(1))
             {
                 root.AddChild(node);
             }
             return root;
+        }
+
+        public void SaveTree(Node root)
+        {
+            var nodes = new List<Node>();
+            root.Flat(nodes);
+            TreeRepository.SaveTreeNodes(nodes);
         }
     }
 }

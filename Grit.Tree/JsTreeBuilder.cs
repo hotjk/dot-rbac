@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Grit.Tree
 {
-    public class JsTreeConverter<T>
+    public class JsTreeBuilder<T>
     {
         private Func<T, string> GetText { get; set; }
         private Func<T, int> GetContent { get; set; }
-        public JsTreeConverter(
+        public JsTreeBuilder(
             Func<T, string> getText,
             Func<T, int> getContent)
         {
@@ -21,10 +21,10 @@ namespace Grit.Tree
 
         public JsTreeNode Build(Node node, IEnumerable<T> entities)
         {
-            JsTreeNode root = BuildJsTreeNode(node, entities);
+            JsTreeNode root = BuildNode(node, entities);
 
             ISet<int> set = new HashSet<int>();
-            node.SummarizeData(set);
+            node.Summarize(set);
             var unused = entities.Where(n => !set.Contains(GetContent(n)));
             foreach(var entity in unused)
             {
@@ -39,10 +39,10 @@ namespace Grit.Tree
             return root;
         }
 
-        private JsTreeNode BuildJsTreeNode(Node node, IEnumerable<T> entities)
+        private JsTreeNode BuildNode(Node node, IEnumerable<T> entities)
         {
             JsTreeNode jsTreeNode = null;
-            if (node.Id == node.Root) // root node is a dummy node.
+            if (!node.Data.HasValue) // root node is a dummy node.
             {
                 jsTreeNode = new JsTreeNode();
             }
@@ -64,7 +64,7 @@ namespace Grit.Tree
             {
                 foreach (Node child in node.Children)
                 {
-                    var childJsTreeNode = BuildJsTreeNode(child, entities);
+                    var childJsTreeNode = BuildNode(child, entities);
                     if(childJsTreeNode != null)
                     {
                         jsTreeNode.AddChild(childJsTreeNode);

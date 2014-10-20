@@ -9,5 +9,6 @@ namespace Grit.Tree
     public interface ITreeRepository
     {
         IEnumerable<Node> GetTreeNodes(int treeId);
+        void SaveTreeNodes(IList<Node> nodes);
     }
 }
