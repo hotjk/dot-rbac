@@ -32,6 +32,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
             ViewBag.Tree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
                 .Build(root, permissions)
                 .children;
+
             return View();
         }
 
@@ -43,8 +44,20 @@ namespace Grit.RBAC.Demo.Web.Controllers
             return new JsonNetResult(nodes);
         }
 
-        public ActionResult Contact()
+        public ActionResult Map()
         {
+            var roles = RBACService.GetRolesWithPermission();
+            var leftTree = TreeService.GetTree(7);
+            ViewBag.LeftTree = new JsTreeBuilder<Role>(x => x.Name, x => x.RoleId, x=>x.Permissions.Select(n=>n.PermissionId))
+                .Build(leftTree, roles)
+                .children;
+
+            var permissions = RBACService.GetPermissions();
+            var rightTree = TreeService.GetTree(8);
+            ViewBag.RightTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
+                .Build(rightTree, permissions)
+                .children;
+
             return View();
         }
     }

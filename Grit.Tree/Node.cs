@@ -21,6 +21,7 @@ namespace Grit.Tree
         public int? Parent { get; private set; }
         public IList<Node> Children { get; private set; }
         public int? Data { get; private set; }
+        public IList<int> Elements { get; private set; }
 
         public bool AddChild(Node node)
         {
@@ -47,6 +48,26 @@ namespace Grit.Tree
                 }
             }
             return false;
+        }
+
+        public Node FindByData(int data)
+        {
+            if (this.Data == data)
+            {
+                return this;
+            }
+            if (Children != null)
+            {
+                foreach (Node child in Children)
+                {
+                    var found = child.FindByData(data);
+                    if (found != null)
+                    {
+                        return found;
+                    }
+                }
+            }
+            return null;
         }
 
         public void Summarize(ref ISet<int> set)

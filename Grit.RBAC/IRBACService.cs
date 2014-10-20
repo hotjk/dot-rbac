@@ -11,6 +11,7 @@ namespace Grit.RBAC
         IEnumerable<Permission> GetPermissions();
         IEnumerable<Role> GetRoles();
         IEnumerable<Subject> GetSubjects();
+        IEnumerable<Role> GetRolesWithPermission();
 
         Permission GetPermission(int id);
         Role GetRole(int id);

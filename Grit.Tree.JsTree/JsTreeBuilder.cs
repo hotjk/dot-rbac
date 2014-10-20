@@ -10,12 +10,15 @@ namespace Grit.Tree.JsTree
     {
         private Func<T, string> GetText { get; set; }
         private Func<T, int> GetContent { get; set; }
+        private Func<T, IEnumerable<int>> GetElements { get; set; }
         public JsTreeBuilder(
             Func<T, string> getText,
-            Func<T, int> getContent)
+            Func<T, int> getContent,
+            Func<T, IEnumerable<int>> getElements = null)
         {
             this.GetText = getText;
             this.GetContent = getContent;
+            this.GetElements = getElements;
         }
 
         public JsTreeNode Build(Node node, IEnumerable<T> entities)
@@ -30,7 +33,8 @@ namespace Grit.Tree.JsTree
                 root.AddChild(new JsTreeNode
                 {
                     text = GetText(entity),
-                    data = new JsTreeNodeData { content = GetContent(entity) },
+                    data = new JsTreeNodeData { content = GetContent(entity),
+                                                elements = GetElements == null ? null : GetElements(entity) },
                     state = new JsTreeNodeState { opened = true }
                 });
             }
@@ -53,7 +57,8 @@ namespace Grit.Tree.JsTree
                     jsTreeNode = new JsTreeNode
                     {
                         text = GetText(entity),
-                        data = new JsTreeNodeData { content = GetContent(entity) },
+                        data = new JsTreeNodeData { content = GetContent(entity),
+                                                    elements = GetElements == null ? null : GetElements(entity) },
                         state = new JsTreeNodeState { opened = true }
                     };
                 }

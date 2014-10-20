@@ -30,6 +30,11 @@ namespace Grit.RBAC
             return RBACRepository.GetSubjects();
         }
 
+        public IEnumerable<Role> GetRolesWithPermission()
+        {
+            return RBACRepository.GetRolesWithPermission();
+        }
+
         public Permission GetPermission(int id)
         {
             return RBACRepository.GetPermission(id);

@@ -9,6 +9,6 @@ namespace Grit.Tree.JsTree
     public class JsTreeNodeData
     {
         public int content { get; set; }
-        public IList<int> elements { get; set; }
+        public IEnumerable<int> elements { get; set; }
     }
 }
