@@ -70,6 +70,11 @@ namespace Grit.RBAC
             RBACRepository.SaveRolePermissions(role);
         }
 
+        public void SaveRolePermissions(IEnumerable<Role> roles)
+        {
+            RBACRepository.SaveRolePermissions(roles);
+        }
+
         public void SaveSubjectRoles(Subject subject)
         {
             RBACRepository.SaveSubjectRoles(subject);

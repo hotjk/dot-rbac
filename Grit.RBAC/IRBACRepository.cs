@@ -23,6 +23,7 @@ namespace Grit.RBAC
         bool SaveSubject(Subject subject);
 
         void SaveRolePermissions(Role role);
+        void SaveRolePermissions(IEnumerable<Role> roles);
         void SaveSubjectRoles(Subject subject);
     }
 }

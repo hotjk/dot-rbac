@@ -32,7 +32,7 @@ namespace Grit.Tree.JsTree
             }
             else
             {
-                node = new Node(tree, id++, parent.Id, jsTreeNode.data.content);
+                node = new Node(tree, id++, parent.Id, jsTreeNode.data.content, jsTreeNode.data.elements);
                 parent.AddChild(node);
             }
 

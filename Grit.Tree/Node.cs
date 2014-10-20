@@ -8,12 +8,23 @@ namespace Grit.Tree
 {
     public class Node
     {
-        public Node(int tree, int id = 0, int? parent = null, int? data = null)
+        public Node(int tree, int id = 0)
+            : this(tree, id, null, null, null)
+        {
+        }
+
+        public Node(int tree, int id, int? parent, int? data)
+            : this(tree, id, parent, data, null)
+        {
+        }
+
+        public Node(int tree, int id, int? parent, int? data, IEnumerable<int> elements)
         {
             this.Tree = tree;
             this.Id = id;
             this.Parent = parent;
             this.Data = data;
+            this.Elements = elements;
         }
 
         public int Tree { get; private set; }
@@ -21,7 +32,7 @@ namespace Grit.Tree
         public int? Parent { get; private set; }
         public IList<Node> Children { get; private set; }
         public int? Data { get; private set; }
-        public IList<int> Elements { get; private set; }
+        public IEnumerable<int> Elements { get; private set; }
 
         public bool AddChild(Node node)
         {
@@ -93,6 +104,18 @@ namespace Grit.Tree
                 foreach(var child in Children)
                 {
                     child.Flat(ref nodes);
+                }
+            }
+        }
+
+        public void Each(Action<Node> action)
+        {
+            action(this);
+            if (Children != null && Children.Count > 0)
+            {
+                foreach (var child in Children)
+                {
+                    child.Each(action);
                 }
             }
         }

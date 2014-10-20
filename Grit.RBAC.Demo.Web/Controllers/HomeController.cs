@@ -44,6 +44,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
             return new JsonNetResult(nodes);
         }
 
+        [HttpGet]
         public ActionResult Map()
         {
             var roles = RBACService.GetRolesWithPermission();
@@ -59,6 +60,28 @@ namespace Grit.RBAC.Demo.Web.Controllers
                 .children;
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Map([ModelBinder(typeof(JsonNetModelBinder))] IList<JsTreeNode> nodes)
+        {
+            var root = new JsTreeParser().Parse(7, nodes);
+            var roles = RBACService.GetRoles();
+            var permissions = RBACService.GetPermissions();
+            root.Each(x =>
+            {
+                if(x.Elements != null)
+                {
+                    var role = roles.SingleOrDefault(n => n.RoleId == x.Id);
+                    if (role != null)
+                    {
+                        var rolePermissions = permissions.Where(n => x.Elements.Any(m => m == n.PermissionId));
+                        role.Add(rolePermissions);
+                    }
+                }
+            });
+            RBACService.SaveRolePermissions(roles);
+            return new JsonNetResult(nodes);
         }
     }
 }

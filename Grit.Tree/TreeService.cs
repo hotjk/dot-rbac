@@ -37,7 +37,7 @@ namespace Grit.Tree
         public void SaveTree(Node root)
         {
             IList<Node> nodes = new List<Node>();
-            root.Flat(ref nodes);
+            root.Each(x=>nodes.Add(x));
             TreeRepository.SaveTreeNodes(nodes);
         }
     }

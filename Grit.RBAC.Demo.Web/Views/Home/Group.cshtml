@@ -13,10 +13,10 @@
             var App = {
                 init: function () {
                     this.$treeControl = $("#ctl_tree");
-                    this.bindTree(@Html.Json(@ViewBag.Tree as object));
+                    this.initTree(@Html.Json(@ViewBag.Tree as object));
                     $("#btn_save").on('click', this.save.bind(this));
                 },
-                bindTree: function (data) {
+                initTree: function (data) {
                     this.$treeControl.jstree({
                         'core': {
                             'themes': {

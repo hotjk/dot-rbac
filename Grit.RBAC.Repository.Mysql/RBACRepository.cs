@@ -154,6 +154,19 @@ namespace Grit.RBAC.Repository.MySql
             }
         }
 
+        public void SaveRolePermissions(IEnumerable<Role> roles)
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                foreach(var role in roles)
+                {
+                    connection.Execute("DELETE FROM rbac_role_permission WHERE RoleId = @RoleId;", role);
+                    connection.Execute("INSERT INTO rbac_role_permission (RoleId, PermissionId) VALUES (@RoleId, @PermissionId);",
+                        role.Permissions.Select(n => new { RoleId = role.RoleId, PermissionId = n.PermissionId }));
+                }
+            }
+        }
+
         public void SaveSubjectRoles(Subject subject)
         {
             using (IDbConnection connection = OpenConnection())

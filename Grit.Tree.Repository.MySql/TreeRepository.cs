@@ -29,10 +29,14 @@ namespace Grit.Tree.Repository.MySql
 
             using (IDbConnection connection = OpenConnection())
             {
-                connection.Execute("DELETE FROM `Tree` WHERE `Tree` = @Tree;",
-                    new { Tree = nodes.First().Tree });
-                connection.Execute("INSERT INTO `tree`(`Tree`, `Id`, `Parent`, `Data`) VALUES (@Tree, @Id, @Parent, @Data);",
-                    nodes);
+                using (var transaction = connection.BeginTransaction())
+                {
+                    connection.Execute("DELETE FROM `Tree` WHERE `Tree` = @Tree;",
+                        new { Tree = nodes.First().Tree });
+                    connection.Execute("INSERT INTO `tree`(`Tree`, `Id`, `Parent`, `Data`) VALUES (@Tree, @Id, @Parent, @Data);",
+                        nodes);
+                    transaction.Commit();
+                }
             }
         }
      }
