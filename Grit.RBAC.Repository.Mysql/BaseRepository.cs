@@ -13,6 +13,7 @@ namespace Grit.RBAC.Repository.MySql
         protected static IDbConnection OpenConnection()
         {
             MySqlConnection connection = new MySqlConnection(Grit.Configuration.MySql.RBAC);
+            connection.Open();
             return connection;
         }
     }

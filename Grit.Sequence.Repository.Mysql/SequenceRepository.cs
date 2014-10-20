@@ -20,9 +20,11 @@ namespace Grit.Sequence.Repository.MySql
             using (IDbConnection conn = OpenConnection())
             {
                 const string query = "SELECT Value FROM Sequence WHERE Id=@Id FOR UPDATE; UPDATE Sequence SET Value=Value+@Step WHERE Id=@Id;";
-                IDbTransaction transaction = conn.BeginTransaction(System.Data.IsolationLevel.RepeatableRead);
-                next = conn.Query<int?>(query, new { Id = id, Step = step }).SingleOrDefault();
-                transaction.Commit();
+                using (IDbTransaction transaction = conn.BeginTransaction(System.Data.IsolationLevel.RepeatableRead))
+                {
+                    next = conn.Query<int?>(query, new { Id = id, Step = step }).SingleOrDefault();
+                    transaction.Commit();
+                }
             }
 
             if (next == null)
