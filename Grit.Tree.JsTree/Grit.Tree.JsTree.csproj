@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8C530C2D-566F-4D0C-8368-4E5FC68187B3}</ProjectGuid>
+    <ProjectGuid>{63FF4D80-7207-4925-8D2F-19C036FF6E35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Grit.Tree</RootNamespace>
-    <AssemblyName>Grit.Tree</AssemblyName>
+    <RootNamespace>Grit.Tree.JsTree</RootNamespace>
+    <AssemblyName>Grit.Tree.JsTree</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,19 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITreeRepository.cs" />
-    <Compile Include="ITreeService.cs" />
-    <Compile Include="Node.cs" />
+    <Compile Include="JsTreeBuilder.cs" />
+    <Compile Include="JsTreeNode.cs" />
+    <Compile Include="JsTreeNodeData.cs" />
+    <Compile Include="JsTreeNodeState.cs" />
+    <Compile Include="JsTreeParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TreeService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Grit.Sequence\Grit.Sequence.csproj">
-      <Project>{0161cd61-4221-47c3-9567-1695c06de101}</Project>
-      <Name>Grit.Sequence</Name>
+    <ProjectReference Include="..\Grit.Tree\Grit.Tree.csproj">
+      <Project>{8c530c2d-566f-4d0c-8368-4e5fc68187b3}</Project>
+      <Name>Grit.Tree</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

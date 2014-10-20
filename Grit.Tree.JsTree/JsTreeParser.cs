@@ -1,11 +1,10 @@
-﻿using Grit.Tree.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.Tree
+namespace Grit.Tree.JsTree
 {
     public class JsTreeParser
     {

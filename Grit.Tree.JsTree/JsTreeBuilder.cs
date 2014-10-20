@@ -1,11 +1,10 @@
-﻿using Grit.Tree.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.Tree
+namespace Grit.Tree.JsTree
 {
     public class JsTreeBuilder<T>
     {
@@ -24,7 +23,7 @@ namespace Grit.Tree
             JsTreeNode root = BuildNode(node, entities);
 
             ISet<int> set = new HashSet<int>();
-            node.Summarize(set);
+            node.Summarize(ref set);
             var unused = entities.Where(n => !set.Contains(GetContent(n)));
             foreach(var entity in unused)
             {
@@ -42,7 +41,7 @@ namespace Grit.Tree
         private JsTreeNode BuildNode(Node node, IEnumerable<T> entities)
         {
             JsTreeNode jsTreeNode = null;
-            if (!node.Data.HasValue) // root node is a dummy node.
+            if (node.Parent == null) // root node is a dummy node.
             {
                 jsTreeNode = new JsTreeNode();
             }

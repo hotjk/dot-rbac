@@ -226,6 +226,10 @@
       <Project>{0161cd61-4221-47c3-9567-1695c06de101}</Project>
       <Name>Grit.Sequence</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Grit.Tree.JsTree\Grit.Tree.JsTree.csproj">
+      <Project>{63ff4d80-7207-4925-8d2f-19c036ff6e35}</Project>
+      <Name>Grit.Tree.JsTree</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Grit.Tree.Repository.MySql\Grit.Tree.Repository.MySql.csproj">
       <Project>{b946ff4a-9002-49ba-be32-2fda761534af}</Project>
       <Name>Grit.Tree.Repository.MySql</Name>

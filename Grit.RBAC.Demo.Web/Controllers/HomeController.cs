@@ -1,5 +1,5 @@
 ﻿using Grit.Tree;
-using Grit.Tree.ViewModel;
+using Grit.Tree.JsTree;
 using Grit.Utility.Web.Infrastructure;
 using System;
 using System.Collections.Generic;

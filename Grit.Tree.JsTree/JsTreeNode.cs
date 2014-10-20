@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.Tree.ViewModel
+namespace Grit.Tree.JsTree
 {
     public class JsTreeNode
     {

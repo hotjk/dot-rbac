@@ -24,9 +24,8 @@ namespace Grit.Tree
 
         public bool AddChild(Node node)
         {
-            if (node.Parent == null || node.Parent == this.Id)
+            if (node.Parent == this.Id)
             {
-                //node.Parent = node.Id;
                 if (Children == null)
                 {
                     Children = new List<Node>();
@@ -50,7 +49,7 @@ namespace Grit.Tree
             return false;
         }
 
-        public void Summarize(ISet<int> set)
+        public void Summarize(ref ISet<int> set)
         {
             if (Data.HasValue)
             {
@@ -60,19 +59,19 @@ namespace Grit.Tree
             {
                 foreach (var child in Children)
                 {
-                    child.Summarize(set);
+                    child.Summarize(ref set);
                 }
             }
         }
 
-        public void Flat(IList<Node> nodes)
+        public void Flat(ref IList<Node> nodes)
         {
             nodes.Add(this);
             if(Children != null && Children.Count > 0)
             {
                 foreach(var child in Children)
                 {
-                    child.Flat(nodes);
+                    child.Flat(ref nodes);
                 }
             }
         }
