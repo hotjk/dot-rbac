@@ -26,6 +26,24 @@ namespace Grit.RBAC.Repository.MySql
             }
         }
 
+        public IEnumerable<Role> GetRolesWithPermission()
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                var roles = connection.Query<Role>("SELECT RoleId, Name FROM rbac_role;");
+                var permissions = connection.Query<RolePermission>(
+                    "SELECT rp.RoleId, p.PermissionId, p.Name FROM rbac_permission p " +
+                    "JOIN rbac_role_permission rp ON p.PermissionId = rp.PermissionId;");
+                foreach(var role in roles)
+                {
+                    role.Add(permissions
+                        .Where(n=>n.RoleId == role.RoleId)
+                        .Select(n=>new Permission(n.PermissionId, n.Name)));
+                }
+                return roles;
+            }
+        }
+
         public IEnumerable<Subject> GetSubjects()
         {
             using (IDbConnection connection = OpenConnection())
@@ -133,6 +151,19 @@ namespace Grit.RBAC.Repository.MySql
                 connection.Execute("DELETE FROM rbac_role_permission WHERE RoleId = @RoleId;", role);
                 connection.Execute("INSERT INTO rbac_role_permission (RoleId, PermissionId) VALUES (@RoleId, @PermissionId);",
                     role.Permissions.Select(n => new { RoleId = role.RoleId, PermissionId = n.PermissionId }));
+            }
+        }
+
+        public void SaveRolePermissions(IEnumerable<Role> roles)
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                foreach(var role in roles)
+                {
+                    connection.Execute("DELETE FROM rbac_role_permission WHERE RoleId = @RoleId;", role);
+                    connection.Execute("INSERT INTO rbac_role_permission (RoleId, PermissionId) VALUES (@RoleId, @PermissionId);",
+                        role.Permissions.Select(n => new { RoleId = role.RoleId, PermissionId = n.PermissionId }));
+                }
             }
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grit.CQRS
 {
-    public class Command : ICommand
+    public class Command : DomainMessage, ICommand
     {
     }
 }

@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Group";
+}
+@using Grit.Utility.Web.Extensions
+<h2>@ViewBag.Title.</h2>
+
+<link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
+@section scripts {
+    <script src="~/Content/jstree/jstree.js"></script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            'use strict';
+            var App = {
+                init: function () {
+                    this.$treeControl = $("#ctl_tree");
+                    this.initTree(@Html.Json(@ViewBag.Tree as object));
+                    $("#btn_save").on('click', this.save.bind(this));
+                },
+                initTree: function (data) {
+                    this.$treeControl.jstree({
+                        'core': {
+                            'themes': {
+                                'name': 'proton',
+                                'responsive': true
+                            },
+                            'check_callback': true,
+                            'data': data || []
+                        },
+                        'plugins': ['dnd', 'unique']
+                    });
+                    this.$tree = this.$treeControl.jstree(true);
+                },
+                pick: function (collection) {
+                    var keys = ['id', 'data', 'children'];
+                    for (var i = 0; i < collection.length; i++) {
+                        var obj = collection[i];
+                        var copy = {};
+                        $.each(keys, function (i, key) {
+                            if (key in obj) copy[key] = obj[key];
+                        });
+                        collection[i] = copy;
+                        this.pick(copy.children);
+                        if (copy.children.length == 0) {
+                            delete copy.children;
+                        }
+                    }
+                },
+                save: function () {
+                    var json_data = this.$tree.get_json('#', { 'no_state': true });
+                    this.pick(json_data);
+                    console.log(JSON.stringify(json_data));
+                    var $that = this;
+                    $.ajax({
+                        url: '/Home/Group',
+                        type: 'POST',
+                        data: JSON.stringify(json_data),
+                        dataType: 'json',
+                        processData: false,
+                        contentType: 'application/json; charset=utf-8'
+                    }).done(function (data) {
+                        $that.bindTree(data);
+                    }).fail(function (data) {
+                    }).always(function (data) {
+                    });
+                }
+            };
+            App.init();
+            
+        });
+    </script>
+}
+
+<div class="row">
+    <button type="button" class="btn btn-default pull-right" id="btn_save">Save</button>
+</div>
+<div class="row">
+    <div id="ctl_tree" class="col-md-12"></div>
+</div>
+

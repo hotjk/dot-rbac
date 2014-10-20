@@ -9,9 +9,6 @@ namespace CQRS.Demo.Contracts.Events
 {
     public class InvestmentStatusCompleted : Event
     {
-        public int AccountId { get; set; }
-        public int ProjectId { get; set; }
         public int InvestmentId { get; set; }
-        public decimal Amount { get; set; }
     }
 }

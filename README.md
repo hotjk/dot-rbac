@@ -1,29 +1,23 @@
-# README #
+# Grit.Demo.CQRS #
 
-True Grit
+### Setup RabbitMQ ###
 
-### What is this repository for? ###
+* Install RabblitMQ
+* Start RabbitMQ service
+* Add vhost/user/permission, run below commands
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+rabbitmqctl add_vhost grit_demo_vhost
 
-### How do I get set up? ###
+rabbitmqctl add_user event_user event_password
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+rabbitmqctl set_permissions -p grit_demo_vhost event_user ".*" ".*" ".*"
 
-### Contribution guidelines ###
+### Setup MySQL ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* Install MySQL
+* Inport Dump20140707.sql
 
-### Who do I talk to? ###
+### Run ###
 
-* Repo owner or admin
-* Other community or team contact
+* CQRS.Demo.Sagas
+* CQRS.Demo.Web

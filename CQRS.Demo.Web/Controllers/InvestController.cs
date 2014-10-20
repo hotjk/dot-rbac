@@ -1,10 +1,17 @@
-﻿using CQRS.Demo.Applications;
+﻿using CQRS.Demo.Contracts;
+using CQRS.Demo.Contracts.Actions;
 using CQRS.Demo.Contracts.Commands;
+using CQRS.Demo.Contracts.Events;
+using CQRS.Demo.Model.Investments;
+using CQRS.Demo.Web.Models;
+using Grit.CQRS;
+using Grit.CQRS.Actions;
 using Grit.CQRS.Exceptions;
 using Grit.Sequence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,57 +19,59 @@ namespace CQRS.Demo.Web.Controllers
 {
     public class InvestController : Controller
     {
-        public InvestController(InvestmentAndPaymentApplication application,
-            ISequenceService sequenceService)
+        public InvestController(ISequenceService sequenceService,
+            IInvestmentService investmentService)
         {
-            _application = application;
             _sequenceService = sequenceService;
+            _investmentService = investmentService;
         }
 
-        private InvestmentAndPaymentApplication _application;
         private ISequenceService _sequenceService;
+        private IInvestmentService _investmentService;
 
+        [HttpGet]
         public ActionResult Create()
         {
-            int accountId = 2;
-            int projectId = 1;
-            decimal amount = 100.00m;
-
-            var command = new CreateInvestment
+            return View(new InvestViewModel
             {
-                InvestmentId = _sequenceService.Next(SequenceID.CQRS_Investment, 1),
-                AccountId = accountId,
-                ProjectId = projectId,
-                Amount = amount
-            };
-            try
-            {
-                _application.CreateInvestment(command);
-            }
-            catch(BusinessException ex)
-            {
-                return Content(ex.Message);
-            }
-
-            return RedirectToAction("Completed", new { id = command.InvestmentId });
+                ProjectId = 1,
+                AccountId = 2,
+                Amount = 1,
+            });
         }
 
-        public string Completed(int id)
+        [HttpPost]
+        public ActionResult Create(InvestViewModel vm)
         {
-            var command = new CompleteInvestment
+            var action = new InvestmentCreateRequest
+            {
+                InvestmentId = _sequenceService.Next(SequenceID.CQRS_Investment, 1),
+                AccountId = vm.AccountId,
+                ProjectId = vm.ProjectId,
+                Amount = vm.Amount
+            };
+
+            ActionResponse response = ServiceLocator.ActionBus.Send(action);
+            TempData["ActionResponse"] = response;
+            return RedirectToAction("Index", new { id = action.InvestmentId });
+        }
+
+        public ActionResult Index(int id)
+        {
+            var investment = _investmentService.Get(id);
+            return View(investment);
+        }
+
+        public ActionResult Pay(int id)
+        {
+            var action = new InvestmentPayRequest
             {
                 InvestmentId = id
             };
-            try
-            {
-                _application.CompleteInvestment(command);
-            }
-            catch (BusinessException ex)
-            {
-                return ex.Message;
-            }
 
-            return "Bingo";
+            ActionResponse response = ServiceLocator.ActionBus.Send(action);
+            TempData["ActionResponse"] = response;
+            return RedirectToAction("Index", new { id = action.InvestmentId });
         }
     }
 }

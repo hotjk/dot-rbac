@@ -53,12 +53,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Events\AccountStatusCreated.cs" />
+    <Compile Include="Actions\InvestmentPayRequest.cs" />
+    <Compile Include="Actions\InvestmentCreateRequest.cs" />
     <Compile Include="Events\InvestmentStatusCompleted.cs" />
     <Compile Include="Events\InvestmentStatusCreated.cs" />
     <Compile Include="Events\ProjectAmountChanged.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceID.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Grit.CQRS\Grit.CQRS.csproj">
@@ -66,6 +69,7 @@
       <Name>Grit.CQRS</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

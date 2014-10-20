@@ -12,6 +12,8 @@ namespace Grit.RBAC
         IEnumerable<Role> GetRoles();
         IEnumerable<Subject> GetSubjects();
 
+        IEnumerable<Role> GetRolesWithPermission();
+
         Permission GetPermission(int id);
         Role GetRole(int id);
         Subject GetSubject(int id);
@@ -21,6 +23,7 @@ namespace Grit.RBAC
         bool SaveSubject(Subject subject);
 
         void SaveRolePermissions(Role role);
+        void SaveRolePermissions(IEnumerable<Role> roles);
         void SaveSubjectRoles(Subject subject);
     }
 }

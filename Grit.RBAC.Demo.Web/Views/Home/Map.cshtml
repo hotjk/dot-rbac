@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Map";
+}
+@using Grit.Utility.Web.Extensions
+<h2>@ViewBag.Title.</h2>
+
+<link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
+@section scripts {
+    <script src="~/Content/jstree/jstree.js"></script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            'use strict';
+            var App = {
+                init: function () {
+                    this.$treeControlLeft = $("#ctl_tree_left");
+                    this.$treeControlRight = $("#ctl_tree_right");
+                    this.initLeftTree(@Html.Json(@ViewBag.LeftTree as object));
+                    this.initRightTree(@Html.Json(@ViewBag.RightTree as object));
+                    this.bindTreeEvents();
+                    $("#btn_save").on('click', this.save.bind(this));
+                },
+                initLeftTree: function (data) {
+                    this.$treeControlLeft.jstree({
+                        'core': {
+                            'themes': {
+                                'name': 'proton',
+                                'responsive': true
+                            },
+                            'multiple': false,
+                            'check_callback': true,
+                            'data': data || []
+                        },
+                        'plugins': ['unique']
+                    });
+                    this.$treeLeft = this.$treeControlLeft.jstree(true);
+                },
+                initRightTree: function (data) {
+                    this.$treeControlRight.jstree({
+                        'core': {
+                            'themes': {
+                                'name': 'proton',
+                                'responsive': true
+                            },
+                            'data': data || []
+                        },
+                        'checkbox': {
+                            'three_state': false,
+                            'visible': false
+                        },
+                        'plugins': ['unique', 'checkbox']
+                    });
+                    this.$treeRight = this.$treeControlRight.jstree(true);
+                },
+                bindTreeEvents: function(){
+                    this.$treeControlLeft.on('select_node.jstree', function (e, data) {
+                        var node = data.instance.get_node(data.selected);
+                        App.$treeRight.deselect_all(true);
+                        if (node.data.elements != null) {
+                            var data = App.$treeRight.get_json('#', { 'no_state': true });
+                            $.each(node.data.elements, function (i, v) {
+                                var id = App.find(data, v);
+                                App.$treeRight.select_node(id, true);
+                            });
+                        }
+                    });
+                    this.$treeControlLeft.on('deselect_node.jstree', function (e, data) {
+                        App.$treeRight.deselect_all(true);
+                    });
+                    this.$treeControlRight.on('changed.jstree', function (e, data) {
+                        var node = App.$treeLeft.get_node(App.$treeLeft.get_selected());
+                        if (node) {
+                            var selected = $.map(App.$treeRight.get_selected(), function (v, i) {
+                                return App.$treeRight.get_node(v).data.content;
+                            });
+                            node.data.elements = selected;
+                        }
+                    });
+                },
+                find: function (nodes, data) {
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (nodes[i].data.content == data) {
+                            return nodes[i].id;
+                        }
+                        if (nodes[i].children) {
+                            var found = App.find(nodes[i].children, data);
+                            if (found != null) {
+                                return found;
+                            }
+                        }
+                    }
+                    return null;
+                },
+                pick: function (collection) {
+                    var keys = ['id', 'data', 'children'];
+                    for (var i = 0; i < collection.length; i++) {
+                        var obj = collection[i];
+                        var copy = {};
+                        $.each(keys, function (i, key) {
+                            if (key in obj) { copy[key] = obj[key] };
+                        });
+                        collection[i] = copy;
+                        this.pick(copy.children);
+                        if (copy.children.length == 0) {
+                            delete copy.children;
+                        }
+                    }
+                },
+                save: function () {
+                    var json_data = this.$treeLeft.get_json('#', { 'no_state': true });
+                    this.pick(json_data);
+                    console.log(JSON.stringify(json_data));
+                    var $that = this;
+                    $.ajax({
+                        url: '/Home/Map',
+                        type: 'POST',
+                        data: JSON.stringify(json_data),
+                        dataType: 'json',
+                        processData: false,
+                        contentType: 'application/json; charset=utf-8'
+                    }).done(function (data) {
+                        $that.bindTree(data);
+                    }).fail(function (data) {
+                    }).always(function (data) {
+                    });
+                }
+            };
+            App.init();
+        });
+    </script>
+}
+
+<div class="row">
+    <button type="button" class="btn btn-default pull-right" id="btn_save">Save</button>
+</div>
+<div class="row">
+    <div id="ctl_tree_left" class="col-md-6"></div>
+    <div id="ctl_tree_right" class="col-md-6"></div>
+</div>
+
+

@@ -13,7 +13,7 @@ namespace Grit.RBAC.Demo
     {
         static void Main(string[] args)
         {
-            BootStrapper.BootStrap();
+            BootStrapper.BootStrap(new StandardKernel());
             GetPermissionsTest();
             GetRolesTest();
             GetSubjectsTest();

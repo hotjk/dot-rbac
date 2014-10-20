@@ -24,6 +24,7 @@ namespace Grit.CQRS
             _events.Add(@event);
         }
 
+<<<<<<< HEAD
         public void FlushAll()
         {
             foreach(Event @event in _events)
@@ -40,13 +41,29 @@ namespace Grit.CQRS
                 string.Format("{0}{1}{2}",
                 @event, Environment.NewLine,
                 json));
+=======
+        public void Flush()
+        {
+            foreach (Event @event in _events)
+            {
+                FlushAnEvent(@event);
+            }
+            _events.Clear();
+        }
+>>>>>>> CQRS-RPC
 
-            var channel = _eventHandlerFactory.GetChannel();
+        private void FlushAnEvent<T>(T @event) where T : Event
+        {
+            string json = JsonConvert.SerializeObject(@event);
+            log4net.LogManager.GetLogger("event.logger").Info(
+                string.Format("Event Publish {0} {1}", @event, json));
 
-            channel.BasicPublish(_eventHandlerFactory.GetExchange(),
+            var channel = ServiceLocator.Channel;
+            channel.BasicPublish(ServiceLocator.EventBusExchange,
                 @event.RoutingKey, 
                 new BasicProperties { 
-                    DeliveryMode = 2
+                    DeliveryMode = 2, // durable
+                    Type = @event.Type
                 },
                 Encoding.UTF8.GetBytes(json));
 
@@ -55,9 +72,6 @@ namespace Grit.CQRS
             {
                 foreach (var handler in handlers)
                 {
-                    // handle event in current thread
-                    // handler.Handle(@event);
-
                     // handle event in thread pool
                     ThreadPool.QueueUserWorkItem(x =>
                     {
@@ -67,11 +81,47 @@ namespace Grit.CQRS
                         }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            var newEx = new Exception(string.Format("{0} {1} {2}",
+                            handler.GetType().Name, @event.Type, @event.Id), ex);
+                            log4net.LogManager.GetLogger("exception.logger").Error(newEx);
                         }
                     });
                 }
             }
+        }
+
+        public void Handle<T>(T @event) where T : Event
+        {
+            log4net.LogManager.GetLogger("event.logger").Info(
+                string.Format("Event Handle {0}", @event.Id));
+
+            var handlers = _eventHandlerFactory.GetHandlers<T>();
+            if (handlers != null)
+            {
+                foreach (var handler in handlers)
+                {
+                    try
+                    {
+                        // handle event in current thread
+                        handler.Handle(@event);
+                    }
+                    catch(Exception ex)
+                    {
+                        var newEx = new Exception(string.Format("{0} {1} {2}",
+                            handler.GetType().Name, @event.Type, @event.Id), ex);
+                        log4net.LogManager.GetLogger("exception.logger").Error(newEx);
+                    }
+                }
+            }
+        }
+        public Type GetType(string eventName)
+        {
+            return _eventHandlerFactory.GetType(eventName);
+        }
+
+        public void Purge()
+        {
+            _events.Clear();
         }
     }
 }
