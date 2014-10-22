@@ -38,11 +38,7 @@ namespace Grit.Pattern.FSM
                 return false;
             }
 
-            if (!representation.TryFind(trigger, out destinationState))
-            {
-                return false;
-            }
-            return true;
+            return representation.TryFind(trigger, out destinationState);
         }
     }
 }

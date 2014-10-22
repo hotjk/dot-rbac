@@ -15,7 +15,7 @@ namespace Grit.Pattern.FSM
             public StateMachine<TState, TTrigger> StateMachine { get; private set; }
             public TState State { get; private set; }
 
-            public StateInstance(StateMachine<TState, TTrigger> stateMachine, TState initialState)
+            internal StateInstance(StateMachine<TState, TTrigger> stateMachine, TState initialState)
             {
                 this.StateMachine = stateMachine;
                 this.State = initialState;
@@ -29,6 +29,17 @@ namespace Grit.Pattern.FSM
                     return false;
                 }
 
+                this.State = destinationState;
+                return true;
+            }
+
+            public bool CanFire(TTrigger trigger)
+            {
+                TState destinationState;
+                if (!StateMachine.Try(this.State, trigger, out destinationState))
+                {
+                    return false;
+                }
                 this.State = destinationState;
                 return true;
             }
