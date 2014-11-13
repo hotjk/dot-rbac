@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Grit.Utility.String
+namespace Grit.Utility.System
 {
     public static class StringExtensions
     {
