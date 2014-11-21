@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Pattern.Spec", "Grit.P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Pattern.Spec.Test", "Grit.Pattern.Spec.Test\Grit.Pattern.Spec.Test.csproj", "{6DA28962-82E2-48D8-98CB-37BE799934BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Web", "Demo.Web\Demo.Web.csproj", "{5FA4F163-1297-45BC-B88C-2A50A0F307C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,10 @@ Global
 		{6DA28962-82E2-48D8-98CB-37BE799934BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DA28962-82E2-48D8-98CB-37BE799934BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DA28962-82E2-48D8-98CB-37BE799934BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FA4F163-1297-45BC-B88C-2A50A0F307C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA4F163-1297-45BC-B88C-2A50A0F307C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA4F163-1297-45BC-B88C-2A50A0F307C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA4F163-1297-45BC-B88C-2A50A0F307C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,5 +172,6 @@ Global
 		{4A10DD1B-4008-436F-96CB-34904D45E465} = {71E85344-A3BE-4243-AA13-ADCC8152B9E1}
 		{B16B8E2A-90ED-4A2E-A8DD-E0D4D3FA6D8A} = {C583F969-F812-4263-9FF3-409EF2776B34}
 		{6DA28962-82E2-48D8-98CB-37BE799934BF} = {71E85344-A3BE-4243-AA13-ADCC8152B9E1}
+		{5FA4F163-1297-45BC-B88C-2A50A0F307C4} = {BAF43B16-9BAD-4569-9E4D-CD7202BAB7C7}
 	EndGlobalSection
 EndGlobal

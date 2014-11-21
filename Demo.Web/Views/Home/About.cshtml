@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@section scripts {
+    <script>
+        require(['jquery'], function ($) {
+            $(document).ready(function () {
+                console.log("dom ready!");
+            });
+        });
+    </script>
+}
