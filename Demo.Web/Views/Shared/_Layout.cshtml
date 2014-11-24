@@ -7,21 +7,22 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript">
-    var require = {
-        paths: {
-            'jquery': '@Scripts.Url("~/bundles/jquery")',
-            'bootstrap': '@Scripts.Url("~/bundles/bootstrap")'
-        },
-        shim: {
-            'bootstrap': {
-                deps: ['jquery']
-            }
-        },
-        waitSeconds: 60,
-        deps: ['@ViewBag.ViewJs']
-    };
-</script>
+        var require = {
+            paths: {
+                'jquery': '@Scripts.Url("~/bundles/jquery")',
+                'bootstrap': '@Scripts.Url("~/bundles/bootstrap")'
+            },
+            shim: {
+                'bootstrap': {
+                    deps: ['jquery']
+                }
+            },
+            waitSeconds: 60,
+            deps: ['@ViewBag.ViewJs']
+        };
+    </script>
     <script src="~/Scripts/require.js" async></script>
+    @RenderSection("scripts", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -50,7 +51,5 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
-    @RenderSection("scripts", required: false)
 </body>
 </html>

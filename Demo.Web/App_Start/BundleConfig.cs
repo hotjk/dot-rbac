@@ -1,5 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
+using System.Linq;
+using System.IO;
 
 namespace Demo.Web
 {
@@ -23,7 +25,8 @@ namespace Demo.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/view/home/index").Include("~/Scripts/View/home.index.js"));
+            Grit.Utility.Web.Mvc.BundleHelper.AddFilesInFolderToBundle("~/Scripts/Views/", bundles);
+            //bundles.Add(new ScriptBundle("~/view/home/index").Include("~/Scripts/View/home.index.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
