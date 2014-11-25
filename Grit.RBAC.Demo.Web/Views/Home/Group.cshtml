@@ -7,7 +7,7 @@
 @Styles.Render("~/Content/jstree/themes/proton/style")
 @section scripts {
     <script>
-        require(['jquery', 'bootstrap', 'jstree.group'],
+        require(['jquery', 'bootstrap', 'jstree-group-js'],
             function ($, bootstrap, app) {
                 $(document).ready(function () {
                     app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));

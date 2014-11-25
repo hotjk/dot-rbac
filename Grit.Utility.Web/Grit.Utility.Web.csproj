@@ -83,7 +83,7 @@
     <Compile Include="Extensions\JsonExtensions.cs" />
     <Compile Include="Infrastructure\JsonNetModelBinder.cs" />
     <Compile Include="Infrastructure\JsonNetResult.cs" />
-    <Compile Include="Mvc\BundleHelper.cs" />
+    <Compile Include="Mvc\AppScriptsBandles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

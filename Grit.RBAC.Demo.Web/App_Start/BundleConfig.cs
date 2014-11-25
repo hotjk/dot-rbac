@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Optimization;
 
 namespace Grit.RBAC.Demo.Web
@@ -23,10 +24,13 @@ namespace Grit.RBAC.Demo.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/requirejs").Include(
+                      "~/Scripts/require.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jstree").Include(
                       "~/Scripts/jstree.js"));
 
-            Grit.Utility.Web.Mvc.BundleHelper.AddFilesInFolderToBundle("~/Scripts/app/", bundles);
+            Grit.Utility.Web.Mvc.AppScriptsBandles.AddFolder("~/Scripts/app/", bundles);
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                       "~/Content/bootstrap.css"));

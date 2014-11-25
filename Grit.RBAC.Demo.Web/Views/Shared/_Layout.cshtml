@@ -14,8 +14,7 @@
                 'jquery': '@Scripts.Url("~/bundles/jquery")',
                 'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
                 'jstree': '@Scripts.Url("~/bundles/jstree")',
-                'jstree.group': '@Scripts.Url("~/Scripts/app/jstree.group.js")',
-                'jstree.map': '@Scripts.Url("~/Scripts/app/jstree.map.js")'
+                @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsPathScripts()
             },
             shim: {
                 'bootstrap': {
