@@ -18,7 +18,7 @@
                 }
             },
             waitSeconds: 60,
-            deps: ['@ViewBag.ViewJs']
+            deps: ['@(ViewBag.ViewJs!=null?Scripts.Url(ViewBag.ViewJs):string.Empty)']
         };
     </script>
     <script src="~/Scripts/require.js" async></script>
