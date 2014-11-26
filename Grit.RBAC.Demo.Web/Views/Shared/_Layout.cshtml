@@ -14,13 +14,14 @@
                 'jquery': '@Scripts.Url("~/bundles/jquery")',
                 'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
                 'jstree': '@Scripts.Url("~/bundles/jstree")',
-                @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsPathScripts()
+                @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
             shim: {
                 'bootstrap': {
                     deps: ['jquery']
                 }
             },
+            @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
             waitSeconds: 60
         });
     </script>

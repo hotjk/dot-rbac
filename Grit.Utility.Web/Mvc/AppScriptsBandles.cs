@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Optimization;
 
 namespace Grit.Utility.Web.Mvc
@@ -46,10 +47,11 @@ namespace Grit.Utility.Web.Mvc
             foreach (string path in Directory.GetFiles(scriptsAbstractPath, "*.*", SearchOption.AllDirectories))
             {
                 string relativePath = path.Substring(scriptsAbstractPath.Length).Replace('\\', '/');
+                string slug = relativePath.Replace('.', '-').Replace('/', '-');
                 Item item = new Item
                 {
-                    Key = relativePath.Replace('.', '-'),
-                    Bundle = Path.Combine("~/bundles/", relativePath.Replace('.', '-')),
+                    Key = slug,
+                    Bundle = Path.Combine("~/bundles/", slug),
                     Include = Path.Combine(scriptsPath, relativePath)
                 };
                 list.Add(item);
@@ -59,6 +61,7 @@ namespace Grit.Utility.Web.Mvc
 
         public static IHtmlString GetRequireJsPathScripts()
         {
+            if (!Items.Any()) return null;
             StringBuilder sb = new StringBuilder();
             foreach(var item in Items) 
             {
@@ -71,9 +74,31 @@ namespace Grit.Utility.Web.Mvc
             return new System.Web.Mvc.MvcHtmlString(sb.ToString());
         }
 
-        public static string GetRequireJsBundle(string key)
+        public static IHtmlString GetRequireJsPathScripts(IEnumerable<string> keys)
         {
-            return Items.First(n=>n.Key == key).Bundle;
+            if (!Items.Any()) return null;
+            if (keys == null) return null;
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in Items)
+            {
+                if (keys.Any(x=>string.Compare(item.Key,x,true) == 0))
+                {
+                    sb.AppendFormat("'{0}': '{1}',", item.Key, System.Web.Optimization.Scripts.Url(item.Bundle));
+                }
+            }
+            if (sb.Length > 0)
+            {
+                sb.Remove(sb.Length - 1, 1);
+            }
+            return new MvcHtmlString(sb.ToString());
+        }
+
+        public static IHtmlString GetRequireJsDeps(string key)
+        {
+            if (key == null) return null;
+            Item item = Items.SingleOrDefault(n => n.Key == key);
+            if (item == null) return null;
+            return new MvcHtmlString(string.Format("Deps: ['{0}'],", Scripts.Url(item.Bundle)));
         }
     }
 }

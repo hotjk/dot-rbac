@@ -151,6 +151,7 @@
     <Content Include="Content\jstree\themes\proton\style.css" />
     <Content Include="Content\jstree\themes\proton\style.min.css" />
     <Content Include="Content\jstree\themes\proton\throbber.gif" />
+    <Content Include="Scripts\app\home\index.js" />
     <Content Include="Scripts\app\jstree.group.js" />
     <Content Include="Scripts\jstree.js" />
     <Content Include="Scripts\jstree.min.js" />

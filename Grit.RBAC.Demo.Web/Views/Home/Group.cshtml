@@ -1,8 +1,10 @@
 ﻿@{
     ViewBag.Title = "Group";
+    ViewBag.RequireJsBundles = new string[] { "jstree-group-js" };
+    ViewBag.RequireJsMain = "home-index-js";
 }
 @using Grit.Utility.Web.Extensions
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 @Styles.Render("~/Content/jstree/themes/proton/style")
 @section scripts {
