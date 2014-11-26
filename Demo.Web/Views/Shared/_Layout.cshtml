@@ -7,18 +7,19 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript">
-        var require = {
-            paths: {
-                'jquery': '@Scripts.Url("~/bundles/jquery")',
-                'bootstrap': '@Scripts.Url("~/bundles/bootstrap")'
+    var require = {
+        paths: {
+            'jquery': '@Scripts.Url("~/bundles/jquery")',
+            'bootstrap': '@Scripts.Url("~/bundles/bootstrap")'
+                @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
             shim: {
                 'bootstrap': {
                     deps: ['jquery']
                 }
             },
-            waitSeconds: 60,
-            deps: ['@(ViewBag.ViewJs!=null?Scripts.Url(ViewBag.ViewJs):string.Empty)']
+            waitSeconds: 60
+            @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
         };
     </script>
     <script src="~/Scripts/require.js" async></script>

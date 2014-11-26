@@ -74,7 +74,7 @@ namespace Grit.Utility.Web.Mvc
             return new System.Web.Mvc.MvcHtmlString(sb.ToString());
         }
 
-        public static IHtmlString GetRequireJsPathScripts(IEnumerable<string> keys)
+        public static IHtmlString GetRequireJsPathScripts(IEnumerable<string> keys, bool commaPrefix = true, bool commaPostfix = false)
         {
             if (!Items.Any()) return null;
             if (keys == null) return null;
@@ -88,17 +88,27 @@ namespace Grit.Utility.Web.Mvc
             }
             if (sb.Length > 0)
             {
-                sb.Remove(sb.Length - 1, 1);
+                if (!commaPostfix)
+                {
+                    sb.Remove(sb.Length - 1, 1);
+                }
+                if(commaPrefix)
+                {
+                    sb.Insert(0, ", ");
+                }
             }
             return new MvcHtmlString(sb.ToString());
         }
 
-        public static IHtmlString GetRequireJsDeps(string key)
+        public static IHtmlString GetRequireJsDeps(string key, bool commaPrefix = true, bool commaPostfix = false)
         {
             if (key == null) return null;
             Item item = Items.SingleOrDefault(n => n.Key == key);
             if (item == null) return null;
-            return new MvcHtmlString(string.Format("Deps: ['{0}'],", Scripts.Url(item.Bundle)));
+            return new MvcHtmlString(string.Format("{0}Deps: ['{1}']{2}", 
+                commaPrefix?", ":string.Empty,
+                Scripts.Url(item.Bundle),
+                commaPostfix?", ":string.Empty));
         }
     }
 }
