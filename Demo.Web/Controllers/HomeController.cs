@@ -6,10 +6,11 @@ using System.Web.Mvc;
 
 namespace Demo.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         public ActionResult Index()
         {
+            TempData["demo"] = "Hello world, 中文字符，很长很长的中文字符。";
             return View();
         }
 
@@ -22,7 +23,7 @@ namespace Demo.Web.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = TempData["demo"];
 
             return View();
         }
