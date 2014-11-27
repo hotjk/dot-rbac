@@ -25,7 +25,7 @@ namespace Demo.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            Grit.Utility.Web.Mvc.AppScriptsBandles.AddFolder("~/Scripts/app/", bundles);
+            Grit.Utility.Web.JS.AppScriptsBandles.AddFolder("~/Scripts/app/", bundles);
             //bundles.Add(new ScriptBundle("~/view/home/index").Include("~/Scripts/View/home.index.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

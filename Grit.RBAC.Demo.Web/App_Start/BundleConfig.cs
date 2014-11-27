@@ -30,7 +30,7 @@ namespace Grit.RBAC.Demo.Web
             bundles.Add(new ScriptBundle("~/bundles/jstree").Include(
                       "~/Scripts/jstree.js"));
 
-            Grit.Utility.Web.Mvc.AppScriptsBandles.AddFolder("~/Scripts/app/", bundles);
+            Grit.Utility.Web.JS.AppScriptsBandles.AddFolder("~/Scripts/app/", bundles);
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                       "~/Content/bootstrap.css"));

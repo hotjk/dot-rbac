@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Grit.Utility.Web.Extensions
+namespace Grit.Utility.Web.Json
 {
     public static class JsonExtensions
     {

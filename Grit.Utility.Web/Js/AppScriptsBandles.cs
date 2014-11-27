@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 
-namespace Grit.Utility.Web.Mvc
+namespace Grit.Utility.Web.JS
 {
     public static class AppScriptsBandles
     {
