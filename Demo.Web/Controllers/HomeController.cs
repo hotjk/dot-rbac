@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,6 +27,13 @@ namespace Demo.Web.Controllers
             ViewBag.Message = TempData["demo"];
 
             return View();
+        }
+
+        public void Captcha(string text)
+        {
+            var image = Grit.Utility.Captcha.CaptchaImage.Mini().Generate(text);
+            Response.ContentType = "image/gif";
+            image.Save(Response.OutputStream, ImageFormat.Gif);
         }
     }
 }
