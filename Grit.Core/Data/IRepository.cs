@@ -8,6 +8,5 @@ namespace Grit.Core.Data
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        T GetById(object id);
     }
 }
