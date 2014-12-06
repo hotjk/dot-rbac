@@ -30,6 +30,13 @@ namespace Grit.Utility.Captcha
             Size = size;
             rect = new Rectangle(0, 0, Width, Height);
             rectText = Rectangle.Inflate(rect, (int)(Width / 10), (int)(height / 10));
+
+            error = new Bitmap(Width, Height);
+            using (var graphics = Graphics.FromImage(error))
+            {
+                graphics.DrawLine(Pens.Red, 0, 0, Width, Height);
+                graphics.DrawLine(Pens.Red, 0, Height, Width, 0);
+            }
         }
 
         public static CaptchaImage Mini()
@@ -53,34 +60,42 @@ namespace Grit.Utility.Captcha
         public int Size { get; private set; }
         private Rectangle rect;
         private Rectangle rectText;
+        private Bitmap error;
 
         public Bitmap Generate(string captchaText)
         {
-            var bmp = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-            using (Graphics graphics = Graphics.FromImage(bmp))
+            try
             {
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                using (var solidBrush = new SolidBrush(BgColor))
+                var bmp = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
+                using (Graphics graphics = Graphics.FromImage(bmp))
                 {
-                    graphics.FillRectangle(solidBrush, rect);
-                }
-                using (var font = new Font(Font, Size))
-                {
-                    using (var fontFormat = new StringFormat(StringFormatFlags.NoWrap))
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    using (var solidBrush = new SolidBrush(BgColor))
                     {
-                        fontFormat.Alignment = StringAlignment.Center;
-                        fontFormat.LineAlignment = StringAlignment.Center;
-
-                        var path = new GraphicsPath();
-                        path.AddString(captchaText, font.FontFamily, (int)font.Style, font.Size, rectText, fontFormat);
-                        using (var solidBrush = new SolidBrush(Color))
+                        graphics.FillRectangle(solidBrush, rect);
+                    }
+                    using (var font = new Font(Font, Size))
+                    {
+                        using (var fontFormat = new StringFormat(StringFormatFlags.NoWrap))
                         {
-                            graphics.FillPath(solidBrush, DeformPath(path));
+                            fontFormat.Alignment = StringAlignment.Center;
+                            fontFormat.LineAlignment = StringAlignment.Center;
+
+                            var path = new GraphicsPath();
+                            path.AddString(captchaText, font.FontFamily, (int)font.Style, font.Size, rectText, fontFormat);
+                            using (var solidBrush = new SolidBrush(Color))
+                            {
+                                graphics.FillPath(solidBrush, DeformPath(path));
+                            }
                         }
                     }
                 }
+                return bmp;
             }
-            return bmp;
+            catch
+            {
+                return error;
+            }
         }
 
         private GraphicsPath DeformPath(GraphicsPath graphicsPath)
