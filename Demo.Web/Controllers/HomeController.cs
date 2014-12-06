@@ -17,8 +17,6 @@ namespace Demo.Web.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = TestRepository1.SelectColumns + TestRepository2.SelectColumns;
-
             return View();
         }
 

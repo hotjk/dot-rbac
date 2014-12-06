@@ -64,8 +64,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Pattern.Spec.Test", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Web", "Demo.Web\Demo.Web.csproj", "{5FA4F163-1297-45BC-B88C-2A50A0F307C4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lookup", "Lookup", "{6C048AEA-DC98-40BD-AA8D-83F9FF03F193}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Core", "Grit.Core\Grit.Core.csproj", "{C1271A48-DE60-4DF1-B4E5-44ADB30153F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Data", "Grit.Data\Grit.Data.csproj", "{BEE46B67-B2CF-41F3-BAE9-FF7F7F73672D}"
