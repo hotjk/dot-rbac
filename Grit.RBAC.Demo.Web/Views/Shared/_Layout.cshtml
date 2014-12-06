@@ -14,7 +14,7 @@
                 'jquery': '@Scripts.Url("~/bundles/jquery")',
                 'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
                 'jstree': '@Scripts.Url("~/bundles/jstree")'
-                @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
+                @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
             shim: {
                 'bootstrap': {
@@ -22,7 +22,7 @@
                 }
             },
             waitSeconds: 60
-            @Grit.Utility.Web.Mvc.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
+            @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
         });
     </script>
     @RenderSection("scripts", required: false)
