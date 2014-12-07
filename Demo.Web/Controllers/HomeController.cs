@@ -31,7 +31,8 @@ namespace Demo.Web.Controllers
 
         public void Captcha(int length=4)
         {
-            var image = new Grit.Utility.Captcha.CaptchaImage(80, 36, true, true, true).Generate(Grit.Utility.Security.RandomText.Generate(length));
+            var image = new Grit.Utility.Captcha.CaptchaImage(80, 36, true, true, true).Generate(
+                Grit.Utility.Security.RandomText.Generate(length));
             Response.ContentType = "image/gif";
             image.Save(Response.OutputStream, ImageFormat.Gif);
         }

@@ -51,7 +51,7 @@ namespace Grit.Utility.Captcha
         private const int MAX_WIDTH = 160;
         private const int MAX_HEIGHT = 80;
         private const double WARP_FACTOR = 2F;
-        private const int MAX_COLOR = 200;
+        private const int MAX_COLOR = 180;
         private double _xAmp;
         private double _yAmp;
         private double _xFreq;
@@ -60,7 +60,7 @@ namespace Grit.Utility.Captcha
         private Rectangle _rect;
         private Bitmap _errorBitmap;
 
-        private readonly string[] _fonts = { "Arial", "Times New Roman", "Georgia", "Comic Sans MS", "Tahoma", "Courier New", "Impact" };
+        private readonly string[] _fonts = { "Arial", "Times New Roman", "Georgia", "Comic Sans MS" };
 
         public Bitmap Generate(string captchaText)
         {
@@ -89,7 +89,7 @@ namespace Grit.Utility.Captcha
                         {
                             var path = new GraphicsPath();
                             var rect = new Rectangle(width * i, 0, width, Height);
-                            using (var font = new Font(_fonts[random.Next(_fonts.Length - 1)], _size + random.Next(_size / 2)))
+                            using (var font = new Font(_fonts[random.Next(_fonts.Length - 1)], _size + random.Next(_size / 3)))
                             {
                                 path.AddString(captchaText[i].ToString(), font.FontFamily, (int)font.Style, font.Size, rect, fontFormat);
                             }
