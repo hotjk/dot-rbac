@@ -29,9 +29,9 @@ namespace Demo.Web.Controllers
             return View();
         }
 
-        public void Captcha(string text)
+        public void Captcha(int length=4)
         {
-            var image = Grit.Utility.Captcha.CaptchaImage.Mini().Generate(text);
+            var image = new Grit.Utility.Captcha.CaptchaImage(80, 36, true, true, true).Generate(Grit.Utility.Security.RandomText.Generate(length));
             Response.ContentType = "image/gif";
             image.Save(Response.OutputStream, ImageFormat.Gif);
         }
