@@ -19,7 +19,7 @@ namespace Grit.Core.Caching
         /// <param name="key">key</param>
         /// <param name="data">Data</param>
         /// <param name="cacheTime">Cache time</param>
-        void Set(string key, object data, int cacheTime);
+        void Set(string key, object data, int expireMinutes);
 
         /// <summary>
         /// Gets a value indicating whether the value associated with the specified key is cached
