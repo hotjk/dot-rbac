@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grit.Core.Data
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T>
     {
     }
 }
