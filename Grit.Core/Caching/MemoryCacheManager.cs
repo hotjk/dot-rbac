@@ -34,14 +34,14 @@ namespace Grit.Core.Caching
         /// </summary>
         /// <param name="key">key</param>
         /// <param name="data">Data</param>
-        /// <param name="cacheTime">Cache time</param>
-        public virtual void Set(string key, object data, int cacheTime)
+        /// <param name="expireMinutes">Cache time</param>
+        public virtual void Set(string key, object data, int expireMinutes)
         {
             if (data == null)
                 return;
 
             var policy = new CacheItemPolicy();
-            policy.AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(cacheTime);
+            policy.AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(expireMinutes);
             Cache.Add(new CacheItem(key, data), policy);
         }
 
