@@ -105,7 +105,7 @@ namespace Grit.Utility.Web.JS
             if (key == null) return null;
             Item item = Items.SingleOrDefault(n => n.Key == key);
             if (item == null) return null;
-            return new MvcHtmlString(string.Format("{0}Deps: ['{1}']{2}", 
+            return new MvcHtmlString(string.Format("{0}deps: ['{1}']{2}", 
                 commaPrefix?", ":string.Empty,
                 Scripts.Url(item.Bundle),
                 commaPostfix?", ":string.Empty));
