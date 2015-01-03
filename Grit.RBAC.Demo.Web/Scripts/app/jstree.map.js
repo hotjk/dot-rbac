@@ -1,4 +1,4 @@
-﻿define(['jquery', 'jstree'], function ($, jstree) {
+﻿define('jstree-map-js', ['jquery', 'jstree'], function ($, jstree) {
     'use strict';
     function pick(collection, keys) {
         for (var i = 0; i < collection.length; i++) {
@@ -26,7 +26,7 @@
                 return nodes[i].id;
             }
             if (nodes[i].children) {
-                var found = App.find(nodes[i].children, data);
+                var found = find(nodes[i].children, data);
                 if (found != null) {
                     return found;
                 }
@@ -83,7 +83,7 @@
             if (node.data.elements != null) {
                 var data = $treeRight.get_json('#', { 'no_state': true });
                 $.each(node.data.elements, function (i, v) {
-                    var id = App.find(data, v);
+                    var id = find(data, v);
                     $treeRight.select_node(id, true);
                 });
             }

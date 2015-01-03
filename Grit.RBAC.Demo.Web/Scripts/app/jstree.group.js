@@ -1,4 +1,4 @@
-﻿define(['jquery', 'jstree'], function ($, jstree) {
+﻿define('jstree-group-js', ['jquery', 'jstree'], function ($, jstree) {
     'use strict';
     function pick(collection, keys) {
         for (var i = 0; i < collection.length; i++) {
@@ -7,8 +7,7 @@
             $.each(keys, function (i, key) {
                 if (key in obj) {
                     copy[key] = obj[key];
-                    if($.isArray(copy[key]))
-                    {
+                    if ($.isArray(copy[key])) {
                         if (copy[key].length == 0) {
                             delete copy[key];
                         }
