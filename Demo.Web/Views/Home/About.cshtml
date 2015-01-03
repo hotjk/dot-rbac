@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "About";
+    ViewBag.RequireJsMain = "home-index-js";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
@@ -7,7 +8,7 @@
     <script>
         require(['jquery'], function ($) {
             $(document).ready(function () {
-                console.log("dom ready!");
+                console.log("dom ready from inner js!");
             });
         });
     </script>

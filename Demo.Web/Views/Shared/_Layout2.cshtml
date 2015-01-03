@@ -8,10 +8,10 @@
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/Scripts/require.js"></script>
     <script>
-    require.config({
-        paths: {
-            'jquery': '@Scripts.Url("~/bundles/jquery")',
-            'bootstrap': '@Scripts.Url("~/bundles/bootstrap")'
+        require.config({
+            paths: {
+                'jquery': '@Scripts.Url("~/bundles/jquery")',
+                'bootstrap': '@Scripts.Url("~/bundles/bootstrap")'
                 @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
             shim: {
@@ -20,6 +20,7 @@
                 }
             },
             waitSeconds: 60
+            @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
         });
     </script>
     @RenderSection("scripts", required: false)
