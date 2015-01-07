@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Grit.Utility.System
+namespace Grit.Utility.Basic
 {
     /// <summary>
     /// Strongly typed version of Enum with Parsing and performance improvements.

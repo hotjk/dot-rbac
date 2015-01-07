@@ -52,8 +52,9 @@
     <Compile Include="Security\PasswordHash.cs" />
     <Compile Include="Sql\SqlBuilder.cs" />
     <Compile Include="Security\RandomNumber.cs" />
-    <Compile Include="System\StringExtensions.cs" />
-    <Compile Include="System\EnumT.cs" />
+    <Compile Include="Basic\AssembleHelper.cs" />
+    <Compile Include="Basic\StringExtensions.cs" />
+    <Compile Include="Basic\EnumT.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
