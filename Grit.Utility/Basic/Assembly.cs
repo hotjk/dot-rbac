@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grit.Utility.Basic
 {
-    public static class AssemblyHelper
+    public static class Assembly
     {
         public static string GetVersion()
         {

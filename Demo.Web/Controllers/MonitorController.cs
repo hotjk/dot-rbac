@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Grit.Utility.Basic;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading;
 using System.Web.Http;
 
 namespace Demo.Web.Controllers
@@ -11,11 +14,10 @@ namespace Demo.Web.Controllers
     public class MonitorController : ApiController
     {
         [HttpGet]
-        public string Version()
+        public Grit.Utility.Basic.Diagnostics.ASPNETThreadInfo
+            Index()
         {
-            return Grit.Utility.Basic.AssemblyHelper.RetrieveLinkerTimestamp().ToString();
-            //return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            //return System.IO.File.GetCreationTime(this.GetType().Assembly.Location).ToString();
+            return Diagnostics.GetThreadInfo();
         }
     }
 }

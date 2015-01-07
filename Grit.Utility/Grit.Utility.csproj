@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Basic\Diagnostics.cs" />
     <Compile Include="Captcha\CaptchaImage.cs" />
     <Compile Include="CommonHelper.cs" />
     <Compile Include="Security\RandomText.cs" />
@@ -52,7 +53,7 @@
     <Compile Include="Security\PasswordHash.cs" />
     <Compile Include="Sql\SqlBuilder.cs" />
     <Compile Include="Security\RandomNumber.cs" />
-    <Compile Include="Basic\AssembleHelper.cs" />
+    <Compile Include="Basic\Assembly.cs" />
     <Compile Include="Basic\StringExtensions.cs" />
     <Compile Include="Basic\EnumT.cs" />
   </ItemGroup>
