@@ -17,9 +17,8 @@ namespace Demo.Web.Controllers
         public string
             Index()
         {
-            var version = Grit.Utility.Basic.Assembly.GetComplieVersion();
-            DateTime compileAt = new DateTime(2000, 1, 1).AddDays(version[2]).AddSeconds(version[3] * 2);
-            return compileAt.ToString() + Grit.Utility.Basic.Assembly.RetrieveLinkerTimestamp().ToString();
+            return AssemblyManager.GetVersionTimestamp(AssemblyManager.GetComplieVersion(Assembly.GetExecutingAssembly())).ToString() 
+                + AssemblyManager.RetrieveLinkerTimestamp().ToString();
         }
     }
 }
