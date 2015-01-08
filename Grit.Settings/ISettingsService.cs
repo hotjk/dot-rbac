@@ -8,9 +8,9 @@ namespace Grit.Settings
 {
     public interface ISettingsService
     {
-        public ICollection<SettingsEntry> Find(string[] keys, Version version);
-        public ICollection<SettingsEntry> FindAll(Version version);
-        public bool Update(SettingsEntry entry);
-        public bool Delete(string[] keys, Version version);
+        ICollection<SettingsEntry> Find(string[] keys, Version version);
+        ICollection<SettingsEntry> FindAll(Version version);
+        bool Update(SettingsEntry entry);
+        bool Delete(string[] keys, Version version);
     }
 }

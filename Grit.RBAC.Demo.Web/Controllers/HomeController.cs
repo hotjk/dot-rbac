@@ -14,7 +14,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
         private IRBACService RBACService { get; set; }
         private ITreeService TreeService { get; set; }
         public HomeController(IRBACService rbacService,
-            ITreeService treeService)
+            [Ninject.Named("Tree")] ITreeService treeService)
         {
             RBACService = rbacService;
             TreeService = treeService;
