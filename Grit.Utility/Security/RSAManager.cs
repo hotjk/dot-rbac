@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Grit.Utility.Security
 {
-    public class RSA
+    public class RSAManager
     {
-        public RSA(string key)
+        public RSAManager(string key)
         {
             _key = key;
         }

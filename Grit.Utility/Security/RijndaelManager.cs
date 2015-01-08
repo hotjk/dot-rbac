@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Grit.Utility.Security
 {
-    public class Rijndael
+    public class RijndaelManager
     {
-        public Rijndael(
+        public RijndaelManager(
             byte[] key,
             byte[] iv,
             CipherMode cipherMode = CipherMode.CBC, int saltSize = 8)
