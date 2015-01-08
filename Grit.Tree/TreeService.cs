@@ -10,15 +10,13 @@ namespace Grit.Tree
 {
     public class TreeService : ITreeService
     {
-        public TreeService(string table,
-            ISequenceRepository sequenceRepository,
-            //ITreeRepository treeRepository,
-            Ninject.IKernel kernel)
+        public TreeService(ISequenceRepository sequenceRepository,
+            ITreeRepository treeRepository, string table)
         {
             this.Table = table;
             this.SequenceRepository = sequenceRepository;
-            //this.TreeRepository = treeRepository;
-            TreeRepository = kernel.Get<ITreeRepository>(new Ninject.Parameters.ConstructorArgument("table", table));
+            this.TreeRepository = treeRepository;
+            this.TreeRepository.Table = table;
         }
 
         public string Table { get; private set; }

@@ -24,9 +24,11 @@ namespace Grit.RBAC.Demo.Web.App_Start
         {
             NinjectContainer.Bind<ISequenceRepository>().To<SequenceRepository>().InSingletonScope();
             NinjectContainer.Bind<ISequenceService>().To<SequenceService>().InSingletonScope();
-
             NinjectContainer.Bind<ITreeRepository>().To<TreeRepository>().InSingletonScope();
-            NinjectContainer.Bind<ITreeService>().To<TreeService>().InSingletonScope().Named("Tree").WithConstructorArgument("table", "tree");
+            NinjectContainer.Bind<ITreeService>().To<TreeService>()
+                .InSingletonScope()
+                .Named("Tree")
+                .WithConstructorArgument("table", "tree");
         }
     }
 }
