@@ -39,7 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISettingsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsBag.cs" />
     <Compile Include="SettingsEntry.cs" />
     <Compile Include="SettingsService.cs" />
     <Compile Include="SettingsType.cs" />

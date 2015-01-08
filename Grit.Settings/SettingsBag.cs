@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Grit.Settings
 {
-    public class SettingsService
+    public class SettingsBag
     {
-        
+
     }
 }
