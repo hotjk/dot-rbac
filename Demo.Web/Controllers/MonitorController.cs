@@ -14,10 +14,12 @@ namespace Demo.Web.Controllers
     public class MonitorController : ApiController
     {
         [HttpGet]
-        public Grit.Utility.Basic.Diagnostics.ASPNETThreadInfo
+        public string
             Index()
         {
-            return Diagnostics.GetThreadInfo();
+            var version = Grit.Utility.Basic.Assembly.GetComplieVersion();
+            DateTime compileAt = new DateTime(2000, 1, 1).AddDays(version[2]).AddSeconds(version[3] * 2);
+            return compileAt.ToString() + Grit.Utility.Basic.Assembly.RetrieveLinkerTimestamp().ToString();
         }
     }
 }

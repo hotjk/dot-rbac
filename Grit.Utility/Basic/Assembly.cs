@@ -8,9 +8,16 @@ namespace Grit.Utility.Basic
 {
     public static class Assembly
     {
-        public static string GetVersion()
+        public static int[] GetComplieVersion()
         {
-            return System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString();
+            string version = System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString();
+            return version.Split(new char[] { '.' }).Select(n => int.Parse(n)).ToArray();
+        }
+
+        public static DateTime GetCompileTimestamp()
+        {
+            var version = GetComplieVersion();
+            return new DateTime(2000, 1, 1).AddDays(version[2]).AddSeconds(version[3] * 2);
         }
 
         public static DateTime RetrieveLinkerTimestamp()
