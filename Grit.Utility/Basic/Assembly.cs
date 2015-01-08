@@ -8,6 +8,9 @@ namespace Grit.Utility.Basic
 {
     public static class Assembly
     {
+        private static DateTime _Y2K = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static DateTime _Y1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         public static int[] GetComplieVersion()
         {
             string version = System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString();
@@ -17,7 +20,7 @@ namespace Grit.Utility.Basic
         public static DateTime GetCompileTimestamp()
         {
             var version = GetComplieVersion();
-            return new DateTime(2000, 1, 1).AddDays(version[2]).AddSeconds(version[3] * 2);
+            return _Y2K.AddDays(version[2]).AddSeconds(version[3] * 2);
         }
 
         public static DateTime RetrieveLinkerTimestamp()
@@ -44,9 +47,7 @@ namespace Grit.Utility.Basic
             int i = System.BitConverter.ToInt32(b, c_PeHeaderOffset);
             int secondsSince1970 = System.BitConverter.ToInt32(b, i + c_LinkerTimestampOffset);
             DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            dt = dt.AddSeconds(secondsSince1970);
-            dt = dt.ToLocalTime();
-            return dt;
+            return _Y1970.AddSeconds(secondsSince1970).ToLocalTime();
         }
     }
 }
