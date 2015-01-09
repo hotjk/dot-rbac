@@ -1,5 +1,4 @@
-﻿using Grit.Sequence;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,18 +10,12 @@ namespace Grit.Tree
     public class TreeService : ITreeService
     {
         public TreeService(string table,
-            ISequenceRepository sequenceRepository,
-            //ITreeRepository treeRepository,
-            Ninject.IKernel kernel)
+            ITreeRepository treeRepository)
         {
-            this.Table = table;
-            this.SequenceRepository = sequenceRepository;
-            //this.TreeRepository = treeRepository;
-            TreeRepository = kernel.Get<ITreeRepository>(new Ninject.Parameters.ConstructorArgument("table", table));
+            this.TreeRepository = treeRepository;
+            this.TreeRepository.Table = table;
         }
-
-        public string Table { get; private set; }
-        private ISequenceRepository SequenceRepository { get; set; }
+        
         private ITreeRepository TreeRepository { get; set; }
 
         public Node GetTree(int tree)
