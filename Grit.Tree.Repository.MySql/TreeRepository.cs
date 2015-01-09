@@ -14,6 +14,8 @@ namespace Grit.Tree.Repository.MySql
         
         public string Table { get; set; }
         
+        public string Table { get; set; }
+
         public IEnumerable<Node> GetTreeNodes(int tree)
         {
             using (IDbConnection connection = OpenConnection())
