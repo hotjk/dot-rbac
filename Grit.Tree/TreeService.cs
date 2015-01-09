@@ -10,28 +10,10 @@ namespace Grit.Tree
     public class TreeService : ITreeService
     {
         public TreeService(ITreeRepository treeRepository, string table)
-<<<<<<< .mine
-
-=======
-            ITreeRepository treeRepository)
->>>>>>> .theirs
         {
-<<<<<<< .mine
-            this.Table = table;
             this.TreeRepository = treeRepository;
             this.TreeRepository.Table = table;
-=======
-            this.TreeRepository = treeRepository;
-            this.TreeRepository.Table = table;
-
->>>>>>> .theirs
         }
-<<<<<<< .mine
-
-=======
-        
->>>>>>> .theirs
-        public string Table { get; private set; }
         private ITreeRepository TreeRepository { get; set; }
 
         public Node GetTree(int tree)
