@@ -28,6 +28,8 @@ namespace Grit.Utility.Captcha
 
             _xAmp = WARP_FACTOR * Height / 100;
             _yAmp = WARP_FACTOR * Height / 85;
+            _xAmp = Math.Max(Math.Min(_xAmp, 1), 2);
+            _yAmp = Math.Max(Math.Min(_yAmp, 0.85), 2);
             _xFreq = 2 * Math.PI / Width;
             _yFreq = 2 * Math.PI / Height;
             _size = (int)(Height / 1);
