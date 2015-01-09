@@ -11,6 +11,7 @@ namespace Grit.Settings
         public string Key { get; private set; }
         public Version Version { get; private set; }
         public SettingsType Type { get; private set; }
+        public string Comments { get; set; }
 
         public object _value;
     }
