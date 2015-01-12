@@ -9,13 +9,11 @@ namespace Grit.Tree
 {
     public class TreeService : ITreeService
     {
-        public TreeService(string table,
-            ITreeRepository treeRepository)
+        public TreeService(ITreeRepository treeRepository, string table)
         {
             this.TreeRepository = treeRepository;
             this.TreeRepository.Table = table;
         }
-        
         private ITreeRepository TreeRepository { get; set; }
 
         public Node GetTree(int tree)
