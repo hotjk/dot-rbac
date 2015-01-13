@@ -16,7 +16,7 @@ namespace Settings.Web.Models
         [Required(ErrorMessage = "{0} 必须填写")]
         [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9_]{0,99}$", ErrorMessage = "{0} 必须为 100 位以内字母、数字或下划线组成，且必须以字母开始")]
         public string Name { get; set; }
-
+        
         [Display(Name = "节点配置")]
         public List<EntryVM> Entries { get; set; }
 
@@ -29,6 +29,7 @@ namespace Settings.Web.Models
             Mapper.CreateMap<Entry, EntryVM>();
             Mapper.CreateMap<EntryVM, Entry>();
         }
+
         public bool IsValid(ModelStateDictionary ModelState)
         {
             bool isValid = true;
@@ -37,8 +38,8 @@ namespace Settings.Web.Models
                 EntryVM entry = this.Entries[i];
                 if (!string.IsNullOrWhiteSpace(entry.Value) && string.IsNullOrWhiteSpace(entry.Key))
                 {
-                    ModelState.AddModelError(this.GetExpressionText(x => entry.Key),
-                        string.Format(@"{0} 必须填写", this.GetDisplayName(x => entry.Key)));
+                    ModelState.AddModelError(this.GetExpressionText(x => this.Entries[i].Key),
+                        string.Format(@"{0} 必须填写", this.GetDisplayName(x => this.Entries[i].Key)));
                     isValid = false;
                 }
             }
@@ -55,6 +56,10 @@ namespace Settings.Web.Models
         public static NodeVM FromModel(Node node)
         {
             NodeVM vm = Mapper.Map<NodeVM>(node);
+            if (vm.Entries == null)
+            {
+                vm.Entries = new List<EntryVM>(ENTRY_STEP);
+            }
             for (int i = 0; i < ENTRY_STEP; i++)
             {
                 vm.Entries.Add(new EntryVM());

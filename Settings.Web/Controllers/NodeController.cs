@@ -1,4 +1,5 @@
-﻿using Settings.Web.Models;
+﻿using Settings.Model;
+using Settings.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,21 @@ namespace Settings.Web.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            NodeVM vm = new NodeVM();
+            Node node = new Node() { Name="test" };
+            var vm = NodeVM.FromModel(node);
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(NodeVM vm)
+        {
+            if (!ModelState.IsValid || !vm.IsValid(ModelState))
+            {
+                return View(vm);
+            }
+
+            var node = NodeVM.ToModel(vm);
+            vm = NodeVM.FromModel(node);
             return View(vm);
         }
     }
