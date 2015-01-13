@@ -65,7 +65,7 @@ namespace Grit.Utility.Web.JS
             StringBuilder sb = new StringBuilder();
             foreach(var item in Items) 
             {
-                sb.AppendFormat("'{0}': '{1}',", item.Key, System.Web.Optimization.Scripts.Url(item.Bundle));
+                sb.AppendFormat("'{0}': '{1}',", item.Key, Scripts.Url(item.Bundle));
             }
             if (sb.Length > 0)
             {
@@ -77,13 +77,13 @@ namespace Grit.Utility.Web.JS
         public static IHtmlString GetRequireJsPathScripts(IEnumerable<string> keys, bool commaPrefix = true, bool commaPostfix = false)
         {
             if (!Items.Any()) return null;
-            if (keys == null) return null;
+            if (keys == null || !keys.Any()) return null;
             StringBuilder sb = new StringBuilder();
             foreach (var item in Items)
             {
                 if (keys.Any(x=>string.Compare(item.Key,x,true) == 0))
                 {
-                    sb.AppendFormat("'{0}': '{1}',", item.Key, System.Web.Optimization.Scripts.Url(item.Bundle));
+                    sb.AppendFormat("'{0}': '{1}',", item.Key, Scripts.Url(item.Bundle));
                 }
             }
             if (sb.Length > 0)
@@ -100,15 +100,19 @@ namespace Grit.Utility.Web.JS
             return new MvcHtmlString(sb.ToString());
         }
 
-        public static IHtmlString GetRequireJsDeps(string key, bool commaPrefix = true, bool commaPostfix = false)
+        public static IHtmlString GetRequireJsDeps(IEnumerable<string> keys, bool commaPrefix = true, bool commaPostfix = false)
         {
-            if (key == null) return null;
-            Item item = Items.SingleOrDefault(n => n.Key == key);
-            if (item == null) return null;
-            return new MvcHtmlString(string.Format("{0}deps: ['{1}']{2}", 
-                commaPrefix?", ":string.Empty,
-                Scripts.Url(item.Bundle),
-                commaPostfix?", ":string.Empty));
+            
+            if (keys == null || !keys.Any()) return null;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0}deps: [", commaPrefix ? ", " : string.Empty);
+            foreach(var key in keys)
+            {
+                sb.AppendFormat("'{0}', ", key);
+            }
+            sb.Remove(sb.Length - 2, 2);
+            sb.AppendFormat("]{0}", commaPostfix ? ", " : string.Empty);
+            return new MvcHtmlString(sb.ToString());
         }
     }
 }

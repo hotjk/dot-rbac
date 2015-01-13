@@ -26,8 +26,10 @@ namespace Settings.Web
             Grit.Utility.Web.JS.AppScriptsBandles.AddFolder("~/Scripts/app/", bundles);
             //bundles.Add(new ScriptBundle("~/view/home/index").Include("~/Scripts/View/home.index.js"));
 
+            bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
+                      "~/Content/bootstrap.css"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,

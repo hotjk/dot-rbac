@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Settings</title>
+    @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/Scripts/require.js"></script>
@@ -11,11 +12,15 @@
         require.config({
             paths: {
                 'jquery': '@Scripts.Url("~/bundles/jquery")',
+                'jqueryval': '@Scripts.Url("~/bundles/jqueryval")',
                 'bootstrap': '@Scripts.Url("~/bundles/bootstrap")'
                 @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
             shim: {
                 'bootstrap': {
+                    deps: ['jquery']
+                },
+                'jqueryval': {
                     deps: ['jquery']
                 }
             },
