@@ -170,6 +170,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Scripts\app\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -177,6 +178,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Grit.Utility.Web\Grit.Utility.Web.csproj">
+      <Project>{07d3c73b-80ab-45a3-a28d-a1d946fef5e6}</Project>
+      <Name>Grit.Utility.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grit.Utility\Grit.Utility.csproj">
+      <Project>{bd3ad860-d5a7-4fbd-91a0-bdf20236e5a8}</Project>
+      <Name>Grit.Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
