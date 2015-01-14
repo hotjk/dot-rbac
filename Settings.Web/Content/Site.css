@@ -39,7 +39,7 @@ textarea {
 
 .field-validation-error
 {
-    color: #f00;
+    color: #a94442;
 }
 
 .field-validation-valid
@@ -49,5 +49,5 @@ textarea {
 
 .input-validation-error
 {
-    border-color: #f00 !important;
+    border-color: #a94442 !important;
 }
