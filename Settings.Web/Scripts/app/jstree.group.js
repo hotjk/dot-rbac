@@ -30,8 +30,8 @@
             $treeControl.jstree({
                 'core': {
                     'themes': {
-                        'name': 'proton',
-                        'responsive': true
+                        'name': 'default',
+                        'responsive': false
                     },
                     'check_callback': true,
                     'data': treeJson || []
@@ -44,6 +44,9 @@
             var json_data = $tree.get_json('#', { 'no_state': true });
             pick(json_data, ['id', 'data', 'children']);
             return json_data;
+        },
+        tree: function () {
+            return $tree;
         }
     };
     return App;

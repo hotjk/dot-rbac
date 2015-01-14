@@ -3,15 +3,28 @@
     ViewBag.RequireJsBundles = new string[] { "jstree-group-js" };
 }
 @using Grit.Utility.Web.Json
+@section styles {
+    @Styles.Render("~/Content/jstree/themes/default/style")
+}
 <h2>@ViewBag.Title</h2>
-
-@Styles.Render("~/Content/jstree/themes/proton/style")
 @section scripts {
     <script>
     require(['jquery', 'bootstrap', 'jstree-group-js'],
         function ($, bootstrap, app) {
             $(document).ready(function () {
                 app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
+
+                $("#btn_edit").on('click', function(){
+                    var tree = app.tree();
+                    var selected = tree.get_top_selected();
+                    if(selected.length == 0) {
+                        gMessage('请选择节点','alert-warning');
+                        return;
+                    }
+                    var id = tree.get_node(selected).data.content;
+                    window.location.href = '@Url.Action("Edit")/' + id;
+                });
+
                 $("#btn_save").on('click', function(){
                     $.ajax({
                         url: "@Url.Action("Group")",
@@ -21,19 +34,21 @@
                         processData: false,
                         contentType: 'application/json; charset=utf-8'
                     }).done(function (data) {
+                        gMessage('保存成功','alert-success');
                     }).fail(function (data) {
-                    }).always(function (data) {
+                        gMessage('保存失败','alert-danger');
                     });
                 });
             });
         });
     </script>
 }
-
+@Html.Partial("Message")
+<div class="alert hidden" role="alert" id="div_message"></div>
 <div class="row">
-    <button type="button" class="btn btn-default pull-right" id="btn_save">Save</button>
-</div>
-<div class="row">
+    <button type="button" class="btn btn-default" id="btn_save">保存节点结构</button>
+    @Html.ActionLink("新建节点", "Edit", null, new { @class = "btn btn-default" })
+    <button type="button" class="btn btn-default" id="btn_edit">编辑节点</button>
     <div id="ctl_tree" class="col-md-12"></div>
 </div>
 

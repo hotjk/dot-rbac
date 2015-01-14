@@ -37,6 +37,9 @@ namespace Settings.Web
             bundles.Add(new StyleBundle("~/Content/jstree/themes/proton/style").Include(
                       "~/Content/jstree/themes/proton/style.css"));
 
+            bundles.Add(new StyleBundle("~/Content/jstree/themes/default/style").Include(
+                      "~/Content/jstree/themes/default/style.css"));
+
             bundles.Add(new StyleBundle("~/Content/site").Include(
                       "~/Content/site.css"));
 

@@ -34,6 +34,10 @@ namespace Settings.Web.Controllers
             if(id.HasValue)
             {
                 Node node = NodeService.GetNode(id.Value);
+                if (node == null)
+                {
+                    return new HttpNotFoundResult("节点不存在");
+                }
                 NodeVM vm = NodeVM.FromModel(node);
                 return View(vm);
             }
@@ -72,8 +76,9 @@ namespace Settings.Web.Controllers
         {
             var nodes = NodeService.GetNodes();
             var root = TreeService.GetTree(Constants.TREE_NODE);
-
-            ViewBag.Tree = new Grit.Tree.JsTree.JsTreeBuilder<Node>(x => x.Name, x => x.NodeId)
+            ViewBag.Tree = new Grit.Tree.JsTree.JsTreeBuilder<Node>(
+                x => x.Name, 
+                x => x.NodeId)
                 .Build(root, nodes)
                 .children;
 
