@@ -27,11 +27,10 @@ namespace Settings.Web.App_Start
             NinjectContainer.Bind<ISequenceService>().To<SequenceService>().InSingletonScope();
             NinjectContainer.Bind<ITreeRepository>().To<TreeRepository>().InSingletonScope();
             NinjectContainer.Bind<ITreeService>().To<TreeService>().InSingletonScope()
-                .Named("Tree")
                 .WithConstructorArgument("table", "settings_tree");
 
-            NinjectContainer.Bind<ISettingsRepository>().To<SettingsRepository>().InSingletonScope();
-            NinjectContainer.Bind<ISettingsService>().To<SettingsService>().InSingletonScope();
+            NinjectContainer.Bind<INodesRepository>().To<NodeRepository>().InSingletonScope();
+            NinjectContainer.Bind<INodeService>().To<NodeService>().InSingletonScope();
         }
     }
 }

@@ -9,8 +9,19 @@ using Dapper;
 
 namespace Settings.Repository.MySql
 {
-    public class SettingsRepository : BaseRepository, ISettingsRepository
+    public class NodeRepository : BaseRepository, INodesRepository
     {
+        public IEnumerable<Node> GetNodes()
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                using (IDbTransaction transaction = connection.BeginTransaction())
+                {
+                    return connection.Query<Node>(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node`;");
+                }
+            }
+        }
+
         public Node GetNode(int nodeId)
         {
             using (IDbConnection connection = OpenConnection())

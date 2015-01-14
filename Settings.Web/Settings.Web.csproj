@@ -132,6 +132,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BootStrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\Constants.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectDependencyResolver.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -149,12 +150,39 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jstree\jstree.js" />
+    <Content Include="Content\jstree\jstree.min.js" />
+    <Content Include="Content\jstree\themes\default\30px.png" />
+    <Content Include="Content\jstree\themes\default\32px.png" />
+    <Content Include="Content\jstree\themes\default\40px.png" />
+    <Content Include="Content\jstree\themes\default\style.css" />
+    <Content Include="Content\jstree\themes\default\style.min.css" />
+    <Content Include="Content\jstree\themes\default\throbber.gif" />
+    <Content Include="Content\jstree\themes\proton\30px.png" />
+    <Content Include="Content\jstree\themes\proton\32px.png" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-bold-webfont.svg" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-extralight-webfont.svg" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-regular-webfont.svg" />
+    <Content Include="Content\jstree\themes\proton\style.css" />
+    <Content Include="Content\jstree\themes\proton\style.min.css" />
+    <Content Include="Content\jstree\themes\proton\throbber.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\app\jstree.group.js" />
+    <Content Include="Scripts\app\jstree.map.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-bold-webfont.eot" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-bold-webfont.ttf" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-bold-webfont.woff" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-extralight-webfont.eot" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-extralight-webfont.ttf" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-extralight-webfont.woff" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-regular-webfont.eot" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-regular-webfont.ttf" />
+    <Content Include="Content\jstree\themes\proton\fonts\titillium\titilliumweb-regular-webfont.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -163,6 +191,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jstree.js" />
+    <Content Include="Scripts\jstree.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
@@ -186,10 +216,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Node\Edit.cshtml" />
     <Content Include="Views\Shared\Message.cshtml" />
+    <Content Include="Views\Node\Group.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\app\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

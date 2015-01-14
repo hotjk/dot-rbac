@@ -23,18 +23,26 @@ namespace Settings.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/requirejs").Include(
+                      "~/Scripts/require.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jstree").Include(
+                      "~/Scripts/jstree.js"));
+
             Grit.Utility.Web.JS.AppScriptsBandles.AddFolder("~/Scripts/app/", bundles);
-            //bundles.Add(new ScriptBundle("~/view/home/index").Include("~/Scripts/View/home.index.js"));
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                       "~/Content/bootstrap.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/jstree/themes/proton/style").Include(
+                      "~/Content/jstree/themes/proton/style.css"));
+
+            bundles.Add(new StyleBundle("~/Content/site").Include(
                       "~/Content/site.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
-            BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
 
             if (!BundleTable.EnableOptimizations)
             {
