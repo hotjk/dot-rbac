@@ -6,16 +6,28 @@ using System.Threading.Tasks;
 
 namespace Settings.Model
 {
-    public class SettingsService
+    public class SettingsService : ISettingsService
     {
-        public bool UpdateNode(int id, string name, IList<Entry> entries)
+        public SettingsService(ISettingsRepository settingsRepository)
         {
-            return true;
+            this.SettingsRepository = settingsRepository;
+        }
+        private ISettingsRepository SettingsRepository { get; set; }
+
+        public bool UpdateNode(Node node)
+        {
+            node.Entries.ForEach(x => x.NodeId = node.NodeId);
+            return SettingsRepository.SaveNode(node);
         }
 
-        public bool DeleteNode(int id)
+        public bool DeleteNode(int nodeId, int version)
         {
-            return true;
+            return SettingsRepository.DeleteNode(nodeId, version);
+        }
+
+        public Node GetNode(int nodeId)
+        {
+            return SettingsRepository.GetNode(nodeId);
         }
 
         public IList<Node> GetNodes()

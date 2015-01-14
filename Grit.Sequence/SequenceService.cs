@@ -21,7 +21,7 @@ namespace Grit.Sequence
         private static IDictionary<int, SequenceRange> cache = new Dictionary<int, SequenceRange>();
         private ISequenceRepository SequenceRepository { get; set; }
 
-        public int Next(int sequence, int step)
+        public int Next(int sequence, int step = 1)
         {
             if (step < MIN_STEP || step > MAX_STEP)
             {

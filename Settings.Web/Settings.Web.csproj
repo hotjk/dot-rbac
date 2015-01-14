@@ -45,10 +45,16 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="BrockAllen.CookieTempData">
+      <HintPath>..\packages\BrockAllen.CookieTempData.dll.1.3.0\lib\net45\BrockAllen.CookieTempData.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -124,10 +130,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BootStrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectDependencyResolver.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NodeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -176,6 +185,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Node\Edit.cshtml" />
+    <Content Include="Views\Shared\Message.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -189,6 +199,26 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Grit.Sequence.Repository.Mysql\Grit.Sequence.Repository.MySql.csproj">
+      <Project>{c8223ccd-75f4-4b9e-813b-b8a5a83ff758}</Project>
+      <Name>Grit.Sequence.Repository.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grit.Sequence\Grit.Sequence.csproj">
+      <Project>{0161cd61-4221-47c3-9567-1695c06de101}</Project>
+      <Name>Grit.Sequence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grit.Tree.JsTree\Grit.Tree.JsTree.csproj">
+      <Project>{63ff4d80-7207-4925-8d2f-19c036ff6e35}</Project>
+      <Name>Grit.Tree.JsTree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grit.Tree.Repository.MySql\Grit.Tree.Repository.MySql.csproj">
+      <Project>{b946ff4a-9002-49ba-be32-2fda761534af}</Project>
+      <Name>Grit.Tree.Repository.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grit.Tree\Grit.Tree.csproj">
+      <Project>{8c530c2d-566f-4d0c-8368-4e5fc68187b3}</Project>
+      <Name>Grit.Tree</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Grit.Utility.Web\Grit.Utility.Web.csproj">
       <Project>{07d3c73b-80ab-45a3-a28d-a1d946fef5e6}</Project>
       <Name>Grit.Utility.Web</Name>
@@ -200,6 +230,10 @@
     <ProjectReference Include="..\Settings.Model\Settings.Model.csproj">
       <Project>{d7865771-4584-4c5c-b8b6-c52d35727274}</Project>
       <Name>Settings.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Settings.Repository.MySql\Settings.Repository.MySql.csproj">
+      <Project>{0f355428-29a9-4126-b375-86d8b5663120}</Project>
+      <Name>Settings.Repository.MySql</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

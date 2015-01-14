@@ -1,0 +1,11 @@
+﻿@if (TempData["Info"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Info"]
+    </div>
+}
+@*Only none property errors will show in error summary area.*@
+@if (ViewData.ModelState[string.Empty] != null)
+{
+    @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+}

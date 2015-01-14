@@ -4,6 +4,6 @@ namespace Grit.Sequence
 {
     public interface ISequenceService
     {
-        int Next(int sequence, int step);
+        int Next(int sequence, int step = 1);
     }
 }

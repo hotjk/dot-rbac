@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Settings.Model
 {
-    public class Entry
+    public interface ISettingsRepository
     {
-        public int NodeId { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
+        Node GetNode(int nodeId);
+        bool SaveNode(Node node);
+        bool DeleteNode(int nodeId, int version);
     }
 }

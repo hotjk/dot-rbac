@@ -8,6 +8,7 @@ namespace Settings.Model
 {
     public class Client
     {
+        public int ClientId { get; set; }
         public string Name { get; set; }
         public SecurityKey RequestKey { get; set; }
         public SecurityKey ResponseKey { get; set; }

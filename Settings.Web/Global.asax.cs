@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Settings.Web.App_Start;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,9 @@ namespace Settings.Web
     {
         protected void Application_Start()
         {
+            BootStrapper.BootStrap();
+            DependencyResolver.SetResolver(new NinjectDependencyResolver { Kernel = BootStrapper.NinjectContainer });
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

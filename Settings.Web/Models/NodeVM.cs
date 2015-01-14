@@ -12,6 +12,8 @@ namespace Settings.Web.Models
 {
     public class NodeVM
     {
+        public int NodeId { get; set; }
+
         [Display(Name = "节点名称")]
         [Required(ErrorMessage = "{0} 必须填写")]
         [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9_]{0,99}$", ErrorMessage = "{0} 必须为 100 位以内字母、数字或下划线组成，且必须以字母开始")]
@@ -19,6 +21,8 @@ namespace Settings.Web.Models
         
         [Display(Name = "节点配置")]
         public List<EntryVM> Entries { get; set; }
+
+        public int Version { get; set; }
 
         private const int ENTRY_STEP = 4;
 
@@ -53,9 +57,18 @@ namespace Settings.Web.Models
             return node;
         }
 
-        public static NodeVM FromModel(Node node)
+        public static NodeVM FromModel(Node node = null)
         {
-            NodeVM vm = Mapper.Map<NodeVM>(node);
+            NodeVM vm;
+            if (node == null)
+            {
+                vm = new NodeVM();
+            }
+            else
+            {
+                vm = Mapper.Map<NodeVM>(node);
+            }
+
             if (vm.Entries == null)
             {
                 vm.Entries = new List<EntryVM>(ENTRY_STEP);
