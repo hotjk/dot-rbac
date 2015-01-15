@@ -15,7 +15,8 @@ namespace Settings.Repository.MySql
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return connection.Query<Node>(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node`;");
+                return connection.Query<Node>(
+@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node`;");
             }
         }
 
@@ -27,7 +28,8 @@ namespace Settings.Repository.MySql
             }
             using (IDbConnection connection = OpenConnection())
             {
-                using (var multi = connection.QueryMultiple(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` IN @Ids;
+                using (var multi = connection.QueryMultiple(
+@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` IN @Ids;
 SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` IN @Ids;",
                     new { Ids = ids }))
                 {
@@ -46,7 +48,8 @@ SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` IN @Ids;",
         {
             using (IDbConnection connection = OpenConnection())
             {
-                using (var multi = connection.QueryMultiple(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` = @NodeId;
+                using (var multi = connection.QueryMultiple(
+@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` = @NodeId;
 SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` = @NodeId;", 
                     new { NodeId = nodeId })) {
                     var node = multi.Read<Node>().SingleOrDefault();
@@ -63,11 +66,13 @@ SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` = @NodeId;"
             {
                 using (IDbTransaction transaction = connection.BeginTransaction())
                 {
-                    Node found = connection.Query<Node>("SELECT `NodeId`, `Version` FROM `settings_node` WHERE `NodeId` = @NodeId FOR UPDATE;",
+                    Node found = connection.Query<Node>(
+@"SELECT `NodeId`, `Version` FROM `settings_node` WHERE `NodeId` = @NodeId FOR UPDATE;",
                         new { NodeId = node.NodeId }).SingleOrDefault();
                     if (found == null)
                     {
-                        if (1 != connection.Execute(@"INSERT INTO `settings_node` 
+                        if (1 != connection.Execute(
+@"INSERT INTO `settings_node` 
 (`NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt`)
 VALUES (@NodeId, @Name, @Version, @CreateAt, @UpdateAt);", node))
                         {
@@ -81,12 +86,15 @@ VALUES (@NodeId, @Name, @Version, @CreateAt, @UpdateAt);", node))
                             return false;
                         }
                         node.Version++;
-                        int n = connection.Execute(@"UPDATE `settings_node` 
+                        int n = connection.Execute(
+@"UPDATE `settings_node` 
 SET `Name` = @Name, `Version` = @Version, `UpdateAt` = @UpdateAt 
 WHERE NodeId = @NodeId;", node);
                     }
-                    connection.Execute("DELETE FROM `settings_entry` WHERE `NodeId` = @NodeId;", new { NodeId = node.NodeId });
-                    connection.Execute(@"INSERT INTO `settings_entry` (`NodeId`, `Key`, `Value`) VALUES (@NodeId, @Key, @Value);",
+                    connection.Execute(
+@"DELETE FROM `settings_entry` WHERE `NodeId` = @NodeId;", new { NodeId = node.NodeId });
+                    connection.Execute(
+@"INSERT INTO `settings_entry` (`NodeId`, `Key`, `Value`) VALUES (@NodeId, @Key, @Value);",
                         node.Entries);
                     transaction.Commit();
                     return true;
@@ -122,7 +130,8 @@ WHERE NodeId = @NodeId;", node);
         {
             using (IDbConnection connection = OpenConnection())
             {
-                using (var multi = connection.QueryMultiple(@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `ClientId` = @ClientId;
+                using (var multi = connection.QueryMultiple(
+@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `ClientId` = @ClientId;
 SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;", 
                     new {  ClientId = clientId }))
                 {
@@ -140,13 +149,15 @@ SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;",
         {
             using (IDbConnection connection = OpenConnection())
             {
-                var client = connection.Query<Client>(@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `Name` = @Name;", 
+                var client = connection.Query<Client>(
+@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `Name` = @Name;", 
                     new { Name = name }).SingleOrDefault();
                 if(client == null)
                 {
                     return null;
                 }
-                client.Nodes = connection.Query<int>(@"SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;", new { ClientId = client.ClientId }).ToArray();
+                client.Nodes = connection.Query<int>(
+@"SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;", new { ClientId = client.ClientId }).ToArray();
                 return client;
             }
         }
@@ -161,7 +172,8 @@ SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;",
         {
             using (IDbConnection connection = OpenConnection())
             {
-                using (var multi = connection.QueryMultiple(@"SELECT `ClientId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client`;
+                using (var multi = connection.QueryMultiple(
+@"SELECT `ClientId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client`;
 SELECT `ClientId`, `NodeId` FROM `settings_client_node`;"))
                 {
                     var clients = multi.Read<Client>();
@@ -181,11 +193,13 @@ SELECT `ClientId`, `NodeId` FROM `settings_client_node`;"))
             {
                 using (IDbTransaction transaction = connection.BeginTransaction())
                 {
-                    Client found = connection.Query<Client>("SELECT `ClientId`, `Version` FROM `settings_client` WHERE `ClientId` = @ClientId FOR UPDATE;",
+                    Client found = connection.Query<Client>(
+@"SELECT `ClientId`, `Version` FROM `settings_client` WHERE `ClientId` = @ClientId FOR UPDATE;",
                         new { ClientId = client.ClientId }).SingleOrDefault();
                     if (found == null)
                     {
-                        if (1 != connection.Execute(@"INSERT INTO `settings_client` 
+                        if (1 != connection.Execute(
+@"INSERT INTO `settings_client` 
 (`ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt`)
 VALUES (@ClientId, @Name, @PublicKey, @Version, @CreateAt, @UpdateAt);", client))
                         {
@@ -199,7 +213,8 @@ VALUES (@ClientId, @Name, @PublicKey, @Version, @CreateAt, @UpdateAt);", client)
                             return false;
                         }
                         client.Version++;
-                        int n = connection.Execute(@"UPDATE `settings_client` 
+                        int n = connection.Execute(
+@"UPDATE `settings_client` 
 SET `Name` = @Name, `PublicKey` = @PublicKey, `Version` = @Version, `UpdateAt` = @UpdateAt 
 WHERE ClientId = @ClientId;", client);
                     }
@@ -217,8 +232,10 @@ WHERE ClientId = @ClientId;", client);
                 {
                     foreach (var client in clients)
                     {
-                        connection.Execute("DELETE FROM `settings_client_node` WHERE `ClientId` = @ClientId;", client);
-                        connection.Execute("INSERT INTO `settings_client_node` (ClientId, NodeId) VALUES (@ClientId, @NodeId);",
+                        connection.Execute(
+@"DELETE FROM `settings_client_node` WHERE `ClientId` = @ClientId;", client);
+                        connection.Execute(
+@"INSERT INTO `settings_client_node` (ClientId, NodeId) VALUES (@ClientId, @NodeId);",
                             client.Nodes.Select(n => new { ClientId = client.ClientId, NodeId = n }));
                     }
                     transaction.Commit();

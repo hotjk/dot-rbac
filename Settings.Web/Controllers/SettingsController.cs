@@ -32,24 +32,22 @@ namespace Settings.Web.Controllers
 
             var nodes = SettingsService.GetNodes(aClient.Nodes);
             var allNodes = SettingsService.GetNodes();
+            var tree = TreeService.GetTree(Constants.TREE_NODE);
             var tNodes = TreeService.GetTreeNodes(Constants.TREE_NODE);
 
             SettingsResponse resp = new SettingsResponse { Client = client, Entries = new List<SettingsEntry>() };
+            var path = new List<Grit.Tree.Node>(5);
             foreach(var node in nodes)
             {
                 if (node.Entries == null || !node.Entries.Any()) continue;
 
-                List<Node> path = new List<Node>(5);
-                var tNode = tNodes.FirstOrDefault(n=>n.Data == node.NodeId);
-                path.Add(allNodes.FirstOrDefault(n=>n.NodeId == tNode.Data));
-                while(tNode.Parent != null)
-                {
-                    tNode = tNodes.SingleOrDefault(n=>n.Id == tNode.Parent.Value);
-                    if (tNode.Data == null) break;
-                    path.Add(allNodes.FirstOrDefault(n=>n.NodeId == tNode.Data));
-                }
-                string strPath = string.Join("/", path.Select(n=>n.Name).Reverse()) + "/";
-                
+                path.Clear();
+                tree.FindByData(node.NodeId, path);
+
+                string strPath = string.Join("/",
+                path.Select(n => allNodes.FirstOrDefault(x => x.NodeId == n.Data))
+                    .Select(n => n.Name)) + "/";
+
                 foreach(var data in node.Entries)
                 {
                     resp.Entries.Add(new SettingsEntry{ Path = strPath + data.Key, Value = data.Value});

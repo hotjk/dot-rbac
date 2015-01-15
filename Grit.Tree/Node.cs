@@ -61,7 +61,7 @@ namespace Grit.Tree
             return false;
         }
 
-        public Node FindByData(int data)
+        public Node FindByData(int data, List<Node> path = null)
         {
             if (this.Data == data)
             {
@@ -71,9 +71,13 @@ namespace Grit.Tree
             {
                 foreach (Node child in Children)
                 {
-                    var found = child.FindByData(data);
+                    var found = child.FindByData(data, path);
                     if (found != null)
                     {
+                        if (path != null)
+                        {
+                            path.Add(child);
+                        }
                         return found;
                     }
                 }

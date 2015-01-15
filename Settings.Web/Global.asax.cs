@@ -18,6 +18,9 @@ namespace Settings.Web
             DependencyResolver.SetResolver(new NinjectDependencyResolver { Kernel = BootStrapper.NinjectContainer });
             GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver4API(BootStrapper.NinjectContainer);
 
+            ViewEngines.Engines.Clear();   
+            ViewEngines.Engines.Add(new RazorViewEngine());  
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
