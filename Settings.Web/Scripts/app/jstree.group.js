@@ -30,8 +30,8 @@
             $treeControl.jstree({
                 'core': {
                     'themes': {
-                        'name': 'default',
-                        'responsive': false
+                        'name': 'proton',
+                        'responsive': true
                     },
                     'check_callback': true,
                     'data': treeJson || []

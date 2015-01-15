@@ -10,7 +10,12 @@ namespace Settings.Model
     {
         public int ClientId { get; set; }
         public string Name { get; set; }
-        public SecurityKey RequestKey { get; set; }
-        public SecurityKey ResponseKey { get; set; }
+        public string PublicKey { get; set; }
+        public string PrivateKey { get; set; }
+        public int[] Nodes { get; set; }
+
+        public int Version { get; set; }
+        public DateTime CreateAt { get; set; }
+        public DateTime UpdateAt { get; set; }
     }
 }

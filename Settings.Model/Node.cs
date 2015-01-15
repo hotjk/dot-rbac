@@ -10,9 +10,10 @@ namespace Settings.Model
     {
         public int NodeId { get; set; }
         public string Name { get; set; }
+        public List<Entry> Entries { get; set; }
+
         public int Version { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
-        public List<Entry> Entries { get; set; }
     }
 }

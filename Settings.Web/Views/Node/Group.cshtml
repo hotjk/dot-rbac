@@ -1,10 +1,10 @@
-﻿@{
+﻿@using Grit.Utility.Web.Json
+@{
     ViewBag.Title = "Group";
     ViewBag.RequireJsBundles = new string[] { "jstree-group-js" };
 }
-@using Grit.Utility.Web.Json
 @section styles {
-    @Styles.Render("~/Content/jstree/themes/default/style")
+    @Styles.Render("~/Content/jstree/themes/proton/style")
 }
 <h2>@ViewBag.Title</h2>
 @section scripts {
@@ -44,11 +44,10 @@
     </script>
 }
 @Html.Partial("Message")
-<div class="alert hidden" role="alert" id="div_message"></div>
 <div class="row">
     <button type="button" class="btn btn-default" id="btn_save">保存节点结构</button>
     @Html.ActionLink("新建节点", "Edit", null, new { @class = "btn btn-default" })
     <button type="button" class="btn btn-default" id="btn_edit">编辑节点</button>
-    <div id="ctl_tree" class="col-md-12"></div>
+    <div id="ctl_tree" class="col-sm-12"></div>
 </div>
 

@@ -41,13 +41,12 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Entry.cs" />
-    <Compile Include="INodeRepository.cs" />
-    <Compile Include="INodeService.cs" />
+    <Compile Include="ISettingsRepository.cs" />
+    <Compile Include="ISettingsService.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecurityKey.cs" />
     <Compile Include="Envelope.cs" />
-    <Compile Include="NodeService.cs" />
+    <Compile Include="SettingsService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

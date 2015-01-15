@@ -15,25 +15,23 @@ namespace Settings.Web.Controllers
     {
         public NodeController(ISequenceService sequenceService,
             Grit.Tree.ITreeService treeService,
-            INodeService nodeService)
+            ISettingsService settingsService)
         {
             this.SequenceService = sequenceService;
-            this.NodeService = nodeService;
+            this.SettingsService = settingsService;
             this.TreeService = treeService;
         }
 
         private ISequenceService SequenceService { get; set; }
         private Grit.Tree.ITreeService TreeService { get; set; }
-        private INodeService NodeService { get; set; }
-
-        
+        private ISettingsService SettingsService { get; set; }
 
         [HttpGet]
         public ActionResult Edit(int? id)
         {
             if(id.HasValue)
             {
-                Node node = NodeService.GetNode(id.Value);
+                Node node = SettingsService.GetNode(id.Value);
                 if (node == null)
                 {
                     return new HttpNotFoundResult("节点不存在");
@@ -56,11 +54,11 @@ namespace Settings.Web.Controllers
             node.UpdateAt = DateTime.Now;
             if (node.NodeId == 0)
             {
-                node.NodeId = SequenceService.Next(Constants.SEQUENCE_SETTINGS, 1);
+                node.NodeId = SequenceService.Next(Constants.SEQUENCE_SETTINGS_NODE, 1);
                 node.CreateAt = node.UpdateAt;
             }
 
-            if(!NodeService.UpdateNode(node))
+            if(!SettingsService.UpdateNode(node))
             {
                 ModelState.AddModelError(string.Empty, 
                     "保存失败，编辑过程中可能其他用户已经编辑了节点的数据");
@@ -74,7 +72,7 @@ namespace Settings.Web.Controllers
         [HttpGet]
         public ActionResult Group()
         {
-            var nodes = NodeService.GetNodes();
+            var nodes = SettingsService.GetNodes();
             var root = TreeService.GetTree(Constants.TREE_NODE);
             ViewBag.Tree = new Grit.Tree.JsTree.JsTreeBuilder<Node>(
                 x => x.Name, 
