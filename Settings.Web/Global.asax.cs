@@ -16,6 +16,7 @@ namespace Settings.Web
         {
             BootStrapper.BootStrap();
             DependencyResolver.SetResolver(new NinjectDependencyResolver { Kernel = BootStrapper.NinjectContainer });
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver4API(BootStrapper.NinjectContainer);
 
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);

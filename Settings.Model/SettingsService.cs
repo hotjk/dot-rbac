@@ -35,14 +35,19 @@ namespace Settings.Model
             return SettingsRepository.GetNodes();
         }
 
-        public IEnumerable<Node> GetNodes(int client)
+        public IEnumerable<Node> GetNodes(int[] nodes)
         {
-            return null;
+            return SettingsRepository.GetNodes(nodes);
         }
 
         public Client GetClient(int clientId)
         {
             return SettingsRepository.GetClient(clientId);
+        }
+
+        public Client GetClient(string name)
+        {
+            return SettingsRepository.GetClient(name);
         }
 
         public IEnumerable<Client> GetClients()

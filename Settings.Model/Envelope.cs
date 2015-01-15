@@ -10,7 +10,7 @@ namespace Settings.Model
     {
         public int Client { get; set; }
         public string EncryptedKey { get; set; }
-        public string EncryptedValue { get; set; }
+        public string EncryptedIV { get; set; }
         public string Data { get; set; }
     }
 }

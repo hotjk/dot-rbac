@@ -31,6 +31,11 @@ namespace Grit.Tree
             return root;
         }
 
+        public IEnumerable<Node> GetTreeNodes(int tree)
+        {
+            return TreeRepository.GetTreeNodes(tree);
+        }
+
         public void SaveTree(Node root)
         {
             IList<Node> nodes = new List<Node>();

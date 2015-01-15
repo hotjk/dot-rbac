@@ -15,9 +15,29 @@ namespace Settings.Repository.MySql
         {
             using (IDbConnection connection = OpenConnection())
             {
-                using (IDbTransaction transaction = connection.BeginTransaction())
+                return connection.Query<Node>(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node`;");
+            }
+        }
+
+        public IEnumerable<Node> GetNodes(int[] ids)
+        {
+            if (ids == null || !ids.Any())
+            {
+                return new List<Node>();
+            }
+            using (IDbConnection connection = OpenConnection())
+            {
+                using (var multi = connection.QueryMultiple(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` IN @Ids;
+SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` IN @Ids;",
+                    new { Ids = ids }))
                 {
-                    return connection.Query<Node>(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node`;");
+                    var nodes = multi.Read<Node>();
+                    var entries = multi.Read<Entry>();
+                    foreach (var node in nodes)
+                    {
+                        node.Entries = entries.Where(n => n.NodeId == node.NodeId).ToList();
+                    }
+                    return nodes;
                 }
             }
         }
@@ -26,16 +46,13 @@ namespace Settings.Repository.MySql
         {
             using (IDbConnection connection = OpenConnection())
             {
-                using (IDbTransaction transaction = connection.BeginTransaction())
-                {
-                    using (var multi = connection.QueryMultiple(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` = @NodeId;
+                using (var multi = connection.QueryMultiple(@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` = @NodeId;
 SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` = @NodeId;", 
-                        new { NodeId = nodeId })) {
-                        var node = multi.Read<Node>().SingleOrDefault();
-                        if(node == null) return null;
-                        node.Entries = multi.Read<Entry>().ToList();
-                        return node;
-                    }
+                    new { NodeId = nodeId })) {
+                    var node = multi.Read<Node>().SingleOrDefault();
+                    if(node == null) return null;
+                    node.Entries = multi.Read<Entry>().ToList();
+                    return node;
                 }
             }
         }
@@ -105,11 +122,32 @@ WHERE NodeId = @NodeId;", node);
         {
             using (IDbConnection connection = OpenConnection())
             {
-                using (IDbTransaction transaction = connection.BeginTransaction())
+                using (var multi = connection.QueryMultiple(@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `ClientId` = @ClientId;
+SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;", 
+                    new {  ClientId = clientId }))
                 {
-                    return connection.Query<Client>(@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `ClientId` = @ClientId;", 
-                        new {  ClientId = clientId }).SingleOrDefault();
+                    var client = multi.Read<Client>().SingleOrDefault();
+                    if (client != null)
+                    {
+                        client.Nodes = multi.Read<int>().ToArray();
+                    }
+                    return client;
                 }
+            }
+        }
+
+        public Client GetClient(string name)
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                var client = connection.Query<Client>(@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `Name` = @Name;", 
+                    new { Name = name }).SingleOrDefault();
+                if(client == null)
+                {
+                    return null;
+                }
+                client.Nodes = connection.Query<int>(@"SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;", new { ClientId = client.ClientId }).ToArray();
+                return client;
             }
         }
 
@@ -123,19 +161,16 @@ WHERE NodeId = @NodeId;", node);
         {
             using (IDbConnection connection = OpenConnection())
             {
-                using (IDbTransaction transaction = connection.BeginTransaction())
-                {
-                    using (var multi = connection.QueryMultiple(@"SELECT `ClientId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client`;
+                using (var multi = connection.QueryMultiple(@"SELECT `ClientId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client`;
 SELECT `ClientId`, `NodeId` FROM `settings_client_node`;"))
+                {
+                    var clients = multi.Read<Client>();
+                    var nodes = multi.Read<ClientNode>(); 
+                    foreach(var client in clients)
                     {
-                        var clients = multi.Read<Client>();
-                        var nodes = multi.Read<ClientNode>(); 
-                        foreach(var client in clients)
-                        {
-                            client.Nodes = nodes.Where(n => n.ClientId == client.ClientId).Select(n => n.NodeId).ToArray();
-                        }
-                        return clients;
+                        client.Nodes = nodes.Where(n => n.ClientId == client.ClientId).Select(n => n.NodeId).ToArray();
                     }
+                    return clients;
                 }
             }
         }

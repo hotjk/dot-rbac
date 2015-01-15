@@ -10,10 +10,12 @@ namespace Settings.Model
     {
         IEnumerable<Node> GetNodes();
         Node GetNode(int nodeId);
+        IEnumerable<Node> GetNodes(int[] nodes);
         bool SaveNode(Node node);
         bool DeleteNode(int nodeId, int version);
 
         Client GetClient(int clientId);
+        Client GetClient(string name);
         IEnumerable<Client> GetClients();
         bool SaveClient(Client client);
         bool SaveClientNodes(IEnumerable<Client> clients);
