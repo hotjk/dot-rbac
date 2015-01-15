@@ -112,6 +112,9 @@
             var json_data = $treeLeft.get_json('#', { 'no_state': true });
             pick(json_data, ['id', 'data', 'children']);
             return json_data;
+        },
+        tree: function () {
+            return $treeLeft;
         }
     };
     return App;

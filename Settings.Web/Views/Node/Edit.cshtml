@@ -1,11 +1,11 @@
 ﻿@model Settings.Web.Models.NodeVM
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "编辑节点";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.RequireJsMain = new string[] { "jquery", "jqueryval" };
 }
 
-<h2>编辑节点</h2>
+<h2>ViewBag.Title</h2>
 
 @using (Html.BeginForm("Edit", "Node", new { id = Model.NodeId }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
 {

@@ -1,22 +1,33 @@
 ﻿@using Grit.Utility.Web.Json
 @{
-    ViewBag.Title = "Map";
+    ViewBag.Title = "客户节点";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.RequireJsBundles = new string[] { "jstree-map-js" };
 }
 @section styles {
-<link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
+    <link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
 }
 <h2>@ViewBag.Title</h2>
 @section scripts {
     <script>
-    require(['jquery', 'bootstrap', 'jstree-map-js'],
-        function ($, bootstrap, app) {
-            $(document).ready(function () {
-                app.init($('#ctl_tree_left'), $('#ctl_tree_right'),
-                    @Html.Json(@ViewBag.LeftTree as object),
-                        @Html.Json(@ViewBag.RightTree as object));
-                $("#btn_save").on('click', function(){
+        require(['jquery', 'bootstrap', 'jstree-map-js'],
+            function ($, bootstrap, app) {
+                $(document).ready(function () {
+                    app.init($('#ctl_tree_left'), $('#ctl_tree_right'),
+                        @Html.Json(@ViewBag.LeftTree as object),
+                            @Html.Json(@ViewBag.RightTree as object));
+
+                    $("#btn_edit").on('click', function(){
+                        var tree = app.tree();
+                        var selected = tree.get_top_selected();
+                        if(selected.length == 0) {
+                            gMessage('请选择客户','alert-warning');
+                            return;
+                        }
+                        var id = tree.get_node(selected).data.content;
+                        window.location.href = '@Url.Action("Edit")/' + id;
+                    });
+                    $("#btn_save").on('click', function(){
                         $.ajax({
                             url: "@Url.Action("Map")",
                             type: 'POST',
@@ -35,9 +46,11 @@
     </script>
 }
 @Html.Partial("Message")
-<button type="button" class="btn btn-default" id="btn_save">Save</button>
+<button type="button" class="btn btn-default" id="btn_save">保存客户节点</button>
+@Html.ActionLink("新建客户", "Edit", null, new { @class = "btn btn-default" })
+<button type="button" class="btn btn-default" id="btn_edit">编辑客户</button>
 <div class="row">
-    
+
     <div id="ctl_tree_left" class="col-sm-6"></div>
     <div id="ctl_tree_right" class="col-sm-6"></div>
 </div>
