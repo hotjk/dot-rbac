@@ -21,9 +21,9 @@ namespace Settings.Model
             return SettingsRepository.SaveNode(node);
         }
 
-        public bool DeleteNode(int nodeId, int version)
+        public bool DeleteNode(Node node)
         {
-            return SettingsRepository.DeleteNode(nodeId, version);
+            return SettingsRepository.DeleteNode(node);
         }
 
         public Node GetNode(int nodeId)
@@ -64,6 +64,11 @@ namespace Settings.Model
         public bool SaveClientNodes(IEnumerable<Client> clients)
         {
             return SettingsRepository.SaveClientNodes(clients);
+        }
+
+        public bool DeleteClient(Client client)
+        {
+            return SettingsRepository.DeleteClient(client);
         }
 
         public SettingsResponse GetClientSettings(Client client, Grit.Tree.Node tree)

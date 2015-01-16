@@ -14,13 +14,13 @@ namespace Settings.Client
             public string Value { get; set; }
         }
 
-        public SettingsResponse(string name)
+        public SettingsResponse(string client)
         {
-            this.Client = name;
+            this.Client = client;
             this.Entries = new List<Entry>(10);
         }
-        public string Client { get; set; }
-        public List<Entry> Entries { get; set; }
+        public string Client { get; private set; }
+        public List<Entry> Entries { get; private set; }
 
         public SettingsResponse Filter(string pattern)
         {

@@ -24,6 +24,8 @@ namespace Settings.Web.Models
         [StringLength(2000, ErrorMessage = "{0} must be less than {1} characters")]
         public string PublicKey {get;set;}
 
+        public bool Deleted { get; set; }
+
         public int Version { get; set; }
 
         static ClientVM()

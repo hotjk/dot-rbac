@@ -59,15 +59,25 @@ namespace Settings.Web.Controllers
                 client.CreateAt = client.UpdateAt;
             }
 
-            if(!SettingsService.UpdateClient(client))
+            if (vm.Deleted)
             {
-                ModelState.AddModelError(string.Empty,
-                    "Failed to save, other users may have edited the data during your processing");
-                return View(vm);
+                client.DeleteAt = client.UpdateAt;
+                SettingsService.DeleteClient(client);
+                Info = "Delete successfully";
+                return RedirectToAction("Map", "Client");
             }
+            else
+            {
+                if (!SettingsService.UpdateClient(client))
+                {
+                    ModelState.AddModelError(string.Empty,
+                        "Failed to save, other users may have edited the data during your processing");
+                    return View(vm);
+                }
 
-            Info = "Saved successfully";
-            return RedirectToAction("Edit", new { id = client.ClientId });
+                Info = "Saved successfully";
+                return RedirectToAction("Edit", new { id = client.ClientId });
+            }
         }
 
         [HttpGet]

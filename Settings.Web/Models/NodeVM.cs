@@ -22,6 +22,7 @@ namespace Settings.Web.Models
         [Display(Name = "Node Entries")]
         public List<EntryVM> Entries { get; set; }
 
+        public bool Deleted { get; set; }
         public int Version { get; set; }
 
         private const int ENTRY_STEP = 4;

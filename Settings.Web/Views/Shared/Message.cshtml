@@ -19,6 +19,6 @@
         $('div.alert').remove();
         var alert = $('<div class="alert ' + css + '" role="alert" id="div_message"></div>')
             .text(message).hide().appendTo($('#panel_message')).fadeIn(500);
-        //setTimeout(function () { alert.fadeOut(500); }, 2000);
+        setTimeout(function () { alert.fadeOut(500); }, 2000);
     }
 </script>

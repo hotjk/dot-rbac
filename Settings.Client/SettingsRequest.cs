@@ -13,7 +13,7 @@ namespace Settings.Client
             this.Client = client;
             this.Pattern = pattern;
         }
-        public string Client { get; set; }
-        public string Pattern { get; set; }
+        public string Client { get; private set; }
+        public string Pattern { get; private set; }
     }
 }

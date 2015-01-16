@@ -58,15 +58,25 @@ namespace Settings.Web.Controllers
                 node.CreateAt = node.UpdateAt;
             }
 
-            if(!SettingsService.UpdateNode(node))
+            if (vm.Deleted)
             {
-                ModelState.AddModelError(string.Empty,
-                    "Failed to save, other users may have edited the data during your processing");
-                return View(vm);
+                node.DeleteAt = node.UpdateAt;
+                SettingsService.DeleteNode(node);
+                Info = "Delete successfully";
+                return RedirectToAction("Group", "Node");
             }
+            else
+            {
+                if (!SettingsService.UpdateNode(node))
+                {
+                    ModelState.AddModelError(string.Empty,
+                        "Failed to save, other users may have edited the data during your processing");
+                    return View(vm);
+                }
 
-            Info = "Saved successfully";
-            return RedirectToAction("Edit", new { id = node.NodeId });
+                Info = "Saved successfully";
+                return RedirectToAction("Edit", new { id = node.NodeId });
+            }
         }
 
         [HttpGet]
