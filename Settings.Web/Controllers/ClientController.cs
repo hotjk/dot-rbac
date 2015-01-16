@@ -43,6 +43,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Edit(ClientVM vm)
         {
             if (!ModelState.IsValid)

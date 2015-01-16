@@ -1,4 +1,6 @@
-﻿using Settings.Model;
+﻿using Grit.Utility.Security;
+using Newtonsoft.Json;
+using Settings.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,30 +32,11 @@ namespace Settings.Web.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "客户不存在");
             }
 
-            var nodes = SettingsService.GetNodes(aClient.Nodes);
-            var allNodes = SettingsService.GetNodes();
             var tree = TreeService.GetTree(Constants.TREE_NODE);
-            var tNodes = TreeService.GetTreeNodes(Constants.TREE_NODE);
+            ClientSettings settings = SettingsService.GetClientSettings(aClient, tree);
+            string json = JsonConvert.SerializeObject(settings);
 
-            SettingsResponse resp = new SettingsResponse { Client = client, Entries = new List<SettingsEntry>() };
-            var path = new List<Grit.Tree.Node>(5);
-            foreach(var node in nodes)
-            {
-                if (node.Entries == null || !node.Entries.Any()) continue;
-
-                path.Clear();
-                tree.FindByData(node.NodeId, path);
-
-                string strPath = string.Join("/",
-                path.Select(n => allNodes.FirstOrDefault(x => x.NodeId == n.Data))
-                    .Select(n => n.Name)) + "/";
-
-                foreach(var data in node.Entries)
-                {
-                    resp.Entries.Add(new SettingsEntry{ Path = strPath + data.Key, Value = data.Value});
-                }
-            }
-
+            Envelope resp = EnvelopeService.Encrypt(aClient.Name, json, aClient.PublicKey);
             return Request.CreateResponse(HttpStatusCode.OK, resp);
         }
     }

@@ -15,5 +15,6 @@ namespace Settings.Model
         IEnumerable<Client> GetClients();
         bool UpdateClient(Client client);
         bool SaveClientNodes(IEnumerable<Client> clients);
+        ClientSettings GetClientSettings(Client client, Grit.Tree.Node tree);
     }
 }

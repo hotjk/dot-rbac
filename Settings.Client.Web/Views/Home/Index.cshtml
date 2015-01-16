@@ -1,0 +1,15 @@
+﻿@model Settings.Client.ClientSettings
+@{
+    ViewBag.Title = "Client Demo";
+}
+<div class="row">
+    <p>@Model.Client</p>
+    <table class="table">
+        @foreach(var entry in Model.Entries) {
+            <tr>
+                <td>@entry.Path</td>
+                <td>@entry.Value</td>
+            </tr>
+    }
+    </table>
+</div>

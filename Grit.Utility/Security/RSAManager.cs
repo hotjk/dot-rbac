@@ -51,11 +51,12 @@ namespace Grit.Utility.Security
             return Convert.ToBase64String(encryptedBytes);
         }
 
-        public string Decrypt(string text)
+        public byte[] Decrypt(string text)
         {
             byte[] bytesToBeDecrypted = Convert.FromBase64String(text);
             byte[] decryptedBytes = Decrypt(bytesToBeDecrypted);
-            return Encoding.UTF8.GetString(decryptedBytes);
+            return decryptedBytes;
+            //return Encoding.UTF8.GetString(decryptedBytes);
         }
 
         public string PrivareEncrypt(string text)

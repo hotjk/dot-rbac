@@ -65,38 +65,26 @@ namespace Settings.Model
             return SettingsRepository.SaveClientNodes(clients);
         }
 
-        //public SettingsResponse GetSettings(string client)
-        //{
-        //    var aClient = GetClient(client);
-        //    if (aClient == null)
-        //    {
-        //        return null;
-        //    }
+        public ClientSettings GetClientSettings(Client client, Grit.Tree.Node tree)
+        {
+            var clientNodes = GetNodes(client.Nodes);
+            var allNodes = GetNodes();
 
-        //    var nodes = GetNodes(aClient.Nodes);
-        //    var allNodes = GetNodes();
+            ClientSettings resp = new ClientSettings(client.Name);
+            var path = new List<Grit.Tree.Node>(5);
+            foreach (var node in clientNodes)
+            {
+                if (node.Entries == null || !node.Entries.Any()) continue;
+                path.Clear();
+                tree.FindByData(node.NodeId, path);
 
-        //    SettingsResponse resp = new SettingsResponse { Client = client, Entries = new List<SettingsEntry>() };
-        //    foreach (var node in nodes)
-        //    {
-        //        if (node.Entries == null || !node.Entries.Any()) continue;
+                string strPath = string.Join("/",
+                    path.Select(n => allNodes.FirstOrDefault(x => x.NodeId == n.Data)).Select(n => n.Name).Reverse())
+                    + "/";
 
-        //        List<Node> path = new List<Node>(5);
-        //        var tNode = treeNodes.FirstOrDefault(n => n.Data == node.NodeId);
-        //        path.Add(allNodes.FirstOrDefault(n => n.NodeId == tNode.Data));
-        //        while (tNode.Parent != null)
-        //        {
-        //            tNode = tNodes.SingleOrDefault(n => n.Id == tNode.Parent.Value);
-        //            if (tNode.Data == null) break;
-        //            path.Add(allNodes.FirstOrDefault(n => n.NodeId == tNode.Data));
-        //        }
-        //        string strPath = string.Join("/", path.Select(n => n.Name).Reverse()) + "/";
-
-        //        foreach (var data in node.Entries)
-        //        {
-        //            resp.Entries.Add(new SettingsEntry { Path = strPath + data.Key, Value = data.Value });
-        //        }
-        //    }
-        //}
+                resp.Entries.AddRange(node.Entries.Select(n => new ClientSettings.Entry { Path = strPath + n.Key, Value = n.Value }));
+            }
+            return resp;
+        }
     }
 }
