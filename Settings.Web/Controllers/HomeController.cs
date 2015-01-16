@@ -29,16 +29,5 @@ namespace Settings.Web.Controllers
             return View();
         }
 
-        public string test()
-        {
-            string privateKey;
-            string publicKey;
-            RSAManager.GenerateKeyAndIV(out publicKey, out privateKey);
-            RSAManager rsa = new RSAManager(privateKey);
-            string encrypted = rsa.PrivareEncrypt("hello world中文");
-            rsa = new RSAManager(publicKey);
-            string decrypted = rsa.PublicDecrypt(encrypted);
-            return decrypted;
-        }
     }
 }

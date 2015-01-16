@@ -46,8 +46,11 @@
     <Compile Include="ClientSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientSettingsRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsService.cs" />
+    <Compile Include="SettingsService.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

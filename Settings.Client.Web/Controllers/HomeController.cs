@@ -11,10 +11,11 @@ namespace Settings.Client.Web.Controllers
     {
         public ActionResult Index()
         {
+            string client = ConfigurationManager.AppSettings["SettingsClient"];
             string api = ConfigurationManager.AppSettings["SettingsAPI"];
             string key = ConfigurationManager.AppSettings["SettingsPrivateKey"];
             SettingsService service = new SettingsService();
-            var settings = service.GetClientSettings(api, key);
+            var settings = service.GetClientSettings(client, api, "",  key);
             return View(settings);
         }
     }

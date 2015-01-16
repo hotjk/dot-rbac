@@ -59,9 +59,9 @@ namespace Grit.Utility.Security
             //return Encoding.UTF8.GetString(decryptedBytes);
         }
 
-        public string PrivareEncrypt(string text)
+        public string PrivateEncrypt(byte[] bytesToBeEncrypted)
         {
-            byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(text);
+            //byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(text);
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(_key);
@@ -70,14 +70,15 @@ namespace Grit.Utility.Security
             }
         }
 
-        public string PublicDecrypt(string text)
+        public byte[] PublicDecrypt(string text)
         {
             byte[] bytesToBeDecrypted = Convert.FromBase64String(text);
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(_key);
                 byte[] decryptedBytes = RSA.PublicDecryption(bytesToBeDecrypted);
-                return Encoding.UTF8.GetString(decryptedBytes);
+                return decryptedBytes;
+                //return Encoding.UTF8.GetString(decryptedBytes);
             }
         }
     }
