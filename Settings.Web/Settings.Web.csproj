@@ -140,7 +140,7 @@
     <Compile Include="App_Start\NinjectDependencyResolver4API.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\EncryptKeyController.cs" />
+    <Compile Include="Controllers\SecurityKeyController.cs" />
     <Compile Include="Controllers\ClientController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,7 +151,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\EncryptKeyVM.cs" />
+    <Compile Include="Models\SecurityKeyVM.cs" />
     <Compile Include="Models\EntryVM.cs" />
     <Compile Include="Models\ClientVM.cs" />
     <Compile Include="Models\NodeVM.cs" />
@@ -227,7 +227,7 @@
     <Content Include="Views\Node\Group.cshtml" />
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Map.cshtml" />
-    <Content Include="Views\EncryptKey\Index.cshtml" />
+    <Content Include="Views\SecurityKey\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -267,6 +267,10 @@
     <ProjectReference Include="..\Grit.Utility\Grit.Utility.csproj">
       <Project>{bd3ad860-d5a7-4fbd-91a0-bdf20236e5a8}</Project>
       <Name>Grit.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Settings.Client\Settings.Client.csproj">
+      <Project>{977a672d-4530-480e-9ce4-a9b6f874c32f}</Project>
+      <Name>Settings.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Settings.Model\Settings.Model.csproj">
       <Project>{d7865771-4584-4c5c-b8b6-c52d35727274}</Project>

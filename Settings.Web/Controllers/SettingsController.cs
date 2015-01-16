@@ -1,5 +1,6 @@
 ﻿using Grit.Utility.Security;
 using Newtonsoft.Json;
+using Settings.Client;
 using Settings.Model;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace Settings.Web.Controllers
             }
 
             var tree = TreeService.GetTree(Constants.TREE_NODE);
-            ClientSettings settings = SettingsService.GetClientSettings(aClient, tree);
+            SettingsResponse settings = SettingsService.GetClientSettings(aClient, tree);
             string json = JsonConvert.SerializeObject(settings);
 
             Envelope resp = EnvelopeService.Encrypt(aClient.Name, json, aClient.PublicKey);
@@ -51,10 +52,17 @@ namespace Settings.Web.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "客户不存在");
             }
 
-            var req = EnvelopeService.PublicDecrypt(envelope, client.PublicKey);
+            var decrypted = EnvelopeService.PublicDecrypt(envelope, client.PublicKey);
+            var req = JsonConvert.DeserializeObject<SettingsRequest>(decrypted);
+            if (req.Client != envelope.Id)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "无效的客户");
+            }
 
             var tree = TreeService.GetTree(Constants.TREE_NODE);
-            ClientSettings settings = SettingsService.GetClientSettings(client, tree);
+            SettingsResponse settings = SettingsService.GetClientSettings(client, tree)
+                .Filter(req.Pattern);
+
             string json = JsonConvert.SerializeObject(settings);
 
             Envelope resp = EnvelopeService.Encrypt(client.Name, json, client.PublicKey);

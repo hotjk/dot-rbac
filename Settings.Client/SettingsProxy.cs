@@ -11,11 +11,11 @@ using System.Net.Http.Headers;
 
 namespace Settings.Client
 {
-    public class SettingsService
+    public class SettingsProxy
     {
-        public ClientSettings GetClientSettings(string client, string api, string path, string privateKey)
+        public async Task<SettingsResponse> GetSettings(string client, string api, string pattern, string privateKey)
         {
-            ClientSettingsRequest csr = new ClientSettingsRequest(client, path);
+            SettingsRequest csr = new SettingsRequest(client, pattern);
             string json = JsonConvert.SerializeObject(csr);
             var reqEnvelope = EnvelopeService.PrivateEncrypt(client, json, privateKey);
             var reqContent = JsonConvert.SerializeObject(reqEnvelope);
@@ -25,15 +25,15 @@ namespace Settings.Client
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, "");
                 req.Content = new StringContent(reqContent, Encoding.UTF8, "application/json");
-                var response = httpClient.SendAsync(req).Result;
+                var response = await httpClient.SendAsync(req);
                 if(!response.IsSuccessStatusCode)
                 {
                     return null;
                 }
-                var content = response.Content.ReadAsStringAsync().Result;
+                var content = await response.Content.ReadAsStringAsync();
                 var envelope = JsonConvert.DeserializeObject<Envelope>(content);
                 string decrypted = EnvelopeService.Decrypt(envelope, privateKey);
-                return JsonConvert.DeserializeObject<ClientSettings>(decrypted);
+                return JsonConvert.DeserializeObject<SettingsResponse>(decrypted);
             }
         }
     }

@@ -43,12 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientSettings.cs">
+    <Compile Include="SettingsResponse.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClientSettingsRequest.cs" />
+    <Compile Include="SettingsRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsService.cs">
+    <Compile Include="SettingsProxy.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

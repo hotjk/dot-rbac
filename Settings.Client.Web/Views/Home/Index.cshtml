@@ -1,15 +1,17 @@
-﻿@model Settings.Client.ClientSettings
+﻿@model Settings.Client.SettingsResponse
 @{
-    ViewBag.Title = "Client Demo";
+    ViewBag.Title = "Settings Client";
 }
-<div class="row">
-    <p>@Model.Client</p>
+@if (Model != null)
+{
+    <h2>@Model.Client</h2>
     <table class="table">
-        @foreach(var entry in Model.Entries) {
+        @foreach (var entry in Model.Entries)
+        {
             <tr>
                 <td>@entry.Path</td>
                 <td>@entry.Value</td>
             </tr>
-    }
+        }
     </table>
-</div>
+}

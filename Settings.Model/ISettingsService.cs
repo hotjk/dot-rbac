@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Settings.Client;
+using System;
 using System.Collections.Generic;
+
 namespace Settings.Model
 {
     public interface ISettingsService
@@ -15,6 +17,6 @@ namespace Settings.Model
         IEnumerable<Client> GetClients();
         bool UpdateClient(Client client);
         bool SaveClientNodes(IEnumerable<Client> clients);
-        ClientSettings GetClientSettings(Client client, Grit.Tree.Node tree);
+        SettingsResponse GetClientSettings(Client client, Grit.Tree.Node tree);
     }
 }

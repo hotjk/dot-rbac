@@ -45,13 +45,16 @@
     <Compile Include="ISettingsService.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ClientSettings.cs" />
     <Compile Include="SettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Grit.Tree\Grit.Tree.csproj">
       <Project>{8c530c2d-566f-4d0c-8368-4e5fc68187b3}</Project>
       <Name>Grit.Tree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Settings.Client\Settings.Client.csproj">
+      <Project>{977a672d-4530-480e-9ce4-a9b6f874c32f}</Project>
+      <Name>Settings.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

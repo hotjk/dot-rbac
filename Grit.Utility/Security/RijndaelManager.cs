@@ -25,12 +25,19 @@ namespace Grit.Utility.Security
         private CipherMode _cipherMode;
         private int _saltSize;
 
+        public static void GenerateKeyAndIV(out string Key, out string IV)
+        {
+            using (RijndaelManaged AES = new RijndaelManaged())
+            {
+                Key = Convert.ToBase64String(AES.Key);
+                IV = Convert.ToBase64String(AES.IV);
+            }
+        }
+
         public static void GenerateKeyAndIV(out byte[] Key, out byte[] IV)
         {
             using (RijndaelManaged AES = new RijndaelManaged())
             {
-                AES.GenerateKey();
-                AES.GenerateIV();
                 Key = AES.Key;
                 IV = AES.IV;
             }

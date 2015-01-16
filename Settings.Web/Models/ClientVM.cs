@@ -28,16 +28,16 @@ namespace Settings.Web.Models
 
         static ClientVM()
         {
-            Mapper.CreateMap<Client, ClientVM>();
-            Mapper.CreateMap<ClientVM, Client>();
+            Mapper.CreateMap<Settings.Model.Client, ClientVM>();
+            Mapper.CreateMap<ClientVM, Settings.Model.Client>();
         }
 
-        public static Client ToModel(ClientVM vm)
+        public static Settings.Model.Client ToModel(ClientVM vm)
         {
-            return Mapper.Map<Client>(vm);
+            return Mapper.Map<Settings.Model.Client>(vm);
         }
 
-        public static ClientVM FromModel(Client m = null)
+        public static ClientVM FromModel(Settings.Model.Client m = null)
         {
             ClientVM vm;
             if (m == null)

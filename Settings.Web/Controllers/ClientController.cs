@@ -31,7 +31,7 @@ namespace Settings.Web.Controllers
         {
             if (id.HasValue)
             {
-                Client client = SettingsService.GetClient(id.Value);
+                Settings.Model.Client client = SettingsService.GetClient(id.Value);
                 if (client == null)
                 {
                     return new HttpNotFoundResult("客户不存在");
@@ -75,8 +75,8 @@ namespace Settings.Web.Controllers
         {
             var clients = SettingsService.GetClients();
             var leftTree = new Grit.Tree.Node(1);
-            
-            ViewBag.LeftTree = new Grit.Tree.JsTree.JsTreeBuilder<Client>(x => x.Name, x => x.ClientId, x => x.Nodes)
+
+            ViewBag.LeftTree = new Grit.Tree.JsTree.JsTreeBuilder<Settings.Model.Client>(x => x.Name, x => x.ClientId, x => x.Nodes)
                 .Build(leftTree, clients)
                 .children;
 

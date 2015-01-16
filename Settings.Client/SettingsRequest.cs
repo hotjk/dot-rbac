@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Settings.Client
 {
-    public class ClientSettingsRequest
+    public class SettingsRequest
     {
-        public ClientSettingsRequest(string client, string path)
+        public SettingsRequest(string client, string pattern)
         {
             this.Client = client;
-            this.Path = path;
+            this.Pattern = pattern;
         }
         public string Client { get; set; }
-        public string Path { get; set; }
+        public string Pattern { get; set; }
     }
 }

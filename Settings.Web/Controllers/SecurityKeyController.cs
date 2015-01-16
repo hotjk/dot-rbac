@@ -12,14 +12,22 @@ using System.Web.Mvc;
 
 namespace Settings.Web.Controllers
 {
-    public class EncryptKeyController : ControllerBase
+    public class SecurityKeyController : ControllerBase
     {
         [HttpGet]
         public ActionResult Index()
         {
+            string key, iv;
+            RijndaelManager.GenerateKeyAndIV(out key, out iv);
             string publicKey, privateKey;
             RSAManager.GenerateKeyAndIV(out publicKey, out privateKey);
-            return View(new EncryptKeyVM { PublicKey = publicKey, PrivateKey = privateKey });
+
+            return View(new SecurityKeyVM { 
+                Key = key,
+                IV = iv,
+                PublicKey = publicKey, 
+                PrivateKey = privateKey 
+            });
         }
    }
 }

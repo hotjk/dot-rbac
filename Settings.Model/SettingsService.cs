@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Settings.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -65,12 +66,12 @@ namespace Settings.Model
             return SettingsRepository.SaveClientNodes(clients);
         }
 
-        public ClientSettings GetClientSettings(Client client, Grit.Tree.Node tree)
+        public SettingsResponse GetClientSettings(Client client, Grit.Tree.Node tree)
         {
             var clientNodes = GetNodes(client.Nodes);
             var allNodes = GetNodes();
 
-            ClientSettings resp = new ClientSettings(client.Name);
+            SettingsResponse resp = new SettingsResponse(client.Name);
             var path = new List<Grit.Tree.Node>(5);
             foreach (var node in clientNodes)
             {
@@ -82,7 +83,7 @@ namespace Settings.Model
                     path.Select(n => allNodes.FirstOrDefault(x => x.NodeId == n.Data)).Select(n => n.Name).Reverse())
                     + "/";
 
-                resp.Entries.AddRange(node.Entries.Select(n => new ClientSettings.Entry { Path = strPath + n.Key, Value = n.Value }));
+                resp.Entries.AddRange(node.Entries.Select(n => new SettingsResponse.Entry { Path = strPath + n.Key, Value = n.Value }));
             }
             return resp;
         }
