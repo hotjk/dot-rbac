@@ -30,7 +30,7 @@ namespace Settings.Web.Controllers
             var aClient = SettingsService.GetClient(client);
             if (aClient == null)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "客户不存在");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Client not found");
             }
 
             var tree = TreeService.GetTree(Constants.TREE_NODE);
@@ -49,14 +49,14 @@ namespace Settings.Web.Controllers
             var client = SettingsService.GetClient(envelope.Id);
             if (client == null)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "客户不存在");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Client not found");
             }
 
             var decrypted = EnvelopeService.PublicDecrypt(envelope, client.PublicKey);
             var req = JsonConvert.DeserializeObject<SettingsRequest>(decrypted);
             if (req.Client != envelope.Id)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "无效的客户");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid client");
             }
 
             var tree = TreeService.GetTree(Constants.TREE_NODE);

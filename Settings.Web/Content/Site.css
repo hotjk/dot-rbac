@@ -3,6 +3,9 @@
     padding-bottom: 20px;
 }
 
+.alert {
+    padding:5px;
+}
 /*******************/
 /* jquery.validate */
 /*******************/

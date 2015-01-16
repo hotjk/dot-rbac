@@ -14,12 +14,12 @@ namespace Settings.Web.Models
     {
         public int NodeId { get; set; }
 
-        [Display(Name = "节点名称")]
-        [Required(ErrorMessage = "{0} 必须填写")]
-        [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9_]{0,99}$", ErrorMessage = "{0} 必须为 100 位以内字母、数字或下划线组成，且必须以字母开始")]
+        [Display(Name = "Node Name")]
+        [Required(ErrorMessage = "{0} is required")]
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9_]{0,99}$", ErrorMessage = "{0} must be less than 100 letters, numbers or underscores, and must begin with a letter")]
         public string Name { get; set; }
         
-        [Display(Name = "节点配置")]
+        [Display(Name = "Node Entries")]
         public List<EntryVM> Entries { get; set; }
 
         public int Version { get; set; }
@@ -43,7 +43,7 @@ namespace Settings.Web.Models
                 if (!string.IsNullOrWhiteSpace(entry.Value) && string.IsNullOrWhiteSpace(entry.Key))
                 {
                     ModelState.AddModelError(this.GetExpressionText(x => this.Entries[i].Key),
-                        string.Format(@"{0} 必须填写", this.GetDisplayName(x => this.Entries[i].Key)));
+                        string.Format(@"{0} is required", this.GetDisplayName(x => this.Entries[i].Key)));
                     isValid = false;
                 }
             }

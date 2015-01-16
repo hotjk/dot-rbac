@@ -1,20 +1,24 @@
-﻿<div id="panel_message"></div>
-@if (TempData["Info"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Info"]
+﻿<div class="row">
+    <div class="text-center">
+        <div id="panel_message"></div>
+        @if (TempData["Info"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Info"]
+            </div>
+        }
+        @*Only none property errors will show in error summary area.*@
+        @if (ViewData.ModelState[string.Empty] != null)
+        {
+            @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+        }
     </div>
-}
-@*Only none property errors will show in error summary area.*@
-@if (ViewData.ModelState[string.Empty] != null)
-{
-    @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
-}
+</div>
 <script>
     function gMessage(message, css) {
         $('div.alert').remove();
         var alert = $('<div class="alert ' + css + '" role="alert" id="div_message"></div>')
-            .text(message).appendTo($('#panel_message'));
-        setTimeout(function () { alert.fadeOut(); }, 2000);
+            .text(message).hide().appendTo($('#panel_message')).fadeIn(500);
+        //setTimeout(function () { alert.fadeOut(500); }, 2000);
     }
 </script>

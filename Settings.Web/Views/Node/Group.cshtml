@@ -1,6 +1,6 @@
 ﻿@using Grit.Utility.Web.Json
 @{
-    ViewBag.Title = "节点结构";
+    ViewBag.Title = "Node Tree";
     ViewBag.RequireJsBundles = new string[] { "jstree-group-js" };
 }
 @section styles {
@@ -18,7 +18,7 @@
                     var tree = app.tree();
                     var selected = tree.get_top_selected();
                     if(selected.length == 0) {
-                        gMessage('请选择节点','alert-warning');
+                        gMessage('Please select node first','alert-warning');
                         return;
                     }
                     var id = tree.get_node(selected).data.content;
@@ -34,9 +34,9 @@
                         processData: false,
                         contentType: 'application/json; charset=utf-8'
                     }).done(function (data) {
-                        gMessage('保存成功','alert-success');
+                        gMessage('Saved successfully','alert-success');
                     }).fail(function (data) {
-                        gMessage('保存失败','alert-danger');
+                        gMessage('Failed to save','alert-danger');
                     });
                 });
             });
@@ -45,9 +45,13 @@
 }
 @Html.Partial("Message")
 <div class="row">
-    <button type="button" class="btn btn-default" id="btn_save">保存节点结构</button>
-    @Html.ActionLink("新建节点", "Edit", null, new { @class = "btn btn-default" })
-    <button type="button" class="btn btn-default" id="btn_edit">编辑节点</button>
+    <div class="pull-right">
+        <button type="button" class="btn btn-default" id="btn_save">Save Tree</button>
+        @Html.ActionLink("New Node", "Edit", null, new { @class = "btn btn-default" })
+        <button type="button" class="btn btn-default" id="btn_edit">Edit Node</button>
+    </div>
+</div>
+<div class="row">
     <div id="ctl_tree" class="col-sm-12"></div>
 </div>
 

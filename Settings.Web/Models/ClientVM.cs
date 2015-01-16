@@ -14,14 +14,14 @@ namespace Settings.Web.Models
     {
         public int ClientId { get; set; }
 
-        [Display(Name = "客户名称")]
-        [Required(ErrorMessage = "{0} 必须填写")]
-        [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9_]{0,99}$", ErrorMessage = "{0} 必须为 100 位以内字母、数字或下划线组成，且必须以字母开始")]
+        [Display(Name = "Client Name")]
+        [Required(ErrorMessage = "{0} is required")]
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9_]{0,99}$", ErrorMessage = "{0} must be less than 100 letters, numbers or underscores, and must begin with a letter")]
         public string Name { get; set; }
 
-        [Display(Name = "客户公钥")]
-        [Required(ErrorMessage = "{0} 必须填写")]
-        [StringLength(2000, ErrorMessage="{0} 长度不能超过 {1} 字符")]
+        [Display(Name = "RSA Public Key")]
+        [Required(ErrorMessage = "{0} is required")]
+        [StringLength(2000, ErrorMessage = "{0} must be less than {1} characters")]
         public string PublicKey {get;set;}
 
         public int Version { get; set; }

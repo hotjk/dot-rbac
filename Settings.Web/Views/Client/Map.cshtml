@@ -1,6 +1,6 @@
 ﻿@using Grit.Utility.Web.Json
 @{
-    ViewBag.Title = "客户节点";
+    ViewBag.Title = "Client/Node Mapping";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.RequireJsBundles = new string[] { "jstree-map-js" };
 }
@@ -21,7 +21,7 @@
                         var tree = app.tree();
                         var selected = tree.get_top_selected();
                         if(selected.length == 0) {
-                            gMessage('请选择客户','alert-warning');
+                            gMessage('Please select client first','alert-warning');
                             return;
                         }
                         var id = tree.get_node(selected).data.content;
@@ -36,9 +36,9 @@
                             processData: false,
                             contentType: 'application/json; charset=utf-8'
                         }).done(function (data) {
-                            gMessage('保存成功','alert-success');
+                            gMessage('Saved successfully','alert-success');
                         }).fail(function (data) {
-                            gMessage('保存失败','alert-danger');
+                            gMessage('Failed to save','alert-danger');
                         });
                     });
                 });
@@ -46,11 +46,14 @@
     </script>
 }
 @Html.Partial("Message")
-<button type="button" class="btn btn-default" id="btn_save">保存客户节点</button>
-@Html.ActionLink("新建客户", "Edit", null, new { @class = "btn btn-default" })
-<button type="button" class="btn btn-default" id="btn_edit">编辑客户</button>
 <div class="row">
-
+    <div class="pull-right">
+        <button type="button" class="btn btn-default" id="btn_save">Save Mapping</button>
+        @Html.ActionLink("New Client", "Edit", null, new { @class = "btn btn-default" })
+        <button type="button" class="btn btn-default" id="btn_edit">Edit Client</button>
+    </div>
+</div>
+<div class="row">
     <div id="ctl_tree_left" class="col-sm-6"></div>
     <div id="ctl_tree_right" class="col-sm-6"></div>
 </div>

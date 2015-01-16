@@ -34,7 +34,7 @@ namespace Settings.Web.Controllers
                 Settings.Model.Client client = SettingsService.GetClient(id.Value);
                 if (client == null)
                 {
-                    return new HttpNotFoundResult("客户不存在");
+                    return new HttpNotFoundResult("Client not found");
                 }
                 ClientVM vm = ClientVM.FromModel(client);
                 return View(vm);
@@ -61,12 +61,12 @@ namespace Settings.Web.Controllers
 
             if(!SettingsService.UpdateClient(client))
             {
-                ModelState.AddModelError(string.Empty, 
-                    "保存失败，编辑过程中可能其他用户已经编辑了客户的数据");
+                ModelState.AddModelError(string.Empty,
+                    "Failed to save, other users may have edited the data during your processing");
                 return View(vm);
             }
 
-            Info = "保存成功";
+            Info = "Saved successfully";
             return RedirectToAction("Edit", new { id = client.ClientId });
         }
 

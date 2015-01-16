@@ -34,7 +34,7 @@ namespace Settings.Web.Controllers
                 Node node = SettingsService.GetNode(id.Value);
                 if (node == null)
                 {
-                    return new HttpNotFoundResult("节点不存在");
+                    return new HttpNotFoundResult("Node not found");
                 }
                 NodeVM vm = NodeVM.FromModel(node);
                 return View(vm);
@@ -60,12 +60,12 @@ namespace Settings.Web.Controllers
 
             if(!SettingsService.UpdateNode(node))
             {
-                ModelState.AddModelError(string.Empty, 
-                    "保存失败，编辑过程中可能其他用户已经编辑了节点的数据");
+                ModelState.AddModelError(string.Empty,
+                    "Failed to save, other users may have edited the data during your processing");
                 return View(vm);
             }
 
-            Info = "保存成功";
+            Info = "Saved successfully";
             return RedirectToAction("Edit", new { id = node.NodeId });
         }
 
