@@ -27,6 +27,18 @@ namespace Settings.Web.Controllers
         private ISettingsService SettingsService { get; set; }
 
         [HttpGet]
+        public ActionResult Basic(int id)
+        {
+            Node node = SettingsService.GetNode(id);
+            if (node == null)
+            {
+                return new HttpNotFoundResult("Node not found");
+            }
+            NodeVM vm = NodeVM.FromModel(node);
+            return new JsonNetResult(vm);
+        }
+
+        [HttpGet]
         public ActionResult Edit(int? id)
         {
             if(id.HasValue)
@@ -36,7 +48,7 @@ namespace Settings.Web.Controllers
                 {
                     return new HttpNotFoundResult("Node not found");
                 }
-                NodeVM vm = NodeVM.FromModel(node);
+                NodeVM vm = NodeVM.FromModel(node).Fill();
                 return View(vm);
             }
             return View(NodeVM.FromModel());

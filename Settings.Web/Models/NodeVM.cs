@@ -74,11 +74,17 @@ namespace Settings.Web.Models
             {
                 vm.Entries = new List<EntryVM>(ENTRY_STEP);
             }
+            
+            return vm;
+        }
+
+        public NodeVM Fill()
+        {
             for (int i = 0; i < ENTRY_STEP; i++)
             {
-                vm.Entries.Add(new EntryVM());
+                Entries.Add(new EntryVM());
             }
-            return vm;
+            return this;
         }
     }
 }
