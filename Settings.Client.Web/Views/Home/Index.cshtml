@@ -5,13 +5,11 @@
 @if (Model != null)
 {
     <h2>@Model.Client</h2>
-    <table class="table">
+    <dl>
         @foreach (var entry in Model.Entries)
         {
-            <tr>
-                <td>@entry.Path</td>
-                <td>@entry.Value</td>
-            </tr>
+            <dt>@entry.Path</dt>
+            <dd>@entry.Value</dd>
         }
-    </table>
+    </dl>
 }
