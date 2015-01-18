@@ -14,10 +14,10 @@ namespace Settings.Web.Models
         [Display(Name = "AES IV (Base64)")]
         public string IV { get; set; }
 
-        [Display(Name = "RSA Private Key (XML)")]
+        [Display(Name = "RSA Public Key (XML)")]
         public string PublicKey { get; set; }
 
-        [Display(Name = "RSA Public Key (XML)")]
+        [Display(Name = "RSA Private Key (XML)")]
         public string PrivateKey { get; set; }
     }
 }
