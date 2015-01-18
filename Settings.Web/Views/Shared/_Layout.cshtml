@@ -48,6 +48,10 @@
                     <li>@Html.ActionLink("Node", "Group", "Node")</li>
                     <li>@Html.ActionLink("Client", "Map", "Client")</li>
                     <li>@Html.ActionLink("Security Key Generator", "", "SecurityKey")</li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink(User.Identity.Name, "ChangePassword", "Home")</li>
+                    }
                 </ul>
             </div>
         </div>

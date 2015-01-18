@@ -27,6 +27,7 @@ namespace Settings.Web.Controllers
         private ISettingsService SettingsService { get; set; }
 
         [HttpGet]
+        [Auth]
         public ActionResult Basic(int id)
         {
             Node node = SettingsService.GetNode(id);
@@ -39,6 +40,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpGet]
+        [Auth]
         public ActionResult Edit(int? id)
         {
             if(id.HasValue)
@@ -55,6 +57,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpPost]
+        [Auth]
         public ActionResult Edit(NodeVM vm)
         {
             if (!ModelState.IsValid || !vm.IsValid(ModelState))
@@ -79,7 +82,7 @@ namespace Settings.Web.Controllers
             }
             else
             {
-                if (!SettingsService.UpdateNode(node))
+                if (!SettingsService.SaveNode(node))
                 {
                     ModelState.AddModelError(string.Empty,
                         "Failed to save, other users may have edited the data during your processing");
@@ -92,6 +95,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpGet]
+        [Auth]
         public ActionResult Group()
         {
             var nodes = SettingsService.GetNodes();
@@ -106,6 +110,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpPost]
+        [Auth]
         public ActionResult Group([ModelBinder(typeof(JsonNetModelBinder))] IList<JsTreeNode> nodes)
         {
             var root = new JsTreeParser().Parse(Constants.TREE_NODE, nodes);

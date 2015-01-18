@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http.Dependencies;
 
-namespace Settings.Web.App_Start
+namespace Settings.Web
 {
     public class NinjectDependencyScope : IDependencyScope
     {

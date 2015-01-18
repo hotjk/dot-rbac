@@ -16,7 +16,8 @@ namespace Settings.Repository.MySql
             using (IDbConnection connection = OpenConnection())
             {
                 return connection.Query<Node>(
-@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE Deleted = 0;");
+@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` 
+WHERE Deleted = 0;");
             }
         }
 
@@ -49,7 +50,8 @@ SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` IN @Ids;",
             using (IDbConnection connection = OpenConnection())
             {
                 using (var multi = connection.QueryMultiple(
-@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` WHERE `NodeId` = @NodeId AND Deleted = 0;
+@"SELECT `NodeId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_node` 
+WHERE `NodeId` = @NodeId AND Deleted = 0;
 SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` = @NodeId;", 
                     new { NodeId = nodeId })) {
                     var node = multi.Read<Node>().SingleOrDefault();
@@ -67,7 +69,8 @@ SELECT `NodeId`, `Key`, `Value` FROM `Settings_Entry` WHERE `NodeId` = @NodeId;"
                 using (IDbTransaction transaction = connection.BeginTransaction())
                 {
                     Node found = connection.Query<Node>(
-@"SELECT `NodeId`, `Version` FROM `settings_node` WHERE `NodeId` = @NodeId FOR UPDATE;",
+@"SELECT `NodeId`, `Version` FROM `settings_node` 
+WHERE `NodeId` = @NodeId FOR UPDATE;",
                         new { NodeId = node.NodeId }).SingleOrDefault();
                     if (found == null)
                     {
@@ -221,6 +224,7 @@ SET `Deleted` = 1, `DeleteAt` = @DeleteAt
 WHERE ClientId = @ClientId;", client);
             }
         }
+
         public bool SaveClientNodes(IEnumerable<Client> clients)
         {
             using (IDbConnection connection = OpenConnection())
@@ -240,5 +244,72 @@ WHERE ClientId = @ClientId;", client);
             }
             return true;
         }
+
+        public User GetUser(int userId)
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                return connection.Query<User>(@"SELECT `UserId`, `Username`, `PasswordHash`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_user`
+WHERE `UserId` = @UserId AND DELETED = 0;", new { UserId = userId }).SingleOrDefault();
+            }
+        }
+
+        public User GetUser(string username)
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                return connection.Query<User>(@"SELECT `UserId`, `Username`, `PasswordHash`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_user`
+WHERE `Username` = @Username AND DELETED = 0;", new { Username = username }).SingleOrDefault();
+            }
+        }
+
+        public bool SaveUser(User user)
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                using (IDbTransaction transaction = connection.BeginTransaction())
+                {
+                    User found = connection.Query<User>(
+@"SELECT `UserId`, `Username`, `PasswordHash`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_user`
+WHERE `UserId` = @UserId AND DELETED = 0 FOR UPDATE;", user).SingleOrDefault();
+                    if (found == null)
+                    {
+                        if (1 != connection.Execute(
+@"INSERT INTO `settings_user` 
+(`UserId`, `Username`, `PasswordHash`, `Version`, `CreateAt`, `UpdateAt`)
+VALUES (@UserId, @Username, @PasswordHash, @Version, @CreateAt, @UpdateAt);", user))
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (found.Version != user.Version)
+                        {
+                            return false;
+                        }
+                        user.Version++;
+                        int n = connection.Execute(
+@"UPDATE `settings_user` 
+SET `PasswordHash` = @PasswordHash, `Version` = @Version, `UpdateAt` = @UpdateAt 
+WHERE `UserId` = @UserId;", user);
+                    }
+                    transaction.Commit();
+                    return true;
+                }
+            }
+        }
+
+        public bool DeleteUser(User user)
+        {
+            using (IDbConnection connection = OpenConnection())
+            {
+                return 1 == connection.Execute(
+@"UPDATE `settings_user` 
+SET `Deleted` = 1, `DeleteAt` = @DeleteAt 
+WHERE UserId = @UserId;", user);
+            }
+        }
+
     }
 }

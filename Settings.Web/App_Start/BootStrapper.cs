@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Settings.Web.App_Start
+namespace Settings.Web
 {
     public class BootStrapper
     {

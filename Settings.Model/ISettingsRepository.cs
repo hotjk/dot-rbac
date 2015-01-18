@@ -20,5 +20,10 @@ namespace Settings.Model
         bool SaveClient(Client client);
         bool SaveClientNodes(IEnumerable<Client> clients);
         bool DeleteClient(Client client);
+
+        User GetUser(int userId);
+        User GetUser(string username);
+        bool SaveUser(User user);
+        bool DeleteUser(User user);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Settings.Web.App_Start;
+﻿using Settings.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -20,7 +20,7 @@ namespace Settings.Model
         }
         private ISettingsRepository SettingsRepository { get; set; }
 
-        public bool UpdateNode(Node node)
+        public bool SaveNode(Node node)
         {
             RijndaelManager rsa = new RijndaelManager(KEY, IV);
             node.Entries.ForEach(x => {
@@ -70,7 +70,7 @@ namespace Settings.Model
             return SettingsRepository.GetClients();
         }
 
-        public bool UpdateClient(Client client)
+        public bool SaveClient(Client client)
         {
             return SettingsRepository.SaveClient(client);
         }
@@ -105,6 +105,33 @@ namespace Settings.Model
                 resp.Entries.AddRange(node.Entries.Select(n => new SettingsResponse.Entry { Path = strPath + n.Key, Value = n.Value }));
             }
             return resp;
+        }
+
+        public User GetUser(int userId)
+        {
+            return SettingsRepository.GetUser(userId);
+        }
+
+        public User GetUser(string username)
+        {
+            return SettingsRepository.GetUser(username);
+        }
+
+        public bool ValidatePassword(string username, string password)
+        {
+            User user = SettingsRepository.GetUser(username);
+            return PasswordHash.ValidatePassword(password, user.PasswordHash);
+        }
+
+        public bool SaveUser(User user)
+        {
+            user.PasswordHash = PasswordHash.CreateHash(user.Password);
+            return SettingsRepository.SaveUser(user);
+        }
+
+        public bool DeleteUser(User user)
+        {
+            return SettingsRepository.DeleteUser(user);
         }
     }
 }

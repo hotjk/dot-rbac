@@ -27,6 +27,7 @@ namespace Settings.Web.Controllers
         private ISettingsService SettingsService { get; set; }
 
         [HttpGet]
+        [Auth]
         public ActionResult Edit(int? id)
         {
             if (id.HasValue)
@@ -43,6 +44,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpPost]
+        [Auth]
         [ValidateInput(false)]
         public ActionResult Edit(ClientVM vm)
         {
@@ -68,7 +70,7 @@ namespace Settings.Web.Controllers
             }
             else
             {
-                if (!SettingsService.UpdateClient(client))
+                if (!SettingsService.SaveClient(client))
                 {
                     ModelState.AddModelError(string.Empty,
                         "Failed to save, other users may have edited the data during your processing");
@@ -81,6 +83,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpGet]
+        [Auth]
         public ActionResult Map()
         {
             var clients = SettingsService.GetClients();
@@ -100,6 +103,7 @@ namespace Settings.Web.Controllers
         }
 
         [HttpPost]
+        [Auth]
         public ActionResult Map([ModelBinder(typeof(JsonNetModelBinder))] IList<Grit.Tree.JsTree.JsTreeNode> tree)
         {
             var root = new JsTreeParser().Parse(Constants.TREE_NODE, tree);

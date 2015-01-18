@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Settings.Web.App_Start
+namespace Settings.Web
 {
     public class NinjectDependencyResolver : IDependencyResolver
     {

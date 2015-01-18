@@ -130,10 +130,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AuthAttribute.cs" />
     <Compile Include="App_Start\BootStrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\Constants.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\HttpResponseBaseExtensions.cs" />
     <Compile Include="App_Start\NinjectDependencyResolver.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,6 +153,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChangePasswordVM.cs" />
+    <Compile Include="Models\LoginVM.cs" />
     <Compile Include="Models\SecurityKeyVM.cs" />
     <Compile Include="Models\EntryVM.cs" />
     <Compile Include="Models\ClientVM.cs" />
@@ -229,6 +233,8 @@
     <Content Include="Views\Client\Edit.cshtml" />
     <Content Include="Views\Client\Map.cshtml" />
     <Content Include="Views\SecurityKey\Index.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

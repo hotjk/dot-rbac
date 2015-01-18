@@ -22,25 +22,6 @@ namespace Settings.Web.Controllers
 
         private Grit.Tree.ITreeService TreeService { get; set; }
         private ISettingsService SettingsService  {get;set;}
-
-        [HttpGet]
-        [Route("api/settings/{client}")]
-        public HttpResponseMessage Index(string client)
-        {
-            var aClient = SettingsService.GetClient(client);
-            if (aClient == null)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Client not found");
-            }
-
-            var tree = TreeService.GetTree(Constants.TREE_NODE);
-            SettingsResponse settings = SettingsService.GetClientSettings(aClient, tree);
-            string json = JsonConvert.SerializeObject(settings);
-
-            Envelope resp = EnvelopeService.Encrypt(aClient.Name, json, aClient.PublicKey);
-            return Request.CreateResponse(HttpStatusCode.OK, resp);
-        }
-
         [HttpPost]
         [Route("api/settings")]
         public HttpResponseMessage Index( 

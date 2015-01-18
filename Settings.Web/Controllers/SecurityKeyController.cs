@@ -15,6 +15,7 @@ namespace Settings.Web.Controllers
     public class SecurityKeyController : ControllerBase
     {
         [HttpGet]
+        [Auth]
         public ActionResult Index()
         {
             string key, iv;
