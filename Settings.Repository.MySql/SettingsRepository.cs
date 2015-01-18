@@ -276,8 +276,8 @@ WHERE `UserId` = @UserId AND DELETED = 0 FOR UPDATE;", user).SingleOrDefault();
                     {
                         if (1 != connection.Execute(
 @"INSERT INTO `settings_user` 
-(`UserId`, `Username`, `PasswordHash`, `Version`, `CreateAt`, `UpdateAt`)
-VALUES (@UserId, @Username, @PasswordHash, @Version, @CreateAt, @UpdateAt);", user))
+(`Username`, `PasswordHash`, `Version`, `CreateAt`, `UpdateAt`)
+VALUES (@Username, @PasswordHash, @Version, @CreateAt, @UpdateAt);", user))
                         {
                             return false;
                         }

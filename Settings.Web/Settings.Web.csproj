@@ -153,6 +153,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Signup.cs" />
     <Compile Include="Models\ChangePasswordVM.cs" />
     <Compile Include="Models\LoginVM.cs" />
     <Compile Include="Models\SecurityKeyVM.cs" />
@@ -235,6 +236,7 @@
     <Content Include="Views\SecurityKey\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\ChangePassword.cshtml" />
+    <Content Include="Views\Home\Signup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

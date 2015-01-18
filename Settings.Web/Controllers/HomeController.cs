@@ -112,17 +112,46 @@ namespace Settings.Web.Controllers
         }
 
         [HttpGet]
-        public string Test()
+        [Auth]
+        public ActionResult Signup()
         {
-            //User user = new Model.User{ 
-            //    UserId = SequenceService.Next(Constants.SEQUENCE_SETTINGS_USER),
-            //     Username = "admin",
-            //     Password = "admin",
-            //      CreateAt = DateTime.Now,
-            //      UpdateAt = DateTime.Now
-            //      };
-            //SettingsService.SaveUser(user);
-            return string.Empty;
+            return View(new SignupVM());
+        }
+
+        [HttpPost]
+        [Auth]
+        public ActionResult Signup(SignupVM vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            User found = SettingsService.GetUser(vm.Username);
+            if (found != null)
+            {
+                ModelState.AddModelError(string.Empty, "The username already existed");
+                return View(vm);
+            }
+
+            User user = new Model.User
+            {
+                Username = vm.Username,
+                Password = vm.Password
+            };
+
+            SettingsService.SaveUser(user);
+            
+            Info = "Create user successfully";
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [Auth]
+        public ActionResult Logout()
+        {
+            System.Web.Security.FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
         }
     }
 }

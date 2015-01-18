@@ -1,17 +1,11 @@
-﻿@model Settings.Web.Models.ChangePasswordVM
+﻿@model Settings.Web.Models.SignupVM
 @{
-    ViewBag.Title = "Change Password";
+    ViewBag.Title = "Sign up";
     ViewBag.RequireJsMain = new string[] { "jquery", "jqueryval" };
 }
 
 <h2>@ViewBag.Title</h2>
-<div class="row">
-    <div class="pull-right">
-        @Html.ActionLink("Sign up", "Signup", "Home", new { @class = "btn btn-default" })
-        @Html.ActionLink("Log out", "logout", "Home", new { @class = "btn btn-default" })
-    </div>
-</div>
-@using (Html.BeginForm("ChangePassword", "Home", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+@using (Html.BeginForm("Signup", "Home", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
 {
     @Html.Partial("Message")
     <div class="row">
@@ -19,15 +13,9 @@
             @Html.LabelFor(x => x.Username, new { @class = "col-sm-2 control-label" })
             <div class="col-sm-4">
                 <p class="form-control-static">
-                    @Html.DisplayFor(x => x.Username)
+                    @Html.TextBoxFor(x => x.Username, new { @class = "form-control", rows = 5 })
+                    <span class="help-block">@Html.ValidationMessageFor(x => x.Username)</span>
                 </p>
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(x => x.OldPassword, new { @class = "col-sm-2 control-label" })
-            <div class="col-sm-4">
-                @Html.PasswordFor(x => x.OldPassword, new { @class = "form-control", rows = 5 })
-                <span class="help-block">@Html.ValidationMessageFor(x => x.OldPassword)</span>
             </div>
         </div>
         <div class="form-group">
