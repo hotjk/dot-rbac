@@ -21,7 +21,7 @@
                                 console.log(data);
                                 var entities = '';
                                 $.each(data.Entries, function(i,v) {
-                                    entities += '<dt>' + v.Key + '</dt><dd>' + v.Value + '/dd';
+                                    entities += '<dt>' + v.Key + '</dt><dd>' + v.Value + '</dd>';
                                 });
                                 $('#panel_node').html(entities).show();
                             })

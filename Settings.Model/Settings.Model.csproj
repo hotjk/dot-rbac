@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +52,10 @@
     <ProjectReference Include="..\Grit.Tree\Grit.Tree.csproj">
       <Project>{8c530c2d-566f-4d0c-8368-4e5fc68187b3}</Project>
       <Name>Grit.Tree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grit.Utility\Grit.Utility.csproj">
+      <Project>{bd3ad860-d5a7-4fbd-91a0-bdf20236e5a8}</Project>
+      <Name>Grit.Utility</Name>
     </ProjectReference>
     <ProjectReference Include="..\Settings.Client\Settings.Client.csproj">
       <Project>{977a672d-4530-480e-9ce4-a9b6f874c32f}</Project>

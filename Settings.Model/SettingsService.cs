@@ -1,6 +1,8 @@
-﻿using Settings.Client;
+﻿using Grit.Utility.Security;
+using Settings.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,9 @@ namespace Settings.Model
 {
     public class SettingsService : ISettingsService
     {
+        private static readonly byte[] KEY = Convert.FromBase64String(ConfigurationManager.AppSettings["PersistenceKey"]);
+        private static readonly byte[] IV = Convert.FromBase64String(ConfigurationManager.AppSettings["PersistenceIV"]);
+
         public SettingsService(ISettingsRepository settingsRepository)
         {
             this.SettingsRepository = settingsRepository;
@@ -17,7 +22,11 @@ namespace Settings.Model
 
         public bool UpdateNode(Node node)
         {
-            node.Entries.ForEach(x => x.NodeId = node.NodeId);
+            RijndaelManager rsa = new RijndaelManager(KEY, IV);
+            node.Entries.ForEach(x => {
+                x.NodeId = node.NodeId;
+                x.Value = rsa.Encrypt(x.Value);
+            });
             return SettingsRepository.SaveNode(node);
         }
 
@@ -28,7 +37,12 @@ namespace Settings.Model
 
         public Node GetNode(int nodeId)
         {
-            return SettingsRepository.GetNode(nodeId);
+            var node = SettingsRepository.GetNode(nodeId);
+            RijndaelManager rsa = new RijndaelManager(KEY, IV);
+            node.Entries.ForEach(x => {
+                x.Value = rsa.Decrypt(x.Value);
+            });
+            return node;
         }
 
         public IEnumerable<Node> GetNodes()
