@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Utility", "Grit.Utilit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Sequence.Repository.MySql", "Grit.Sequence.Repository.Mysql\Grit.Sequence.Repository.MySql.csproj", "{C8223CCD-75F4-4B9E-813B-B8A5A83FF758}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Configuration", "Grit.Configuration\Grit.Configuration.csproj", "{38BFF300-BE60-4A8B-886E-0C3DF4362657}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.Sequence.Demo", "Grit.Sequence.Demo\Grit.Sequence.Demo.csproj", "{1856B8C2-C299-4931-8884-182E540BAE77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grit.RBAC.Configuration", "Grit.RBAC.Configuration\Grit.RBAC.Configuration.csproj", "{60936D49-AB59-4D11-AAE5-73C8E71B481A}"
@@ -106,10 +104,6 @@ Global
 		{C8223CCD-75F4-4B9E-813B-B8A5A83FF758}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8223CCD-75F4-4B9E-813B-B8A5A83FF758}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8223CCD-75F4-4B9E-813B-B8A5A83FF758}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38BFF300-BE60-4A8B-886E-0C3DF4362657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38BFF300-BE60-4A8B-886E-0C3DF4362657}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38BFF300-BE60-4A8B-886E-0C3DF4362657}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38BFF300-BE60-4A8B-886E-0C3DF4362657}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1856B8C2-C299-4931-8884-182E540BAE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1856B8C2-C299-4931-8884-182E540BAE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1856B8C2-C299-4931-8884-182E540BAE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
