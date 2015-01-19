@@ -44,6 +44,8 @@
     <Compile Include="Clients\ClientService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ISqlRepository.cs" />
+    <Compile Include="ISqlService.cs" />
     <Compile Include="Nodes\Entry.cs" />
     <Compile Include="Clients\IClientRepository.cs" />
     <Compile Include="Nodes\INodeRepository.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="Nodes\INodeService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SqlService.cs" />
     <Compile Include="Users\IUserRepository.cs">
       <SubType>Code</SubType>
     </Compile>

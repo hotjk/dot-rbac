@@ -35,6 +35,8 @@ namespace Settings.Web
             NinjectContainer.Bind<IClientService>().To<ClientService>().InSingletonScope();
             NinjectContainer.Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
             NinjectContainer.Bind<IUserService>().To<UserService>().InSingletonScope();
+            NinjectContainer.Bind<ISqlRepository>().To<SqlRepository>().InSingletonScope();
+            NinjectContainer.Bind<ISqlService>().To<SqlService>().InSingletonScope();
         }
     }
 }

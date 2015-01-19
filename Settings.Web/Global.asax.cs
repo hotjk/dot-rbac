@@ -28,6 +28,8 @@ namespace Settings.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             MvcHandler.DisableMvcResponseHeader = true;
+
+            (BootStrapper.NinjectContainer.GetService(typeof(Settings.Model.ISqlService)) as Settings.Model.ISqlService).InitDatabase();
         }
 
         protected void Application_PreSendRequestHeaders(object sender, EventArgs e)
