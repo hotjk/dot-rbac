@@ -19,8 +19,10 @@ namespace Settings.Web
                 string userData = ticket.UserData;
                 return;
             }
+            var urlHelper = new UrlHelper(filterContext.RequestContext);
             string url = filterContext.RequestContext.HttpContext.Request.Url.AbsoluteUri;
-            FormsAuthentication.RedirectToLoginPage("returnurl=" + url);
+            filterContext.Result = new RedirectResult(urlHelper.Action("Login", "Home"));// + "?ReturnUrl=" + HttpUtility.UrlEncode(url));
+            //FormsAuthentication.RedirectToLoginPage("returnurl=" + url);
         }
     }
 }

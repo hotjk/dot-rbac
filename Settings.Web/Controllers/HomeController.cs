@@ -39,7 +39,6 @@ namespace Settings.Web.Controllers
                 x => x.NodeId)
                 .Build(root, nodes)
                 .children;
-            Info = "test";
             return View();
         }
 

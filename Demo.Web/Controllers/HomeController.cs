@@ -29,7 +29,7 @@ namespace Demo.Web.Controllers
             return View();
         }
 
-        public void Captcha(int l=4, uint w=100, uint h=36, bool wrap=true, bool deform=true, bool noise=true)
+        public void Captcha(int l=4, uint w=80, uint h=36, bool wrap=true, bool deform=true, bool noise=true)
         {
             var image = new Grit.Utility.Captcha.CaptchaImage(w, h, wrap, deform, noise).Generate(
                 Grit.Utility.Security.RandomText.Generate(l));
