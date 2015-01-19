@@ -44,41 +44,23 @@ namespace Grit.Utility.Security
             }
         }
 
-        public string Encrypt(string text)
+        public byte[] PrivateEncrypt(byte[] bytesToBeEncrypted)
         {
-            byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(text);
-            byte[] encryptedBytes = Encrypt(bytesToBeEncrypted);
-            return Convert.ToBase64String(encryptedBytes);
-        }
-
-        public byte[] Decrypt(string text)
-        {
-            byte[] bytesToBeDecrypted = Convert.FromBase64String(text);
-            byte[] decryptedBytes = Decrypt(bytesToBeDecrypted);
-            return decryptedBytes;
-            //return Encoding.UTF8.GetString(decryptedBytes);
-        }
-
-        public string PrivateEncrypt(byte[] bytesToBeEncrypted)
-        {
-            //byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(text);
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(_key);
                 byte[] encryptedBytes = RSA.PrivareEncryption(bytesToBeEncrypted);
-                return Convert.ToBase64String(encryptedBytes);
+                return encryptedBytes;
             }
         }
 
-        public byte[] PublicDecrypt(string text)
+        public byte[] PublicDecrypt(byte[] bytesToBeDecrypted)
         {
-            byte[] bytesToBeDecrypted = Convert.FromBase64String(text);
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(_key);
                 byte[] decryptedBytes = RSA.PublicDecryption(bytesToBeDecrypted);
                 return decryptedBytes;
-                //return Encoding.UTF8.GetString(decryptedBytes);
             }
         }
     }

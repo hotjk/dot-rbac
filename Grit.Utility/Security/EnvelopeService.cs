@@ -25,8 +25,8 @@ namespace Grit.Utility.Security
         public static string Decrypt(Envelope envelope, string privateKey)
         {
             RSAManager rsa = new RSAManager(privateKey);
-            byte[] key = rsa.Decrypt(envelope.Key);
-            byte[] iv = rsa.Decrypt(envelope.IV);
+            byte[] key = rsa.Decrypt(Convert.FromBase64String(envelope.Key));
+            byte[] iv = rsa.Decrypt(Convert.FromBase64String(envelope.IV));
             RijndaelManager aes = new RijndaelManager(key, iv);
             return aes.Decrypt(envelope.Data);
         }
@@ -40,16 +40,16 @@ namespace Grit.Utility.Security
             envelope.Data = aes.Encrypt(source);
 
             RSAManager rsa = new RSAManager(privateKey);
-            envelope.Key = rsa.PrivateEncrypt(key);
-            envelope.IV = rsa.PrivateEncrypt(iv);
+            envelope.Key = Convert.ToBase64String(rsa.PrivateEncrypt(key));
+            envelope.IV = Convert.ToBase64String(rsa.PrivateEncrypt(iv));
             return envelope;
         }
 
         public static string PublicDecrypt(Envelope envelope, string publicKey)
         {
             RSAManager rsa = new RSAManager(publicKey);
-            byte[] key = rsa.PublicDecrypt(envelope.Key);
-            byte[] iv = rsa.PublicDecrypt(envelope.IV);
+            byte[] key = rsa.PublicDecrypt(Convert.FromBase64String(envelope.Key));
+            byte[] iv = rsa.PublicDecrypt(Convert.FromBase64String(envelope.IV));
             RijndaelManager aes = new RijndaelManager(key, iv);
             return aes.Decrypt(envelope.Data);
         }
