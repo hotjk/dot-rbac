@@ -34,16 +34,6 @@ CREATE TABLE `settings_tree` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `settings_tree`
---
-
-LOCK TABLES `settings_tree` WRITE;
-/*!40000 ALTER TABLE `settings_tree` DISABLE KEYS */;
-INSERT INTO `settings_tree` VALUES (1,0,NULL,NULL),(1,1,0,4),(1,2,1,11),(1,3,1,9),(1,4,3,13),(1,5,0,6),(1,6,5,5),(1,7,0,10),(1,8,7,12);
-/*!40000 ALTER TABLE `settings_tree` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `sequence`
 --
 
@@ -57,16 +47,6 @@ CREATE TABLE `sequence` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sequence`
---
-
-LOCK TABLES `sequence` WRITE;
-/*!40000 ALTER TABLE `sequence` DISABLE KEYS */;
-INSERT INTO `sequence` VALUES (1,4155,'Test'),(100,3,'CQRS_Account'),(101,2,'CQRS_Project'),(102,64625,'CQRS_Investment'),(1000,14,'Settings Node'),(1001,7,'Settings Client');
-/*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `settings_client`

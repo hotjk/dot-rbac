@@ -15,22 +15,22 @@ namespace Settings.Web.Controllers
     {
         public NodeController(ISequenceService sequenceService,
             Grit.Tree.ITreeService treeService,
-            ISettingsService settingsService)
+            INodeService nodeService)
         {
             this.SequenceService = sequenceService;
-            this.SettingsService = settingsService;
+            this.NodeService = nodeService;
             this.TreeService = treeService;
         }
 
         private ISequenceService SequenceService { get; set; }
         private Grit.Tree.ITreeService TreeService { get; set; }
-        private ISettingsService SettingsService { get; set; }
+        private INodeService NodeService { get; set; }
 
         [HttpGet]
         [Auth]
         public ActionResult Basic(int id)
         {
-            Node node = SettingsService.GetNode(id);
+            Node node = NodeService.GetNode(id);
             if (node == null)
             {
                 return new HttpNotFoundResult("Node not found");
@@ -45,7 +45,7 @@ namespace Settings.Web.Controllers
         {
             if(id.HasValue)
             {
-                Node node = SettingsService.GetNode(id.Value);
+                Node node = NodeService.GetNode(id.Value);
                 if (node == null)
                 {
                     return new HttpNotFoundResult("Node not found");
@@ -53,7 +53,7 @@ namespace Settings.Web.Controllers
                 NodeVM vm = NodeVM.FromModel(node).Fill();
                 return View(vm);
             }
-            return View(NodeVM.FromModel());
+            return View(NodeVM.FromModel().Fill());
         }
 
         [HttpPost]
@@ -76,13 +76,13 @@ namespace Settings.Web.Controllers
             if (vm.Deleted)
             {
                 node.DeleteAt = node.UpdateAt;
-                SettingsService.DeleteNode(node);
+                NodeService.DeleteNode(node);
                 Info = "Delete successfully";
                 return RedirectToAction("Group", "Node");
             }
             else
             {
-                if (!SettingsService.SaveNode(node))
+                if (!NodeService.SaveNode(node))
                 {
                     ModelState.AddModelError(string.Empty,
                         "Failed to save, other users may have edited the data during your processing");
@@ -98,7 +98,7 @@ namespace Settings.Web.Controllers
         [Auth]
         public ActionResult Group()
         {
-            var nodes = SettingsService.GetNodes();
+            var nodes = NodeService.GetNodes();
             var root = TreeService.GetTree(Constants.TREE_NODE);
             ViewBag.Tree = new Grit.Tree.JsTree.JsTreeBuilder<Node>(
                 x => x.Name, 

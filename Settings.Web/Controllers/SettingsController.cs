@@ -13,21 +13,25 @@ namespace Settings.Web.Controllers
 {
     public class SettingsController : ApiController
     {
-        public SettingsController(ISettingsService settingsService,
+        public SettingsController(INodeService nodeService,
+            IClientService clientService,
             Grit.Tree.ITreeService treeService)
         {
-            this.SettingsService = settingsService;
+            this.NodeService = nodeService;
             this.TreeService = treeService;
+            this.ClientService = clientService;
         }
 
         private Grit.Tree.ITreeService TreeService { get; set; }
-        private ISettingsService SettingsService  {get;set;}
+        private INodeService NodeService  {get;set;}
+        private IClientService ClientService { get; set; }
+
         [HttpPost]
         [Route("api/settings")]
         public HttpResponseMessage Index( 
             [System.Web.Mvc.ModelBinder(typeof(Grit.Utility.Web.Json.JsonNetModelBinder))] Envelope envelope)
         {
-            var client = SettingsService.GetClient(envelope.Id);
+            var client = ClientService.GetClient(envelope.Id);
             if (client == null)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Client not found");
@@ -41,7 +45,7 @@ namespace Settings.Web.Controllers
             }
 
             var tree = TreeService.GetTree(Constants.TREE_NODE);
-            SettingsResponse settings = SettingsService.GetClientSettings(client, tree)
+            SettingsResponse settings = NodeService.GetClientSettings(client, tree)
                 .Filter(req.Pattern);
 
             string json = JsonConvert.SerializeObject(settings);

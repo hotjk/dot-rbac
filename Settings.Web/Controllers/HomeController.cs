@@ -15,21 +15,24 @@ namespace Settings.Web.Controllers
     {
         public HomeController(ISequenceService sequenceService,
             Grit.Tree.ITreeService treeService,
-            ISettingsService settingsService)
+            INodeService nodeService,
+            IUserService userService)
         {
             this.SequenceService = sequenceService;
-            this.SettingsService = settingsService;
+            this.NodeService = nodeService;
             this.TreeService = treeService;
+            this.UserService = userService;
         }
 
         private ISequenceService SequenceService { get; set; }
         private Grit.Tree.ITreeService TreeService { get; set; }
-        private ISettingsService SettingsService { get; set; }
+        private INodeService NodeService { get; set; }
+        private IUserService UserService { get; set; }
 
         [Auth]
         public ActionResult Index()
         {
-            var nodes = SettingsService.GetNodes();
+            var nodes = NodeService.GetNodes();
             var root = TreeService.GetTree(Constants.TREE_NODE);
             ViewBag.Tree = new Grit.Tree.JsTree.JsTreeBuilder<Node>(
                 x => x.Name,
@@ -54,7 +57,7 @@ namespace Settings.Web.Controllers
                 return View(vm);
             }
 
-            User user = SettingsService.GetUser(vm.Username);
+            User user = UserService.GetUser(vm.Username);
             if (user == null || user.Deleted)
             {
                 ModelState.AddModelError(string.Empty, "The username you entered can not find. Please double-check and try again");
@@ -76,7 +79,7 @@ namespace Settings.Web.Controllers
         [Auth]
         public ActionResult ChangePassword()
         {
-            User user = SettingsService.GetUser(User.Identity.Name);
+            User user = UserService.GetUser(User.Identity.Name);
 
             var vm = new ChangePasswordVM
             {
@@ -96,7 +99,7 @@ namespace Settings.Web.Controllers
                 return View(vm);
             }
 
-            User user = SettingsService.GetUser(User.Identity.Name);
+            User user = UserService.GetUser(User.Identity.Name);
 
             if (!PasswordHash.ValidatePassword(vm.OldPassword, user.PasswordHash))
             {
@@ -105,7 +108,7 @@ namespace Settings.Web.Controllers
             }
 
             user.Password = vm.Password;
-            SettingsService.SaveUser(user);
+            UserService.SaveUser(user);
 
             Info = "Change password successfully";
             return RedirectToAction("Index");
@@ -127,7 +130,7 @@ namespace Settings.Web.Controllers
                 return View(vm);
             }
 
-            User found = SettingsService.GetUser(vm.Username);
+            User found = UserService.GetUser(vm.Username);
             if (found != null)
             {
                 ModelState.AddModelError(string.Empty, "The username already existed");
@@ -140,7 +143,7 @@ namespace Settings.Web.Controllers
                 Password = vm.Password
             };
 
-            SettingsService.SaveUser(user);
+            UserService.SaveUser(user);
             
             Info = "Create user successfully";
             return RedirectToAction("Index");

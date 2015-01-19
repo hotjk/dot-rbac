@@ -38,14 +38,17 @@ namespace Settings.Web.Models
         public bool IsValid(ModelStateDictionary ModelState)
         {
             bool isValid = true;
-            for (int i = 0; i < this.Entries.Count; i++)
+            if (this.Entries != null)
             {
-                EntryVM entry = this.Entries[i];
-                if (!string.IsNullOrWhiteSpace(entry.Value) && string.IsNullOrWhiteSpace(entry.Key))
+                for (int i = 0; i < this.Entries.Count; i++)
                 {
-                    ModelState.AddModelError(this.GetExpressionText(x => this.Entries[i].Key),
-                        string.Format(@"{0} is required", this.GetDisplayName(x => this.Entries[i].Key)));
-                    isValid = false;
+                    EntryVM entry = this.Entries[i];
+                    if (!string.IsNullOrWhiteSpace(entry.Value) && string.IsNullOrWhiteSpace(entry.Key))
+                    {
+                        ModelState.AddModelError(this.GetExpressionText(x => this.Entries[i].Key),
+                            string.Format(@"{0} is required", this.GetDisplayName(x => this.Entries[i].Key)));
+                        isValid = false;
+                    }
                 }
             }
             return isValid;

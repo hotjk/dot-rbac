@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Settings.Model
 {
-    public class SettingsService : ISettingsService
+    public class NodeService : INodeService
     {
         private static readonly byte[] KEY = Convert.FromBase64String(ConfigurationManager.AppSettings["PersistenceKey"]);
         private static readonly byte[] IV = Convert.FromBase64String(ConfigurationManager.AppSettings["PersistenceIV"]);
 
-        public SettingsService(ISettingsRepository settingsRepository)
+        public NodeService(INodeRepository nodeRepository)
         {
-            this.SettingsRepository = settingsRepository;
+            this.NodeRepository = nodeRepository;
         }
-        private ISettingsRepository SettingsRepository { get; set; }
+        private INodeRepository NodeRepository { get; set; }
 
         public bool SaveNode(Node node)
         {
@@ -27,17 +27,17 @@ namespace Settings.Model
                 x.NodeId = node.NodeId;
                 x.Value = rsa.Encrypt(x.Value);
             });
-            return SettingsRepository.SaveNode(node);
+            return NodeRepository.SaveNode(node);
         }
 
         public bool DeleteNode(Node node)
         {
-            return SettingsRepository.DeleteNode(node);
+            return NodeRepository.DeleteNode(node);
         }
 
         public Node GetNode(int nodeId)
         {
-            var node = SettingsRepository.GetNode(nodeId);
+            var node = NodeRepository.GetNode(nodeId);
             RijndaelManager rsa = new RijndaelManager(KEY, IV);
             node.Entries.ForEach(x => {
                 x.Value = rsa.Decrypt(x.Value);
@@ -47,42 +47,12 @@ namespace Settings.Model
 
         public IEnumerable<Node> GetNodes()
         {
-            return SettingsRepository.GetNodes();
+            return NodeRepository.GetNodes();
         }
 
         public IEnumerable<Node> GetNodes(int[] nodes)
         {
-            return SettingsRepository.GetNodes(nodes);
-        }
-
-        public Client GetClient(int clientId)
-        {
-            return SettingsRepository.GetClient(clientId);
-        }
-
-        public Client GetClient(string name)
-        {
-            return SettingsRepository.GetClient(name);
-        }
-
-        public IEnumerable<Client> GetClients()
-        {
-            return SettingsRepository.GetClients();
-        }
-
-        public bool SaveClient(Client client)
-        {
-            return SettingsRepository.SaveClient(client);
-        }
-
-        public bool SaveClientNodes(IEnumerable<Client> clients)
-        {
-            return SettingsRepository.SaveClientNodes(clients);
-        }
-
-        public bool DeleteClient(Client client)
-        {
-            return SettingsRepository.DeleteClient(client);
+            return NodeRepository.GetNodes(nodes);
         }
 
         public SettingsResponse GetClientSettings(Client client, Grit.Tree.Node tree)
@@ -105,33 +75,6 @@ namespace Settings.Model
                 resp.Entries.AddRange(node.Entries.Select(n => new SettingsResponse.Entry { Path = strPath + n.Key, Value = n.Value }));
             }
             return resp;
-        }
-
-        public User GetUser(int userId)
-        {
-            return SettingsRepository.GetUser(userId);
-        }
-
-        public User GetUser(string username)
-        {
-            return SettingsRepository.GetUser(username);
-        }
-
-        public bool ValidatePassword(string username, string password)
-        {
-            User user = SettingsRepository.GetUser(username);
-            return PasswordHash.ValidatePassword(password, user.PasswordHash);
-        }
-
-        public bool SaveUser(User user)
-        {
-            user.PasswordHash = PasswordHash.CreateHash(user.Password);
-            return SettingsRepository.SaveUser(user);
-        }
-
-        public bool DeleteUser(User user)
-        {
-            return SettingsRepository.DeleteUser(user);
         }
     }
 }

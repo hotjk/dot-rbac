@@ -29,8 +29,12 @@ namespace Settings.Web
             NinjectContainer.Bind<ITreeService>().To<TreeService>().InSingletonScope()
                 .WithConstructorArgument("table", "settings_tree");
 
-            NinjectContainer.Bind<ISettingsRepository>().To<SettingsRepository>().InSingletonScope();
-            NinjectContainer.Bind<ISettingsService>().To<SettingsService>().InSingletonScope();
+            NinjectContainer.Bind<INodeRepository>().To<NodeRepository>().InSingletonScope();
+            NinjectContainer.Bind<INodeService>().To<NodeService>().InSingletonScope();
+            NinjectContainer.Bind<IClientRepository>().To<ClientRepository>().InSingletonScope();
+            NinjectContainer.Bind<IClientService>().To<ClientService>().InSingletonScope();
+            NinjectContainer.Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
+            NinjectContainer.Bind<IUserService>().To<UserService>().InSingletonScope();
         }
     }
 }

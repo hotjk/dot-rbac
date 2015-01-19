@@ -141,27 +141,15 @@ UNLOCK TABLES;
 -- Table structure for table `sequence`
 --
 
-DROP TABLE IF EXISTS `sequence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sequence` (
+CREATE TABLE IF NOT EXISTS `sequence` (
   `Id` int(11) NOT NULL,
   `Value` int(11) NOT NULL DEFAULT '0',
   `Comment` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sequence`
---
-
-LOCK TABLES `sequence` WRITE;
-/*!40000 ALTER TABLE `sequence` DISABLE KEYS */;
-INSERT INTO `sequence` VALUES (1000,14,'Settings Node'),(1001,7,'Settings Client'),(1002,2,'Settings User');
-/*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

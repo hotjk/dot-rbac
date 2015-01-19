@@ -15,16 +15,19 @@ namespace Settings.Web.Controllers
     {
         public ClientController(ISequenceService sequenceService,
             Grit.Tree.ITreeService treeService,
-            ISettingsService settingsService)
+            IClientService clientService,
+            INodeService nodeService)
         {
             this.SequenceService = sequenceService;
-            this.SettingsService = settingsService;
+            this.ClientService = clientService;
             this.TreeService = treeService;
+            this.NodeService = nodeService;
         }
 
         private ISequenceService SequenceService { get; set; }
         private Grit.Tree.ITreeService TreeService { get; set; }
-        private ISettingsService SettingsService { get; set; }
+        private IClientService ClientService { get; set; }
+        private INodeService NodeService { get; set; }
 
         [HttpGet]
         [Auth]
@@ -32,7 +35,7 @@ namespace Settings.Web.Controllers
         {
             if (id.HasValue)
             {
-                Settings.Model.Client client = SettingsService.GetClient(id.Value);
+                Settings.Model.Client client = ClientService.GetClient(id.Value);
                 if (client == null)
                 {
                     return new HttpNotFoundResult("Client not found");
@@ -64,13 +67,13 @@ namespace Settings.Web.Controllers
             if (vm.Deleted)
             {
                 client.DeleteAt = client.UpdateAt;
-                SettingsService.DeleteClient(client);
+                ClientService.DeleteClient(client);
                 Info = "Delete successfully";
                 return RedirectToAction("Map", "Client");
             }
             else
             {
-                if (!SettingsService.SaveClient(client))
+                if (!ClientService.SaveClient(client))
                 {
                     ModelState.AddModelError(string.Empty,
                         "Failed to save, other users may have edited the data during your processing");
@@ -86,14 +89,14 @@ namespace Settings.Web.Controllers
         [Auth]
         public ActionResult Map()
         {
-            var clients = SettingsService.GetClients();
+            var clients = ClientService.GetClients();
             var leftTree = new Grit.Tree.Node(1);
 
             ViewBag.LeftTree = new Grit.Tree.JsTree.JsTreeBuilder<Settings.Model.Client>(x => x.Name, x => x.ClientId, x => x.Nodes)
                 .Build(leftTree, clients)
                 .children;
 
-            var nodes = SettingsService.GetNodes();
+            var nodes = NodeService.GetNodes();
             var rightTree = TreeService.GetTree(Constants.TREE_NODE);
             ViewBag.RightTree = new Grit.Tree.JsTree.JsTreeBuilder<Node>(x => x.Name, x => x.NodeId)
                 .Build(rightTree, nodes)
@@ -107,8 +110,8 @@ namespace Settings.Web.Controllers
         public ActionResult Map([ModelBinder(typeof(JsonNetModelBinder))] IList<Grit.Tree.JsTree.JsTreeNode> tree)
         {
             var root = new JsTreeParser().Parse(Constants.TREE_NODE, tree);
-            var clients = SettingsService.GetClients();
-            var nodes = SettingsService.GetNodes();
+            var clients = ClientService.GetClients();
+            var nodes = NodeService.GetNodes();
             root.Each(x =>
             {
                 if (x.Elements != null)
@@ -120,7 +123,7 @@ namespace Settings.Web.Controllers
                     }
                 }
             });
-            SettingsService.SaveClientNodes(clients);
+            ClientService.SaveClientNodes(clients);
             return new JsonNetResult(clients);
         }
     }
