@@ -9,16 +9,16 @@
 <h2>@ViewBag.Title</h2>
 @section scripts {
     <script>
-    require(['jquery', 'bootstrap', 'jstree-group-js'],
-        function ($, bootstrap, app) {
+    require(['jquery', 'bootstrap', 'jstree-group-js', 'utility-js'],
+        function ($, bootstrap, app, u) {
             $(document).ready(function () {
                 app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
-
+                console.log(u);
                 $("#btn_edit").on('click', function(){
                     var tree = app.tree();
                     var selected = tree.get_top_selected();
                     if(selected.length == 0) {
-                        gMessage('Please select node first','alert-warning');
+                        u.showMessage('Please select node first','alert-warning');
                         return;
                     }
                     var id = tree.get_node(selected).data.content;
@@ -34,9 +34,9 @@
                         processData: false,
                         contentType: 'application/json; charset=utf-8'
                     }).done(function (data) {
-                        gMessage('Saved successfully','alert-success');
+                        u.showMessage('Saved successfully','alert-success');
                     }).fail(function (data) {
-                        gMessage('Failed to save','alert-danger');
+                        u.showMessage('Failed to save','alert-danger');
                     });
                 });
             });

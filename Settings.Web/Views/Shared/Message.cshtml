@@ -3,19 +3,28 @@
         <div id="panel_message"></div>
         @if (TempData["Info"] != null)
         {
-            <div class="alert alert-success">
+            <div class="alert alert-success" style="display:none;">
                 @TempData["Info"]
             </div>
+            
         }
-        @*Only none property errors will show in error summary area.*@
         @if (ViewData.ModelState[string.Empty] != null)
         {
-            @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+            <div class="alert alert-danger" style="display:none;">
+                @foreach (var error in ViewData.ModelState[string.Empty].Errors)
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
         }
     </div>
 </div>
 <script>
-    function gMessage(message, css) {
+    function gHideMessage() {
+        var alert = $('div.alert:hidden').fadeIn(500);
+        setTimeout(function () { alert.fadeOut(500); }, 2000);
+    }
+    function showMessage(message, css) {
         $('div.alert').remove();
         var alert = $('<div class="alert ' + css + '" role="alert" id="div_message"></div>')
             .text(message).hide().appendTo($('#panel_message')).fadeIn(500);

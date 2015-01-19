@@ -1,4 +1,28 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string utilityjs = "utility-js";
+    if (ViewBag.RequireJsMain == null)
+    {
+        ViewBag.RequireJsMain = new string[] { utilityjs };
+    }
+    else
+    {
+        var list = new List<string>(ViewBag.RequireJsMain);
+        list.Add(utilityjs);
+        ViewBag.RequireJsMain = list.ToArray();
+    }
+    
+    if (ViewBag.RequireJsBundles == null)
+    {
+        ViewBag.RequireJsBundles = new string[] { utilityjs };
+    }
+    else
+    {
+        var list = new List<string>(ViewBag.RequireJsBundles);
+        list.Add(utilityjs);
+        ViewBag.RequireJsBundles = list.ToArray();
+    }
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />

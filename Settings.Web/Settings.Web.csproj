@@ -187,6 +187,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\app\jstree.basic.js" />
     <Content Include="Scripts\app\jstree.group.js" />
+    <Content Include="Scripts\app\utility.js" />
     <Content Include="Scripts\app\jstree.map.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
