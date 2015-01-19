@@ -2,7 +2,7 @@
     'use strict';
     return {
         showToast: function (type, message) {
-            toastr.options.positionClass = "toast-top-center";
+            toastr.options.positionClass = "toast-bottom-center";
             toastr[type](message);
         }
     };
