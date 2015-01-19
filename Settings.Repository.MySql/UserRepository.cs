@@ -70,12 +70,31 @@ WHERE `UserId` = @UserId;", user);
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return 1 == connection.Execute(
+                using (IDbTransaction transaction = connection.BeginTransaction())
+                {
+                    User found = connection.Query<User>(
+@"SELECT `UserId`, `Username`, `PasswordHash`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_user`
+WHERE `UserId` = @UserId AND DELETED = 0 FOR UPDATE;", user).SingleOrDefault();
+                    if (found == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (found.Version != user.Version)
+                        {
+                            return false;
+                        }
+                        user.Version++;
+                        int n = connection.Execute(
 @"UPDATE `settings_user` 
 SET `Deleted` = 1, `DeleteAt` = @DeleteAt 
 WHERE UserId = @UserId;", user);
+                        transaction.Commit();
+                        return 1 == n;
+                    }
+                }
             }
         }
-
     }
 }

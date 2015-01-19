@@ -76,7 +76,11 @@ namespace Settings.Web.Controllers
             if (vm.Deleted)
             {
                 node.DeleteAt = node.UpdateAt;
-                NodeService.DeleteNode(node);
+                if (!NodeService.DeleteNode(node))
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to delete, other users may have edited the data during your processing");
+                    return View(vm);
+                }
                 Info = "Delete successfully";
                 return RedirectToAction("Group", "Node");
             }
@@ -84,11 +88,9 @@ namespace Settings.Web.Controllers
             {
                 if (!NodeService.SaveNode(node))
                 {
-                    ModelState.AddModelError(string.Empty,
-                        "Failed to save, other users may have edited the data during your processing");
+                    ModelState.AddModelError(string.Empty, "Failed to save, other users may have edited the data during your processing");
                     return View(vm);
                 }
-
                 Info = "Saved successfully";
                 return RedirectToAction("Edit", new { id = node.NodeId });
             }

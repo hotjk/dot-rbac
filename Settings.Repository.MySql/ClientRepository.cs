@@ -113,10 +113,30 @@ WHERE ClientId = @ClientId;", client);
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return 1 == connection.Execute(
+                using (IDbTransaction transaction = connection.BeginTransaction())
+                {
+                    Client found = connection.Query<Client>(
+@"SELECT `ClientId`, `Version` FROM `settings_client` WHERE `ClientId` = @ClientId FOR UPDATE;",
+                        new { ClientId = client.ClientId }).SingleOrDefault();
+                    if (found == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (found.Version != client.Version)
+                        {
+                            return false;
+                        }
+                        client.Version++;
+                        int n = connection.Execute(
 @"UPDATE `settings_client` 
 SET `Deleted` = 1, `DeleteAt` = @DeleteAt 
 WHERE ClientId = @ClientId;", client);
+                        transaction.Commit();
+                        return 1 == n;
+                    }
+                }
             }
         }
 

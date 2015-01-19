@@ -109,10 +109,31 @@ WHERE NodeId = @NodeId;", node);
         {
             using (IDbConnection connection = OpenConnection())
             {
-                return 1 == connection.Execute(
+                using (IDbTransaction transaction = connection.BeginTransaction())
+                {
+                    Node found = connection.Query<Node>(
+@"SELECT `NodeId`, `Version` FROM `settings_node` 
+WHERE `NodeId` = @NodeId FOR UPDATE;",
+                        new { NodeId = node.NodeId }).SingleOrDefault();
+                    if (found == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if (found.Version != node.Version)
+                        {
+                            return false;
+                        }
+                        node.Version++;
+                        int n = connection.Execute(
 @"UPDATE `settings_node` 
 SET `Deleted` = 1, `DeleteAt` = @DeleteAt 
 WHERE NodeId = @NodeId;", node);
+                        transaction.Commit();
+                        return 1 == n;
+                    }
+                }
             }
         }
     }

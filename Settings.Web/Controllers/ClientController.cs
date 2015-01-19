@@ -67,7 +67,11 @@ namespace Settings.Web.Controllers
             if (vm.Deleted)
             {
                 client.DeleteAt = client.UpdateAt;
-                ClientService.DeleteClient(client);
+                if(!ClientService.DeleteClient(client))
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to delete, other users may have edited the data during your processing");
+                    return View(vm);
+                }
                 Info = "Delete successfully";
                 return RedirectToAction("Map", "Client");
             }
@@ -75,11 +79,9 @@ namespace Settings.Web.Controllers
             {
                 if (!ClientService.SaveClient(client))
                 {
-                    ModelState.AddModelError(string.Empty,
-                        "Failed to save, other users may have edited the data during your processing");
+                    ModelState.AddModelError(string.Empty, "Failed to save, other users may have edited the data during your processing");
                     return View(vm);
                 }
-
                 Info = "Saved successfully";
                 return RedirectToAction("Edit", new { id = client.ClientId });
             }
