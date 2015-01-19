@@ -4,7 +4,7 @@
     ViewBag.RequireJsBundles = new string[] { "jstree-basic-js" };
 }
 @section styles {
-    <link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
+    @Styles.Render("~/Content/jstree/themes/proton/style")
 }
 <h2>@ViewBag.Title</h2>
 @section scripts {

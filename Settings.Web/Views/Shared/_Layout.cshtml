@@ -9,7 +9,7 @@
     @Styles.Render("~/Content/site")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", required: false)
-    <script src="~/Scripts/require.js"></script>
+    @Scripts.Render("~/bundles/requirejs")
     <script>
         require.config({
             paths: {
