@@ -11,6 +11,8 @@ namespace Settings.Repository.MySql
 {
     public class ClientRepository : BaseRepository, IClientRepository
     {
+        public ClientRepository(Grit.Core.Data.IConnectionStringProvider privider) : base(privider) { }
+
         public Client GetClient(int clientId)
         {
             using (IDbConnection connection = OpenConnection())

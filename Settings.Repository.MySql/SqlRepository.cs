@@ -11,6 +11,8 @@ namespace Settings.Repository.MySql
 {
     public class SqlRepository : BaseRepository, ISqlRepository
     {
+        public SqlRepository(Grit.Core.Data.IConnectionStringProvider privider) : base(privider) { }
+
         public bool InitDatabase()
         {
             using (IDbConnection connection = OpenConnection())

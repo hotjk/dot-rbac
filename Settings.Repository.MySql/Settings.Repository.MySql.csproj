@@ -62,6 +62,10 @@
       <Project>{38bff300-be60-4a8b-886e-0c3df4362657}</Project>
       <Name>Grit.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Grit.Core\Grit.Core.csproj">
+      <Project>{c1271a48-de60-4df1-b4e5-44adb30153f8}</Project>
+      <Name>Grit.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Settings.Model\Settings.Model.csproj">
       <Project>{d7865771-4584-4c5c-b8b6-c52d35727274}</Project>
       <Name>Settings.Model</Name>

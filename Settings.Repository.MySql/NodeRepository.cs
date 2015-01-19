@@ -11,6 +11,8 @@ namespace Settings.Repository.MySql
 {
     public class NodeRepository : BaseRepository, INodeRepository
     {
+        public NodeRepository(Grit.Core.Data.IConnectionStringProvider privider): base(privider) { }
+
         public IEnumerable<Node> GetNodes()
         {
             using (IDbConnection connection = OpenConnection())

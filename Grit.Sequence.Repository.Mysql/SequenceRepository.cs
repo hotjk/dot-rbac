@@ -13,6 +13,8 @@ namespace Grit.Sequence.Repository.MySql
 {
     public class SequenceRepository : BaseRepository, ISequenceRepository
     {
+        public SequenceRepository(Grit.Core.Data.IConnectionStringProvider privider) : base(privider) { }
+
         public int Next(int id, int step)
         {
             int? next = null;

@@ -256,6 +256,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Grit.Core\Grit.Core.csproj">
+      <Project>{c1271a48-de60-4df1-b4e5-44adb30153f8}</Project>
+      <Name>Grit.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Grit.Sequence.Repository.Mysql\Grit.Sequence.Repository.MySql.csproj">
       <Project>{c8223ccd-75f4-4b9e-813b-b8a5a83ff758}</Project>
       <Name>Grit.Sequence.Repository.MySql</Name>

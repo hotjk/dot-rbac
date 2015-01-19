@@ -216,6 +216,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Grit.Core\Grit.Core.csproj">
+      <Project>{c1271a48-de60-4df1-b4e5-44adb30153f8}</Project>
+      <Name>Grit.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Grit.RBAC.Configuration\Grit.RBAC.Configuration.csproj">
       <Project>{60936d49-ab59-4d11-aae5-73c8e71b481a}</Project>
       <Name>Grit.RBAC.Configuration</Name>

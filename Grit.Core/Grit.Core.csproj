@@ -43,6 +43,8 @@
     <Compile Include="Caching\Extensions.cs" />
     <Compile Include="Caching\ICacheManager.cs" />
     <Compile Include="Caching\MemoryCacheManager.cs" />
+    <Compile Include="Data\ConnectionStringProvider.cs" />
+    <Compile Include="Data\IConnectionStringProvider.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

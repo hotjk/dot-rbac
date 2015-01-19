@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Grit.Core.Data;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,9 +11,15 @@ namespace Settings.Repository.MySql
 {
     public class BaseRepository
     {
-        protected static IDbConnection OpenConnection()
+        public BaseRepository(IConnectionStringProvider privider)
         {
-            MySqlConnection connection = new MySqlConnection(Grit.Configuration.MySql.Settings);
+            this.ConnectionString = privider.ConnectionString;
+        }
+        private string ConnectionString { get; set; }
+
+        public IDbConnection OpenConnection()
+        {
+            MySqlConnection connection = new MySqlConnection(ConnectionString);
             connection.Open();
             return connection;
         }
