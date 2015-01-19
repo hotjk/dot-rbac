@@ -13,12 +13,11 @@
         function ($, bootstrap, app, u) {
             $(document).ready(function () {
                 app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
-                console.log(u);
                 $("#btn_edit").on('click', function(){
                     var tree = app.tree();
                     var selected = tree.get_top_selected();
                     if(selected.length == 0) {
-                        u.showMessage('Please select node first','alert-warning');
+                        u.showToast('error', 'Please select node first');
                         return;
                     }
                     var id = tree.get_node(selected).data.content;
@@ -34,9 +33,9 @@
                         processData: false,
                         contentType: 'application/json; charset=utf-8'
                     }).done(function (data) {
-                        u.showMessage('Saved successfully','alert-success');
+                        u.showToast('success','Saved successfully');
                     }).fail(function (data) {
-                        u.showMessage('Failed to save','alert-danger');
+                        u.showToast('error', 'Failed to save');
                     });
                 });
             });

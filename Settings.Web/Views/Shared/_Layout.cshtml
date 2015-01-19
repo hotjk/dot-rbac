@@ -1,16 +1,6 @@
 ﻿@{
     string utilityjs = "utility-js";
-    if (ViewBag.RequireJsMain == null)
-    {
-        ViewBag.RequireJsMain = new string[] { utilityjs };
-    }
-    else
-    {
-        var list = new List<string>(ViewBag.RequireJsMain);
-        list.Add(utilityjs);
-        ViewBag.RequireJsMain = list.ToArray();
-    }
-    
+   
     if (ViewBag.RequireJsBundles == null)
     {
         ViewBag.RequireJsBundles = new string[] { utilityjs };
@@ -29,6 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Settings</title>
     @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/toastr")
     @Styles.Render("~/Content/site")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("styles", required: false)
@@ -39,7 +30,8 @@
                 'jquery': '@Scripts.Url("~/bundles/jquery")',
                 'jqueryval': '@Scripts.Url("~/bundles/jqueryval")',
                 'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
-                'jstree': '@Scripts.Url("~/bundles/jstree")'
+                'jstree': '@Scripts.Url("~/bundles/jstree")',
+                'toastr': '@Scripts.Url("~/bundles/toastr")'
                 @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
             shim: {
@@ -48,11 +40,30 @@
                 },
                 'jqueryval': {
                     deps: ['jquery']
+                },
+                'toastr': {
+                    deps: ['jquery']
                 }
             },
             waitSeconds: 60
             @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
         });
+        require(['utility-js'],
+            function (u) {
+                $(document).ready(function () {
+                    @if (TempData["Info"] != null)
+                    {
+                        @:u.showToast('info', '@TempData["Info"]'); 
+                    }
+                    @if (ViewData.ModelState[string.Empty] != null)
+                    {
+                        foreach (var error in ViewData.ModelState[string.Empty].Errors)
+                        {
+                            @:u.showToast('error', '@error.ErrorMessage');
+                        }
+                    }
+                });
+            });
     </script>
     @RenderSection("scripts", required: false)
 </head>

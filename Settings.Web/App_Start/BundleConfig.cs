@@ -26,6 +26,9 @@ namespace Settings.Web
             bundles.Add(new ScriptBundle("~/bundles/requirejs").Include(
                       "~/Scripts/require.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/toastr").Include(
+                      "~/Scripts/toastr.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jstree").Include(
                       "~/Scripts/jstree.js"));
 
@@ -33,6 +36,9 @@ namespace Settings.Web
 
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                       "~/Content/bootstrap.css"));
+
+            bundles.Add(new StyleBundle("~/Content/toastr").Include(
+                      "~/Content/toastr.css"));
 
             bundles.Add(new StyleBundle("~/Content/jstree/themes/proton/style").Include(
                       "~/Content/jstree/themes/proton/style.css"));
