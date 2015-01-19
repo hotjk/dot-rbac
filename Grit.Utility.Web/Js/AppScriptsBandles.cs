@@ -81,7 +81,7 @@ namespace Grit.Utility.Web.JS
             StringBuilder sb = new StringBuilder();
             foreach (var item in Items)
             {
-                if (keys.Any(x=>string.Compare(item.Key,x,true) == 0))
+                if (keys != null && keys.Any(x=>string.Compare(item.Key,x,true) == 0))
                 {
                     sb.AppendFormat("'{0}': '{1}',", item.Key, Scripts.Url(item.Bundle));
                 }
@@ -100,15 +100,24 @@ namespace Grit.Utility.Web.JS
             return new MvcHtmlString(sb.ToString());
         }
 
-        public static IHtmlString GetRequireJsDeps(IEnumerable<string> keys, bool commaPrefix = true, bool commaPostfix = false)
+        public static IHtmlString GetRequireJsDeps(IEnumerable<string> keys, IEnumerable<string> appendKeys = null, bool commaPrefix = true, bool commaPostfix = false)
         {
-            
-            if (keys == null || !keys.Any()) return null;
+            if ((keys == null || !keys.Any()) && (appendKeys == null || !appendKeys.Any())) return null;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0}deps: [", commaPrefix ? ", " : string.Empty);
-            foreach(var key in keys)
+            if (keys != null)
             {
-                sb.AppendFormat("'{0}', ", key);
+                foreach (var key in keys)
+                {
+                    sb.AppendFormat("'{0}', ", key);
+                }
+            }
+            if (appendKeys != null)
+            {
+                foreach (var key in appendKeys)
+                {
+                    sb.AppendFormat("'{0}', ", key);
+                }
             }
             sb.Remove(sb.Length - 2, 2);
             sb.AppendFormat("]{0}", commaPostfix ? ", " : string.Empty);

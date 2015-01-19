@@ -1,18 +1,4 @@
-﻿@{
-    string utilityjs = "utility-js";
-   
-    if (ViewBag.RequireJsBundles == null)
-    {
-        ViewBag.RequireJsBundles = new string[] { utilityjs };
-    }
-    else
-    {
-        var list = new List<string>(ViewBag.RequireJsBundles);
-        list.Add(utilityjs);
-        ViewBag.RequireJsBundles = list.ToArray();
-    }
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -31,7 +17,8 @@
                 'jqueryval': '@Scripts.Url("~/bundles/jqueryval")',
                 'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
                 'jstree': '@Scripts.Url("~/bundles/jstree")',
-                'toastr': '@Scripts.Url("~/bundles/toastr")'
+                'toastr': '@Scripts.Url("~/bundles/toastr")',
+                'utility-js': '@Scripts.Url("~/bundles/utility-js")'
                 @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
             shim: {
