@@ -39,7 +39,7 @@ namespace Settings.Web.Controllers
                 x => x.NodeId)
                 .Build(root, nodes)
                 .children;
-
+            Info = "test";
             return View();
         }
 
@@ -155,6 +155,15 @@ namespace Settings.Web.Controllers
         {
             System.Web.Security.FormsAuthentication.SignOut();
             return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public void Captcha()
+        {
+            string captcha = Grit.Utility.Security.RandomText.Generate(4);
+            var image = new Grit.Utility.Captcha.CaptchaImage(100, 36, true, true, true).Generate(captcha);
+            Response.ContentType = "image/gif";
+            image.Save(Response.OutputStream, System.Drawing.Imaging.ImageFormat.Gif);
         }
     }
 }

@@ -18,7 +18,8 @@ namespace Settings.Client.Web.Controllers
             string key = ConfigurationManager.AppSettings["SettingsPrivateKey"];
             SettingsProxy service = new SettingsProxy();
             var settings = await service.GetSettings(client, api, pattern, key);
-            return View(settings.Filter("Product"));
+            return View(settings);
+            //return View(settings.Filter("Product"));
         }
     }
 }
