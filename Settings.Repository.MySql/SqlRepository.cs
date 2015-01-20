@@ -25,9 +25,7 @@ namespace Settings.Repository.MySql
                 catch
                 {
                 }
-                using (IDbTransaction transaction = connection.BeginTransaction())
-                {
-                    connection.Execute(
+                connection.Execute(
     @"
 
 CREATE TABLE `settings_tree` (
@@ -67,15 +65,17 @@ CREATE TABLE `settings_entry` (
   `Key` varchar(100) NOT NULL,
   `Value` varchar(4000) NOT NULL,
   PRIMARY KEY (`NodeId`,`Key`),
-  CONSTRAINT `fk_settings_node_entry` FOREIGN KEY (`NodeId`) REFERENCES `settings_node` (`NodeId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_settings_entry_node` FOREIGN KEY (`NodeId`) REFERENCES `settings_node` (`NodeId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `settings_client_node` (
   `ClientId` int(11) NOT NULL,
   `NodeId` int(11) NOT NULL,
   PRIMARY KEY (`ClientId`,`NodeId`),
-  KEY `fk_node_idx` (`NodeId`),
-  CONSTRAINT `fk_settings_client_node` FOREIGN KEY (`NodeId`) REFERENCES `settings_node` (`NodeId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_settings_client_node_client_idx` (`NodeId`),
+  KEY `fk_settings_client_node_node_idx` (`ClientId`),
+  CONSTRAINT `fk_settings_client_node_client` FOREIGN KEY (`ClientId`) REFERENCES `settings_client` (`ClientId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_settings_client_node_node` FOREIGN KEY (`NodeId`) REFERENCES `settings_node` (`NodeId`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -89,7 +89,7 @@ CREATE TABLE `settings_user` (
   `UpdateAt` datetime NOT NULL,
   `DeleteAt` datetime DEFAULT NULL,
   PRIMARY KEY (`UserId`),
-  UNIQUE KEY `idx__settings_username` (`Username`)
+  UNIQUE KEY `idx_settings_user_username` (`Username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 INSERT INTO `settings_user` VALUES (1,'admin','1000:LBtm29kdYeO/yj627CzHnp4otNRBjyZ8:ElN/ssx1YsFjfaB/n+u5iEna/pTQGhdw',2,0,'2015-01-18 16:52:59','2015-01-18 16:52:59',NULL);
@@ -104,10 +104,9 @@ CREATE TABLE IF NOT EXISTS `sequence` (
 INSERT INTO `sequence` VALUES (1000,1,'Settings Node'),(1001,1,'Settings Client'),(1002,1,'Settings User');
 
 ");
-                    transaction.Commit();
-                    return true;
-                }
+                return true;
             }
         }
     }
 }
+
