@@ -30,6 +30,24 @@ namespace Settings.Client
             return resp;
         }
 
+        public T Get<T>(string pattern, T defaultValue = default(T))
+        {
+            var found = this.Entries.FirstOrDefault(n => Match(n.Path, pattern));
+            if (found == null)
+            {
+                return defaultValue;
+            }
+            try
+            {
+                T value = (T)Convert.ChangeType(found.Value, typeof(T));
+                return value;
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
         public static bool Match(string path, string pattern)
         {
             path = path.Trim(new char[] { '/' });

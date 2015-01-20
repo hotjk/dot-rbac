@@ -3,34 +3,30 @@
     padding-bottom: 20px;
 }
 
-.alert {
-    padding:5px;
+.logo {
+    float: left;
+    padding: 0 10px;
+    width: 64px;
 }
 /*******************/
 /* jquery.validate */
 /*******************/
 
-.validation-summary-errors
-{
-    
+.validation-summary-errors {
 }
 
-.validation-summary-valid
-{
+.validation-summary-valid {
     display: none;
 }
 
-.field-validation-error
-{
+.field-validation-error {
     color: #a94442;
 }
 
-.field-validation-valid
-{
+.field-validation-valid {
     display: none;
 }
 
-.input-validation-error
-{
+.input-validation-error {
     border-color: #a94442 !important;
 }

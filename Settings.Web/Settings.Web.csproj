@@ -187,6 +187,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\settings.png" />
     <Content Include="Scripts\app\jstree.basic.js" />
     <Content Include="Scripts\app\jstree.group.js" />
     <Content Include="Scripts\app\utility.js" />
