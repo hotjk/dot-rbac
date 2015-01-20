@@ -134,7 +134,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
-    <Compile Include="Controllers\SQLDataController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -285,10 +284,6 @@
     <ProjectReference Include="..\Grit.Core\Grit.Core.csproj">
       <Project>{c1271a48-de60-4df1-b4e5-44adb30153f8}</Project>
       <Name>Grit.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Grit.Data\Grit.Data.csproj">
-      <Project>{bee46b67-b2cf-41f3-bae9-ff7f7f73672d}</Project>
-      <Name>Grit.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Grit.Utility.Web\Grit.Utility.Web.csproj">
       <Project>{07d3c73b-80ab-45a3-a28d-a1d946fef5e6}</Project>
