@@ -11,7 +11,7 @@ namespace Settings.Repository.MySql
 {
     public class UserRepository : BaseRepository, IUserRepository
     {
-        public UserRepository(Grit.Core.Data.IConnectionStringProvider privider) : base(privider) { }
+        public UserRepository(SqlOption option) : base(option) { }
 
         public User GetUser(int userId)
         {

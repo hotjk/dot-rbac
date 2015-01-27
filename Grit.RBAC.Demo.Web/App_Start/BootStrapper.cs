@@ -7,7 +7,6 @@ using Grit.Sequence;
 using Grit.Sequence.Repository.MySql;
 using Grit.Tree;
 using Grit.Tree.Repository.MySql;
-using Grit.Core.Data;
 using System.Configuration;
 
 namespace Grit.RBAC.Demo.Web.App_Start
@@ -24,15 +23,15 @@ namespace Grit.RBAC.Demo.Web.App_Start
 
         private static void AddIoCBindings()
         {
-            var treeConnectionStringProvider = new ConnectionStringProvider(ConfigurationManager.ConnectionStrings["Tree.MySql"].ConnectionString);
-            var sequenceConnectionStringProvider = new ConnectionStringProvider(ConfigurationManager.ConnectionStrings["Sequence.MySql"].ConnectionString);
+            var treeSqlOption = new Grit.Tree.Repository.MySql.SqlOption { ConnectionString = ConfigurationManager.ConnectionStrings["Tree.MySql"].ConnectionString };
+            var sequenceSqlOption = new Grit.Sequence.Repository.MySql.SqlOption { ConnectionString = ConfigurationManager.ConnectionStrings["Sequence.MySql"].ConnectionString };
 
             NinjectContainer.Bind<ISequenceRepository>().To<SequenceRepository>().InSingletonScope()
-                .WithConstructorArgument<IConnectionStringProvider>(sequenceConnectionStringProvider);
+                .WithConstructorArgument<Grit.Tree.Repository.MySql.SqlOption>(treeSqlOption);
             NinjectContainer.Bind<ISequenceService>().To<SequenceService>().InSingletonScope();
 
             NinjectContainer.Bind<ITreeRepository>().To<TreeRepository>().InSingletonScope()
-                .WithConstructorArgument<IConnectionStringProvider>(treeConnectionStringProvider);
+                .WithConstructorArgument<Grit.Sequence.Repository.MySql.SqlOption>(sequenceSqlOption);
             NinjectContainer.Bind<ITreeService>().To<TreeService>()
                 .InSingletonScope()
                 .Named("Tree")

@@ -1,5 +1,4 @@
-﻿using Grit.Core.Data;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,9 +10,9 @@ namespace Grit.Sequence.Repository.MySql
 {
     public class BaseRepository
     {
-        public BaseRepository(IConnectionStringProvider privider)
+        public BaseRepository(SqlOption option)
         {
-            this.ConnectionString = privider.ConnectionString;
+            this.ConnectionString = option.ConnectionString;
         }
         private string ConnectionString { get; set; }
 

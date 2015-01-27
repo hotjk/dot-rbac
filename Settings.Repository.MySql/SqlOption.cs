@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.Core.Data
+namespace Settings.Repository.MySql
 {
-    public interface IRepository<T>
+    public class SqlOption
     {
+        public string ConnectionString { get; set; }
     }
 }

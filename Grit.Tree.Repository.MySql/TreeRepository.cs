@@ -10,7 +10,7 @@ namespace Grit.Tree.Repository.MySql
 {
     public class TreeRepository : BaseRepository, ITreeRepository
     {
-        public TreeRepository(Grit.Core.Data.IConnectionStringProvider privider) : base(privider) { }
+        public TreeRepository(SqlOption option) : base(option) { }
 
         // CREATE TABLE `tree` ( `Tree` int(11) NOT NULL, `Id` int(11) NOT NULL, `Parent` int(11) DEFAULT NULL, `Data` int(11) DEFAULT NULL, PRIMARY KEY (`Id`,`Tree`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         
