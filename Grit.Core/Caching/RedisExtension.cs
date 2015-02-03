@@ -15,7 +15,7 @@ namespace Grit.Core.Caching
             {
                 return self.StringGet(key, flags);
             }
-            catch(StackExchange.Redis.RedisConnectionException)
+            catch(RedisConnectionException)
             {
                 return RedisValue.Null;
             }
@@ -27,7 +27,7 @@ namespace Grit.Core.Caching
             {
                 return self.StringSet(key, value, expiry, when, flags);
             }
-            catch (StackExchange.Redis.RedisConnectionException)
+            catch (RedisConnectionException)
             {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace Grit.Core.Caching
             {
                 return self.KeyDelete(key, flags);
             }
-            catch (StackExchange.Redis.RedisConnectionException)
+            catch (RedisConnectionException)
             {
                 return false;
             }
@@ -51,7 +51,7 @@ namespace Grit.Core.Caching
             {
                 return self.KeyExists(key, flags);
             }
-            catch (StackExchange.Redis.RedisConnectionException)
+            catch (RedisConnectionException)
             {
                 return false;
             }
@@ -63,7 +63,7 @@ namespace Grit.Core.Caching
             {
                 self.FlushDatabase(database, flags);
             }
-            catch (StackExchange.Redis.RedisConnectionException)
+            catch (RedisConnectionException)
             {
             }
         }
