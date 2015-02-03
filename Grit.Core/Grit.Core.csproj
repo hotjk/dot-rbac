@@ -46,10 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\Extensions.cs" />
+    <Compile Include="Caching\CacheExtensions.cs" />
     <Compile Include="Caching\ICacheManager.cs" />
     <Compile Include="Caching\MemoryCacheManager.cs" />
     <Compile Include="Caching\RedisCacheManagerOptions.cs" />
+    <Compile Include="Caching\RedisExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Caching\RedisCacheManager.cs" />
   </ItemGroup>

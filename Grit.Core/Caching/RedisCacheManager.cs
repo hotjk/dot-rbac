@@ -32,7 +32,8 @@ namespace Grit.Core.Caching
 
         public T Get<T>(string key)
         {
-            var value = DB.StringGet(key);
+            var value = DB.SafeStringGet(key);
+            if (!value.HasValue) return default(T);
             using(MemoryStream ms = new MemoryStream(value))
             {
                 return Serializer.Deserialize<T>(ms);
@@ -47,30 +48,36 @@ namespace Grit.Core.Caching
                 Serializer.Serialize(ms, data);
                 bytes = ms.ToArray();
             }
-            DB.StringSet(key, bytes, TimeSpan.FromMinutes(expireMinutes));
+            DB.SafeStringSet(key, bytes, TimeSpan.FromMinutes(expireMinutes));
         }
 
         public bool IsSet(string key)
         {
-            return DB.KeyExists(key);
+            return DB.SafeKeyExists(key);
         }
 
         public void Remove(string key)
         {
-            DB.KeyDelete(key);
+            DB.SafeKeyDelete(key);
         }
 
         public int RemoveByPattern(string pattern)
         {
             var db = DB;
             int count = 0;
-            foreach (var endPoint in _muxer.GetEndPoints())
+            try
             {
-                foreach (var item in _muxer.GetServer(endPoint).Keys(_DBIndex, pattern))
+                foreach (var endPoint in _muxer.GetEndPoints())
                 {
-                    db.KeyDelete(item);
-                    count++;
+                    foreach (var item in _muxer.GetServer(endPoint).Keys(_DBIndex, pattern))
+                    {
+                        db.KeyDelete(item);
+                        count++;
+                    }
                 }
+            }
+            catch(StackExchange.Redis.RedisConnectionException)
+            {
             }
             return count;
         }
@@ -79,7 +86,7 @@ namespace Grit.Core.Caching
         {
             foreach (var endPoint in _muxer.GetEndPoints())
             {
-                _muxer.GetServer(endPoint).FlushDatabase(_DBIndex);
+                _muxer.GetServer(endPoint).SafeFlushDatabase(_DBIndex);
             }
         }
     }
