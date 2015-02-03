@@ -68,7 +68,7 @@ namespace Grit.Core.Caching
         /// Removes items by pattern
         /// </summary>
         /// <param name="pattern">pattern</param>
-        public virtual void RemoveByPattern(string pattern)
+        public virtual int RemoveByPattern(string pattern)
         {
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
             var keysToRemove = new List<String>();
@@ -81,6 +81,7 @@ namespace Grit.Core.Caching
             {
                 Remove(key);
             }
+            return keysToRemove.Count;
         }
 
         /// <summary>

@@ -38,7 +38,8 @@ namespace Grit.Core.Caching
         /// Removes items by pattern
         /// </summary>
         /// <param name="pattern">pattern</param>
-        void RemoveByPattern(string pattern);
+        /// <returns></returns>
+        int RemoveByPattern(string pattern);
 
         /// <summary>
         /// Clear all cache data
