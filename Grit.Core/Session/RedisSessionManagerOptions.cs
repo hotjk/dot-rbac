@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.Core.Caching
+namespace Grit.Core.Session
 {
-    public class RedisCacheManagerOptions
+    public class RedisSessionManagerOptions
     {
-        public RedisCacheManagerOptions(string configuration, int db)
+        public RedisSessionManagerOptions(string configuration, int db, int sessionTimeoutMinutes)
         {
             Configuration = configuration;
             DBIndex = db;
+            SessionTimeoutMinutes = sessionTimeoutMinutes;
         }
         public string Configuration { get; private set; }
         public int DBIndex { get; private set; }
+        public int SessionTimeoutMinutes { get; private set; }
     }
 }

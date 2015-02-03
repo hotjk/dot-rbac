@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Grit.Core.Caching
+namespace Grit.Core
 {
     public static class RedisExtension
     {
@@ -54,6 +54,47 @@ namespace Grit.Core.Caching
             catch (RedisConnectionException)
             {
                 return false;
+            }
+        }
+
+        public static bool SafeKeyExpire(this IDatabase self, RedisKey key, TimeSpan? expiry, CommandFlags flags = CommandFlags.None)
+        {
+            try
+            {
+                return self.KeyExpire(key, expiry, flags);
+            }
+            catch(RedisConnectionException)
+            {
+                return false;
+            }
+        }
+
+        public static bool SafeHashSet(this IDatabase self, 
+            RedisKey key, 
+            RedisValue hashField, 
+            RedisValue value, 
+            When when = When.Always, 
+            CommandFlags flags = CommandFlags.None)
+        {
+            try
+            {
+                return self.HashSet(key, hashField, value, when, flags);
+            }
+            catch (RedisConnectionException)
+            {
+                return false;
+            }
+        }
+
+        public static RedisValue SafeHashGet(this IDatabase self, RedisKey key, RedisValue hashField, CommandFlags flags = CommandFlags.None)
+        {
+            try
+            {
+                return self.HashGet(key, hashField, flags);
+            }
+            catch (RedisConnectionException)
+            {
+                return RedisValue.Null;
             }
         }
 

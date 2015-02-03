@@ -55,7 +55,7 @@ namespace Demo.Web.Controllers
         public string Cache()
         {
             Person person = new Person { FirstName = "Tester", LastName = "中文", Age = 12, OK = true };
-            RedisCacheManagerOptions options = new RedisCacheManagerOptions { Configuration = "localhost,abortConnect=false,allowAdmin=true", DBIndex = 1 };
+            RedisCacheManagerOptions options = new RedisCacheManagerOptions("localhost,abortConnect=false,allowAdmin=true", 1);
             RedisCacheManager manager = new RedisCacheManager(options);
             manager.Set("p1", person, 10);
             Person found = manager.Get<Person>("p1");

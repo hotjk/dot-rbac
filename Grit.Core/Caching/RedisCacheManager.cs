@@ -13,20 +13,18 @@ namespace Grit.Core.Caching
     {
         private RedisCacheManagerOptions _options;
         private ConnectionMultiplexer _muxer;
-        private int _DBIndex;
 
         public RedisCacheManager(RedisCacheManagerOptions options)
         {
             _options = options;
             _muxer = ConnectionMultiplexer.Connect(ConfigurationOptions.Parse(_options.Configuration));
-            _DBIndex = _options.DBIndex;
         }
 
         private IDatabase DB
         {
             get
             {
-                return _muxer.GetDatabase(_DBIndex);
+                return _muxer.GetDatabase(_options.DBIndex);
             }
         }
 
@@ -69,7 +67,7 @@ namespace Grit.Core.Caching
             {
                 foreach (var endPoint in _muxer.GetEndPoints())
                 {
-                    foreach (var item in _muxer.GetServer(endPoint).Keys(_DBIndex, pattern))
+                    foreach (var item in _muxer.GetServer(endPoint).Keys(_options.DBIndex, pattern))
                     {
                         db.KeyDelete(item);
                         count++;
@@ -86,7 +84,7 @@ namespace Grit.Core.Caching
         {
             foreach (var endPoint in _muxer.GetEndPoints())
             {
-                _muxer.GetServer(endPoint).SafeFlushDatabase(_DBIndex);
+                _muxer.GetServer(endPoint).SafeFlushDatabase(_options.DBIndex);
             }
         }
     }

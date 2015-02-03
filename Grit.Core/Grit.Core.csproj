@@ -50,9 +50,11 @@
     <Compile Include="Caching\ICacheManager.cs" />
     <Compile Include="Caching\MemoryCacheManager.cs" />
     <Compile Include="Caching\RedisCacheManagerOptions.cs" />
-    <Compile Include="Caching\RedisExtension.cs" />
+    <Compile Include="RedisExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Caching\RedisCacheManager.cs" />
+    <Compile Include="Session\RedisSessionManager.cs" />
+    <Compile Include="Session\RedisSessionManagerOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
