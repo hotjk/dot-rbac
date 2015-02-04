@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    @RenderSection("styles", required: false)
     @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/site")
     @Scripts.Render("~/bundles/modernizr")
@@ -12,8 +13,7 @@
     require.config({
         paths: {
             'jquery': '@Scripts.Url("~/bundles/jquery")',
-                'jquery-ui': '@Scripts.Url("~/bundles/jqueryui")',
-                'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
+            'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
             'jstree': '@Scripts.Url("~/bundles/jstree")'
             @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
         },

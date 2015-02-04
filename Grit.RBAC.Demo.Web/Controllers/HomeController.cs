@@ -26,7 +26,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult UI()
+        public ActionResult Lookup()
         {
             var permissions = RBACService.GetPermissions();
             var root = TreeService.GetTree(8);
