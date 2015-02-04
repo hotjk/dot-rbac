@@ -9,21 +9,25 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/requirejs")
     <script>
-        require.config({
-            paths: {
-                'jquery': '@Scripts.Url("~/bundles/jquery")',
+    require.config({
+        paths: {
+            'jquery': '@Scripts.Url("~/bundles/jquery")',
+                'jquery-ui': '@Scripts.Url("~/bundles/jqueryui")',
                 'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
-                'jstree': '@Scripts.Url("~/bundles/jstree")'
-                @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
+            'jstree': '@Scripts.Url("~/bundles/jstree")'
+            @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
+        },
+        shim: {
+            'bootstrap': {
+                deps: ['jquery']
             },
-            shim: {
-                'bootstrap': {
-                    deps: ['jquery']
-                }
-            },
-            waitSeconds: 60
-            @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
-        });
+            'jquery-ui': {
+                deps: ['jquery']
+            }
+        },
+        waitSeconds: 60
+        @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
+    });
     </script>
     @RenderSection("scripts", required: false)
 </head>

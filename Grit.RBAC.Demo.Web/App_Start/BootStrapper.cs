@@ -31,7 +31,7 @@ namespace Grit.RBAC.Demo.Web.App_Start
             NinjectContainer.Bind<ISequenceService>().To<SequenceService>().InSingletonScope();
 
             NinjectContainer.Bind<ITreeRepository>().To<TreeRepository>().InSingletonScope()
-                .WithConstructorArgument<Grit.Sequence.Repository.MySql.SqlOption>(sequenceSqlOption);
+                .WithConstructorArgument<Grit.Tree.Repository.MySql.SqlOption>(treeSqlOption);
             NinjectContainer.Bind<ITreeService>().To<TreeService>()
                 .InSingletonScope()
                 .Named("Tree")

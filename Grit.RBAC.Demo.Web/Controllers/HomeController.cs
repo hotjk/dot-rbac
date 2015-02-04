@@ -1,5 +1,6 @@
 ﻿using Grit.Tree;
 using Grit.Tree.JsTree;
+using Grit.Tree.UITree;
 using Grit.Utility.Web.Json;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,17 @@ namespace Grit.RBAC.Demo.Web.Controllers
         }
         public ActionResult Index()
         {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult UI()
+        {
+            var permissions = RBACService.GetPermissions();
+            var root = TreeService.GetTree(8);
+            ViewBag.Tree = new UITreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
+                .Build(root, permissions);
+
             return View();
         }
 
