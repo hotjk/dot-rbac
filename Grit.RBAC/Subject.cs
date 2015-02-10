@@ -44,6 +44,18 @@ namespace Grit.RBAC
             return permissions.ToByte();
         }
 
+        public bool HavePermission(int permission)
+        {
+            foreach (Role role in this.Roles)
+            {
+                if(role.Permissions.Any(n=>n.PermissionId == permission))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public string Debug(int indent = 0)
         {
             StringBuilder sb = new StringBuilder();

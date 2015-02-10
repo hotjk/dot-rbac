@@ -17,11 +17,23 @@ namespace Grit.Tree.JsTree
 
         public void AddChild(JsTreeNode node)
         {
-            if (this.children == null)
+            if (children == null)
             {
-                this.children = new List<JsTreeNode>();
+                children = new List<JsTreeNode>();
             }
-            this.children.Add(node);
+            children.Add(node);
+        }
+
+        public void Each(Action<JsTreeNode> action)
+        {
+            action(this);
+            if (children != null && children.Count > 0)
+            {
+                foreach (var child in children)
+                {
+                    child.Each(action);
+                }
+            }
         }
     }
 }

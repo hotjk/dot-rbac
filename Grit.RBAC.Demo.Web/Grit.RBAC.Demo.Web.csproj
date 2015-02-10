@@ -187,6 +187,7 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Scripts\app\home\index.js" />
+    <Content Include="Scripts\app\jstree.static.js" />
     <Content Include="Scripts\app\jstree.group.js" />
     <Content Include="Scripts\app\jstree.lookup.js" />
     <Content Include="Scripts\jquery-ui-1.11.2.js" />
@@ -240,7 +241,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Map.cshtml" />
-    <Content Include="Views\Home\UI.cshtml" />
+    <Content Include="Views\Home\Lookup.cshtml" />
+    <Content Include="Views\Home\Static.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

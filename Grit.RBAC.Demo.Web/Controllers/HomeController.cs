@@ -26,13 +26,32 @@ namespace Grit.RBAC.Demo.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult UI()
+        public ActionResult Lookup()
         {
             var permissions = RBACService.GetPermissions();
             var root = TreeService.GetTree(8);
             ViewBag.Tree = new UITreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
                 .Build(root, permissions);
 
+            return View();
+        }
+
+        public ActionResult Static()
+        {
+            var permissions = RBACService.GetPermissions();
+            var subject = RBACService.GetSubject(3);
+            var tree = TreeService.GetTree(8);
+            var jsTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
+                .Build(tree, permissions);
+            jsTree.Each(x =>
+                {
+                    if (x == jsTree) return;
+                    if (subject.HavePermission(x.data.content))
+                    {
+                        x.state.selected = true;
+                    }
+                });
+            ViewBag.Tree = jsTree.children;
             return View();
         }
 
