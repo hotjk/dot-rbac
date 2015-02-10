@@ -124,10 +124,14 @@
   <ItemGroup>
     <Compile Include="App_Start\BootStrapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\Constants.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectDependencyResolver.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\SubjectController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\PermssionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -208,6 +212,9 @@
     <Content Include="Views\Home\Map.cshtml" />
     <Content Include="Views\Home\Lookup.cshtml" />
     <Content Include="Views\Home\Static.cshtml" />
+    <Content Include="Views\Permission\Group.cshtml" />
+    <Content Include="Views\Role\Group.cshtml" />
+    <Content Include="Views\Role\Map.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

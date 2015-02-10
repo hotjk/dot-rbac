@@ -40,10 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitArrayExtensions.cs" />
+    <Compile Include="IRBACWriteRepository.cs" />
     <Compile Include="IRBACRepository.cs" />
     <Compile Include="IRBACService.cs" />
+    <Compile Include="IRBACWriteService.cs" />
     <Compile Include="Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RBACWriteService.cs" />
     <Compile Include="RBACService.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Subject.cs">

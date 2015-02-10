@@ -20,9 +20,9 @@ namespace Grit.RBAC
             return RBACRepository.GetPermissions();
         }
 
-        public IEnumerable<Role> GetRoles()
+        public IEnumerable<Role> GetRoles(bool withPermission)
         {
-            return RBACRepository.GetRoles();
+            return RBACRepository.GetRoles(withPermission);
         }
 
         public IEnumerable<Subject> GetSubjects()
@@ -30,54 +30,19 @@ namespace Grit.RBAC
             return RBACRepository.GetSubjects();
         }
 
-        public IEnumerable<Role> GetRolesWithPermission()
-        {
-            return RBACRepository.GetRolesWithPermission();
-        }
-
         public Permission GetPermission(int id)
         {
             return RBACRepository.GetPermission(id);
         }
 
-        public Role GetRole(int id)
+        public Role GetRole(int id, bool withPermission)
         {
-            return RBACRepository.GetRole(id);
+            return RBACRepository.GetRole(id, withPermission);
         }
 
-        public Subject GetSubject(int id)
+        public Subject GetSubject(int id, bool withRole, bool withRolePermission, bool withPermission)
         {
-            return RBACRepository.GetSubject(id);
-        }
-
-        public bool SavePermission(Permission permission)
-        {
-            return RBACRepository.SavePermission(permission);
-        }
-
-        public bool SaveRole(Role role)
-        {
-            return RBACRepository.SaveRole(role);
-        }
-
-        public bool SaveSubject(Subject subject)
-        {
-            return RBACRepository.SaveSubject(subject);
-        }
-
-        public void SaveRolePermissions(Role role)
-        {
-            RBACRepository.SaveRolePermissions(role);
-        }
-
-        public void SaveRolePermissions(IEnumerable<Role> roles)
-        {
-            RBACRepository.SaveRolePermissions(roles);
-        }
-
-        public void SaveSubjectRoles(Subject subject)
-        {
-            RBACRepository.SaveSubjectRoles(subject);
+            return RBACRepository.GetSubject(id, withRole, withRolePermission, withPermission);
         }
     }
 }

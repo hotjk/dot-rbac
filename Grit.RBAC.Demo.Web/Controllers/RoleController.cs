@@ -10,71 +10,37 @@ using System.Web.Mvc;
 
 namespace Grit.RBAC.Demo.Web.Controllers
 {
-    public class HomeController : Controller
+    public class RoleController : Controller
     {
         private IRBACService RBACService { get; set; }
         private IRBACWriteService RBACWriteService { get; set; }
         private ITreeService TreeService { get; set; }
+        private const int PERMISSION_TREE_ID = 8;
 
-        public HomeController(IRBACService rbacService,
+        public RoleController(IRBACService rbacService,
             IRBACWriteService rbacWriteService,
-            [Ninject.Named("Tree")] ITreeService treeService)
+            ITreeService treeService)
         {
             RBACService = rbacService;
             RBACWriteService = rbacWriteService;
             TreeService = treeService;
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet]
-        public ActionResult Lookup()
+        public ActionResult Group()
         {
-            var permissions = RBACService.GetPermissions();
-            var root = TreeService.GetTree(8);
-            ViewBag.Tree = new UITreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
-                .Build(root, permissions);
-
-            return View();
-        }
-
-        public ActionResult Static()
-        {
-            var permissions = RBACService.GetPermissions();
-            var subject = RBACService.GetSubject(3);
-            var tree = TreeService.GetTree(8);
-            var jsTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
-                .Build(tree, permissions);
-            jsTree.Each(x =>
-                {
-                    if (x == jsTree) return;
-                    if (subject.HavePermission(x.data.content))
-                    {
-                        x.state.selected = true;
-                    }
-                });
-            ViewBag.Tree = jsTree.children;
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult Group(int id)
-        {
-            var permissions = RBACService.GetPermissions();
-            var root = TreeService.GetTree(id);
-            ViewBag.Tree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
-                .Build(root, permissions)
+            var roles = RBACService.GetRoles();
+            var root = TreeService.GetTree(Constants.ROLE_TREE_ID);
+            ViewBag.Tree = new JsTreeBuilder<Role>(x => x.Name, x => x.RoleId)
+                .Build(root, roles)
                 .children;
-            ViewBag.ID = id;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Group(int id, [ModelBinder(typeof(JsonNetModelBinder))] IList<JsTreeNode> nodes)
+        public ActionResult Group([ModelBinder(typeof(JsonNetModelBinder))] IList<JsTreeNode> nodes)
         {
-            var root = new JsTreeParser().Parse(id, nodes);
+            var root = new JsTreeParser().Parse(Constants.ROLE_TREE_ID, nodes);
             TreeService.SaveTree(root);
             return new JsonNetResult(nodes);
         }
@@ -83,13 +49,13 @@ namespace Grit.RBAC.Demo.Web.Controllers
         public ActionResult Map()
         {
             var roles = RBACService.GetRoles(true);
-            var leftTree = TreeService.GetTree(7);
+            var leftTree = TreeService.GetTree(Constants.ROLE_TREE_ID);
             ViewBag.LeftTree = new JsTreeBuilder<Role>(x => x.Name, x => x.RoleId, x=>x.Permissions.Select(n=>n.PermissionId))
                 .Build(leftTree, roles)
                 .children;
 
             var permissions = RBACService.GetPermissions();
-            var rightTree = TreeService.GetTree(8);
+            var rightTree = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
             ViewBag.RightTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
                 .Build(rightTree, permissions)
                 .children;
@@ -100,7 +66,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
         [HttpPost]
         public ActionResult Map([ModelBinder(typeof(JsonNetModelBinder))] IList<JsTreeNode> nodes)
         {
-            var root = new JsTreeParser().Parse(7, nodes);
+            var root = new JsTreeParser().Parse(Constants.ROLE_TREE_ID, nodes);
             var roles = RBACService.GetRoles();
             var permissions = RBACService.GetPermissions();
             root.Each(x =>

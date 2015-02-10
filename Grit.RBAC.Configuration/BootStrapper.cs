@@ -22,6 +22,9 @@ namespace Grit.RBAC.Configuration
         {
             Kernel.Bind<IRBACRepository>().To<RBACRepository>().InSingletonScope();
             Kernel.Bind<IRBACService>().To<RBACService>().InSingletonScope();
+
+            Kernel.Bind<IRBACWriteRepository>().To<RBACWriteRepository>().InSingletonScope();
+            Kernel.Bind<IRBACWriteService>().To<RBACWriteService>().InSingletonScope();
         }
     }
 }
