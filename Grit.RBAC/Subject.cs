@@ -30,7 +30,20 @@ namespace Grit.RBAC
             return this;
         }
 
-        public byte[] GetPermissions()
+        public ISet<int> GetPermissions()
+        {
+            ISet<int> permissions = new HashSet<int>();
+            foreach (Role role in this.Roles)
+            {
+                foreach (Permission permission in role.Permissions)
+                {
+                    permissions.Add(permission.PermissionId);
+                }
+            }
+            return permissions;
+        }
+
+        public byte[] GetPermissionsBytes()
         {
             int max = this.Roles.Max(n => n.Permissions.Max(p => p.PermissionId))+1;
             BitArray permissions = new BitArray(max);

@@ -84,7 +84,7 @@ namespace Grit.RBAC.Demo
             IRBACService service = BootStrapper.Kernel.Get<IRBACService>();
             var item = service.GetSubject(3);
             Console.WriteLine(item.Debug());
-            Console.WriteLine(item.GetPermissions().Print());
+            Console.WriteLine(item.GetPermissionsBytes().Print());
         }
 
         private static void SaveRolePermissionsTest()
