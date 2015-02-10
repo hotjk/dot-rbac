@@ -34,14 +34,6 @@
         return false;
     }
 
-    // get string value with full path.
-    var _getFullValue = function (tree, id) {
-        var path = [];
-        _findValuePath(tree.root, id, path);
-        path = path.slice(0, path.length - 1).reverse();
-        return $.map(path, function (v, i) { return v[INDEX_AUTO_NAME]; }).join(STEP_JOIN_WITH);
-    }
-
     // remove all options from all select.
     var _clearSelects = function (select_array, from) {
         for (var i = from; i < select_array.length; i++) {
@@ -152,12 +144,12 @@
     }
 
     return {
-        // Must add tree before invoke below functions
+        // MUST add tree before invoke bind functions
         AddTree: function (tree) {
             _lookups.push(tree)
         },
 
-        // Build one select, all tree node will be flot with indentation and show in the select.
+        // Build one drop down list, all tree node will be flat and indentation.
         BindFlatLookup: function (textbox, treeID, seperator) {
             var tree = _findTree(treeID);
             if (tree == null) {
@@ -201,55 +193,6 @@
                 _setValues(tree, select_array, textbox.val());
             });
             textbox.hide();
-        },
-
-        // build auto complete for orignal textbox, jQuery UI autocomplete is required.
-        BindAutoComplete: function (textbox, treeID, onlyShowFirstLevelNodes, fullValue, seperator) {
-            var tree = _findTree(treeID);
-            if (tree == null) {
-                return;
-            }
-            if (seperator == null) {
-                seperator = SEPERATPR;
-            }
-            var dataSource = [];
-            if (onlyShowFirstLevelNodes == true) {
-                $.each(tree.root[INDEX_CHILDREN], function (i, v) {
-                    dataSource.push([v[INDEX_ID], v[INDEX_NAME], 1, v[INDEX_OBSOLETE]]);
-                });
-            }
-            else {
-                _flotNode(tree.root, dataSource, 0);
-                dataSource = dataSource.slice(1); // remove root node
-            }
-            dataSource = $.grep(dataSource, function (v, i) { return v[INDEX_AUTO_OBSOLETE] == 0; });
-            textbox.autocomplete({
-                minLength: 0,
-                source: dataSource,
-                focus: function (event, ui) {
-                    textbox.val(ui.item[INDEX_AUTO_NAME]);
-                    return false;
-                },
-                select: function (event, ui) {
-                    if (fullValue == true) {
-                        textbox.val(_getFullValue(tree, ui.item[INDEX_AUTO_ID]));
-                    }
-                    else {
-                        textbox.val(ui.item[INDEX_AUTO_NAME]);
-                    }
-                    return false;
-                }
-            })
-            .data("ui-autocomplete")._renderItem = function (ul, item) {
-                return $("<li>")
-                  .append("<a>" + Array(item[INDEX_AUTO_DEEPTH]).join(seperator) + item[INDEX_AUTO_NAME] + "</a>")
-                  .appendTo(ul);
-            };
-            $.each($(".ui-autocomplete"), function (i, v) {
-                if (!$(v).hasClass("dropdown-menu")) {
-                    $(v).addClass("dropdown-menu");
-                }
-            });
         },
 
         Contain: function (treeID, nodeValue) {

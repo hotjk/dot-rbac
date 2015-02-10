@@ -1,22 +1,29 @@
 ﻿@{
-    ViewBag.Title = "UI";
+    ViewBag.Title = "Lookup";
     ViewBag.RequireJsBundles = new string[] { "jstree-lookup-js" };
 }
 @using Grit.Utility.Web.Json
 <h2>@ViewBag.Title</h2>
-@Styles.Render("~/Content/jstree/themes/proton/style")
+@section styles {
+<style>
+    .lookup_container .form-control {
+        margin-bottom: 10px;
+    }
+    .js-lookup {
+        display:none;
+    }
+</style>
+}
 @section scripts {
     <script>
-        require(['jquery', 'jquery-ui', 'bootstrap', 'jstree-lookup-js'],
-        function ($, _, bootstrap, lookup) {
+        require(['jquery', 'bootstrap', 'jstree-lookup-js'],
+        function ($, bootstrap, lookup) {
             $(document).ready(function () {
                 lookup.AddTree(@Html.Json(@ViewBag.Tree as object));
                 lookup.BindLookup($('#demo1'), 8, true);
                 lookup.BindLookup($('#demo2'), 8);
                 lookup.BindLookup($('#demo3'), 8, true, true);
                 lookup.BindLookup($('#demo10'), 8, false, true);
-                lookup.BindAutoComplete($('#demo4'), 8);
-                lookup.BindAutoComplete($('#demo5'), 8, true);
                 lookup.BindFlatLookup($('#demo6'), 8);
 
                 $('#demo1').bind('blur', function () {
@@ -76,26 +83,6 @@
             </label>
             <div class="col-sm-4">
                 <input type="text" class="js-lookup" value="9" id="demo10" />
-            </div>
-        </div>
-
-        <hr />
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                自动完成文本框
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-auto-complete form-control" id="demo4" />
-            </div>
-        </div>
-
-        <hr />
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                只选择顶级节点
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-auto-complete form-control" id="demo5" />
             </div>
         </div>
 

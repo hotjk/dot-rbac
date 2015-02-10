@@ -1,17 +1,13 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    <h1>Grit</h1>
-</div>
-
 <div class="row">
     <div class="col-md-4">
         <h2>Tree</h2>
         <p>Grit.RBAC.Demo.Web</p>
         @Html.ActionLink("Static", "Static", null, new { @class = "btn btn-default" })
         @Html.ActionLink("Group", "Group", null, new { @class="btn btn-default" })
+        @Html.ActionLink("Lookup", "Lookup", null, new { @class = "btn btn-default" })
         @Html.ActionLink("Map", "Map", null, new { @class = "btn btn-default" })
         @Html.ActionLink("Lookup", "Lookup", null, new { @class = "btn btn-default" })
     </div>
