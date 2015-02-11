@@ -13,7 +13,7 @@
                     app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
                     $("#btn_save").on('click', function(){
                         $.ajax({
-                            url: "@Url.Action("Group", new { id = ViewBag.ID })",
+                            url: "@Url.Action("Group")",
                             type: 'POST',
                             data: JSON.stringify(app.data()),
                             dataType: 'json',

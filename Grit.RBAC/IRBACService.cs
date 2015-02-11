@@ -8,21 +8,13 @@ namespace Grit.RBAC
 {
     public interface IRBACService
     {
-        IEnumerable<Permission> GetPermissions();
-        IEnumerable<Role> GetRoles();
-        IEnumerable<Subject> GetSubjects();
-        IEnumerable<Role> GetRolesWithPermission();
-
         Permission GetPermission(int id);
-        Role GetRole(int id);
-        Subject GetSubject(int id);
+        IEnumerable<Permission> GetPermissions();
 
-        bool SavePermission(Permission permission);
-        bool SaveRole(Role role);
-        bool SaveSubject(Subject subject);
+        Role GetRole(int id, bool withPermission = true);
+        IEnumerable<Role> GetRoles(bool withPermission = false);
 
-        void SaveRolePermissions(Role role);
-        void SaveRolePermissions(IEnumerable<Role> roles);
-        void SaveSubjectRoles(Subject subject);
+        Subject GetSubject(int id, bool withRole = true, bool withRolePermission = true, bool withPermission = true);
+        IEnumerable<Subject> GetSubjects();
     }
 }

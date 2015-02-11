@@ -102,7 +102,8 @@ namespace Grit.RBAC.Demo
             {
                 role.Permissions.Add(permissions.FirstOrDefault(n => n.PermissionId == 10));
             }
-            service.SaveRolePermissions(role);
+            IRBACWriteService writeservice = BootStrapper.Kernel.Get<IRBACWriteService>();
+            writeservice.SaveRolePermissions(role);
             role = service.GetRole(1);
             Console.WriteLine(role.Debug());
         }
@@ -122,7 +123,8 @@ namespace Grit.RBAC.Demo
             {
                 subject.Roles.Add(roles.FirstOrDefault(n => n.RoleId == 1));
             }
-            service.SaveSubjectRoles(subject);
+            IRBACWriteService writeservice = BootStrapper.Kernel.Get<IRBACWriteService>();
+            writeservice.SaveSubjectRoles(subject);
             subject = service.GetSubject(1);
             Console.WriteLine(subject.Debug());
         }

@@ -36,6 +36,11 @@ namespace Grit.RBAC.Demo.Web.App_Start
                 .InSingletonScope()
                 .Named("Tree")
                 .WithConstructorArgument("table", "tree");
+
+            NinjectContainer.Bind<ITreeService>().To<TreeService>()
+                .InSingletonScope()
+                .Named("Dict")
+                .WithConstructorArgument("table", "dict");
         }
     }
 }

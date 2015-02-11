@@ -48,7 +48,12 @@
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RBACRepository.cs" />
+    <Compile Include="RBACRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RBACWriteRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

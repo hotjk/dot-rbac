@@ -12,6 +12,7 @@ namespace Grit.RBAC
         public Subject() 
         {
             this.Roles = new List<Role>();
+            this.Permissions = new List<Permission>();
         }
         public Subject(int id, string name):this()
         {
@@ -22,7 +23,8 @@ namespace Grit.RBAC
         public int SubjectId { get; private set; }
         public string Name { get; private set; }
 
-        public ICollection<Role> Roles { get; private set; }
+        public List<Role> Roles { get; private set; }
+        public List<Permission> Permissions { get; private set; }
 
         public Subject Add(Role role)
         {
@@ -31,6 +33,25 @@ namespace Grit.RBAC
         }
 
         public ISet<int> GetPermissions()
+        public Subject Add(IEnumerable<Role> roles)
+        {
+            this.Roles.AddRange(roles);
+            return this;
+        }
+
+        public Subject Add(Permission permission)
+        {
+            this.Permissions.Add(permission);
+            return this;
+        }
+
+        public Subject Add(IEnumerable<Permission> permissions)
+        {
+            this.Permissions.AddRange(permissions);
+            return this;
+        }
+
+        public byte[] GetPermissions()
         {
             ISet<int> permissions = new HashSet<int>();
             foreach (Role role in this.Roles)
@@ -59,6 +80,11 @@ namespace Grit.RBAC
 
         public bool HavePermission(int permission)
         {
+            if (Permissions.Any(n => n.PermissionId == permission))
+            {
+                return true;
+            }
+
             foreach (Role role in this.Roles)
             {
                 if(role.Permissions.Any(n=>n.PermissionId == permission))
@@ -75,7 +101,11 @@ namespace Grit.RBAC
             sb.AppendFormat("{0}Subject Id: {1}, Name: {2}", new string(' ', indent), this.SubjectId, this.Name);
             foreach(var role in Roles)
             {
-                sb.AppendFormat("\r\n{0}", role.Debug(indent+1));
+                sb.AppendFormat("\r\n{0}", role.Debug(indent + 1));
+            }
+            foreach (var permission in Permissions)
+            {
+                sb.AppendFormat("\r\n{0}", permission.Debug(indent + 1));
             }
             return sb.ToString();
         }
