@@ -1,8 +1,15 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<div class="row">
-    <div class="col-md-4">
-        <h2>RBAC</h2>
-    </div>
+
+<div class="">
+    <h1>Role-based access control</h1>
+    <p>Within an organization, roles are created for various job functions. The permissions to perform certain operations are assigned to specific roles. Members or staff (or other system users) are assigned particular roles, and through those role assignments acquire the computer permissions to perform particular computer-system functions. Since users are not assigned permissions directly, but only acquire them through their role (or roles), management of individual user rights becomes a matter of simply assigning appropriate roles to the user's account; this simplifies common operations, such as adding a user, or changing a user's department.</p>
+    <p>Three primary rules are defined for RBAC:</p>
+    <ol>
+        <li>Role assignment: A subject can exercise a permission only if the subject has selected or been assigned a role.</li>
+        <li>Role authorization: A subject's active role must be authorized for the subject. With rule 1 above, this rule ensures that users can take on only roles for which they are authorized.</li>
+        <li>Permission authorization: A subject can exercise a permission only if the permission is authorized for the subject's active role. With rules 1 and 2, this rule ensures that users can exercise only permissions for which they are authorized.</li>
+    </ol>
+    <a href="http://en.wikipedia.org/wiki/Role-based_access_control" target="_blank" class="pull-right">wikipedia</a>
 </div>

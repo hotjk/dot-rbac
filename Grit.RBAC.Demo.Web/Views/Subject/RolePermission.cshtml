@@ -6,40 +6,39 @@
 @section scripts {
     <script>
         require(['jquery', 'bootstrap', 'jstree-select-js'],
-    function ($, bootstrap, treeSelect) {
-        $(document).ready(function () {
-            var roleTree = treeSelect($('#ctl_tree_role'), @Html.Json(@ViewBag.RoleTree as object));
-            var permissionTree = treeSelect($('#ctl_tree_permission'), @Html.Json(@ViewBag.PermissionTree as object));
-            $("#btn_save").on('click', function(){
-                var data = [roleTree.data(), permissionTree.data()];
-                $.ajax({
-                    url: '@Url.Action("RolePermission", "Subject", new { id = ViewBag.SubjectId })',
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    dataType: 'json',
-                    processData: false,
-                    contentType: 'application/json; charset=utf-8'
-                }).done(function (data) {
-                }).fail(function (data) {
-                }).always(function (data) {
+        function ($, bootstrap, treeSelect) {
+            $(document).ready(function () {
+                showMessage('Assign roles or directly assign permissions to subject');
+                var roleTree = treeSelect($('#ctl_tree_role'), @Html.Json(@ViewBag.RoleTree as object));
+                var permissionTree = treeSelect($('#ctl_tree_permission'), @Html.Json(@ViewBag.PermissionTree as object));
+                $("#btn_save").on('click', function(){
+                    var data = [roleTree.data(), permissionTree.data()];
+                    $.ajax({
+                        url: '@Url.Action("RolePermission", "Subject", new { id = ViewBag.SubjectId })',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        processData: false,
+                        contentType: 'application/json; charset=utf-8'
+                    }).done(function (data) {
+                        showMessage('Saved successfully');
+                    }).fail(function (data) {
+                        showMessage('Failed to save');
+                    }).always(function (data) {
+                    });
                 });
             });
         });
-    });
     </script>
 }
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse">
-            <button type="button" class="btn btn-default navbar-btn pull-right" id="btn_save">Save</button>
-        </div>
-    </div>
-</nav>
+@section subnav_right {
+    <button type="button" class="btn btn-default navbar-btn" id="btn_save">Save</button>
+}
 
 <div class="row">
     <div class="col-md-6">
-        <h4>Roles</h4>
+        <h4>Corresponding Roles</h4>
         <div id="ctl_tree_role"></div>
     </div>
     <div class="col-md-6">

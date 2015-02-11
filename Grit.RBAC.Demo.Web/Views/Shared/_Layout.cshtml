@@ -10,24 +10,27 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/requirejs")
     <script>
-    require.config({
-        paths: {
-            'jquery': '@Scripts.Url("~/bundles/jquery")',
-            'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
-            'jstree': '@Scripts.Url("~/bundles/jstree")'
-            @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
-        },
-        shim: {
-            'bootstrap': {
-                deps: ['jquery']
+        require.config({
+            paths: {
+                'jquery': '@Scripts.Url("~/bundles/jquery")',
+                'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
+                'jstree': '@Scripts.Url("~/bundles/jstree")'
+                @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
             },
-            'jquery-ui': {
-                deps: ['jquery']
-            }
-        },
-        waitSeconds: 60
-        @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
-    });
+            shim: {
+                'bootstrap': {
+                    deps: ['jquery']
+                },
+                'jquery-ui': {
+                    deps: ['jquery']
+                }
+            },
+            waitSeconds: 60
+            @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
+        });
+        function showMessage(text) {
+            document.getElementById('navbar_message').innerText = text;
+        }
     </script>
     @RenderSection("scripts", required: false)
 </head>
@@ -52,6 +55,17 @@
         </div>
     </div>
     <div class="container body-content">
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    @RenderSection("subnav", required: false)
+                    <div class="navbar-right">
+                        <p class="navbar-text" id="navbar_message"></p>
+                        @RenderSection("subnav_right", required: false)
+                    </div>
+                </div>
+            </div>
+        </nav>
         @RenderBody()
     </div>
 </body>

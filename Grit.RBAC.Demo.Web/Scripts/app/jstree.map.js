@@ -100,6 +100,9 @@
                     });
                     node.data.elements = selected;
                 }
+                else {
+                    setTimeout(function () { $treeRight.deselect_all(); }, 100);
+                }
             });
         }
 

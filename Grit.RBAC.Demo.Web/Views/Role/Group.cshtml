@@ -8,6 +8,7 @@
         require(['jquery', 'bootstrap', 'jstree-group-js'],
             function ($, bootstrap, treeGroup) {
                 $(document).ready(function () {
+                    showMessage('Drap and drop to grouping');
                     var app = treeGroup($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
                     $("#btn_save").on('click', function(){
                         $.ajax({
@@ -18,7 +19,9 @@
                             processData: false,
                             contentType: 'application/json; charset=utf-8'
                         }).done(function (data) {
+                            showMessage('Saved successfully');
                         }).fail(function (data) {
+                            showMessage('Failed to save');
                         }).always(function (data) {
                         });
                     });
@@ -27,13 +30,9 @@
     </script>
 }
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse">
-            <button type="button" class="btn btn-default navbar-btn pull-right" id="btn_save">Save</button>
-        </div>
-    </div>
-</nav>
+@section subnav_right {
+    <button type="button" class="btn btn-default navbar-btn" id="btn_save">Save</button>
+}
 
 <div class="row">
     <div class="col-md-12">

@@ -5,12 +5,13 @@
 <link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
 @section scripts {
     <script>
-    require(['jquery', 'bootstrap', 'jstree-map-js'],
-        function ($, bootstrap, treeMap) {
-            $(document).ready(function () {
-                var app = treeMap($('#ctl_tree_left'), $('#ctl_tree_right'),
-                    @Html.Json(@ViewBag.LeftTree as object),
-                        @Html.Json(@ViewBag.RightTree as object));
+        require(['jquery', 'bootstrap', 'jstree-map-js'],
+            function ($, bootstrap, treeMap) {
+                $(document).ready(function () {
+                    showMessage('Select role then assign permissions to role');
+                    var app = treeMap($('#ctl_tree_left'), $('#ctl_tree_right'),
+                        @Html.Json(@ViewBag.LeftTree as object),
+                            @Html.Json(@ViewBag.RightTree as object));
                     $("#btn_save").on('click', function(){
                         $.ajax({
                             url: "@Url.Action("Map")",
@@ -20,7 +21,9 @@
                             processData: false,
                             contentType: 'application/json; charset=utf-8'
                         }).done(function (data) {
+                            showMessage('Saved successfully');
                         }).fail(function (data) {
+                            showMessage('Failed to save');
                         }).always(function (data) {
                         });
                     });
@@ -29,13 +32,9 @@
     </script>
 }
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse">
-            <button type="button" class="btn btn-default navbar-btn pull-right" id="btn_save">Save</button>
-        </div>
-    </div>
-</nav>
+@section subnav_right {
+    <button type="button" class="btn btn-default navbar-btn" id="btn_save">Save</button>
+}
 
 <div class="row">
     <div class="col-md-6">

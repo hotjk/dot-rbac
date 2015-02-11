@@ -29,14 +29,10 @@
     </script>
 }
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse">
-            @Html.ActionLink("Grouping Roles", "Group", null, new { @class = "btn btn-default navbar-btn" })
-            @Html.ActionLink("Mapping Roles & Permissions ", "Map", null, new { @class = "btn btn-default navbar-btn" })
-        </div>
-    </div>
-</nav>
+@section subnav {
+    @Html.ActionLink("Grouping Roles", "Group", null, new { @class = "btn btn-default navbar-btn" })
+    @Html.ActionLink("Mapping Roles & Permissions ", "Map", null, new { @class = "btn btn-default navbar-btn" })
+}
 
 <div class="row">
     <div class="col-md-6">

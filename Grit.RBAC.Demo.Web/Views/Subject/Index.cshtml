@@ -50,7 +50,10 @@
 
                     $("#btn_map").on('click', function(){
                         var selected = subjectTreeApp.tree.get_top_selected();
-                        if(selected.length == 0) return false;
+                        if(selected.length == 0) { 
+                            showMessage('Please select a subject');
+                            return false;
+                        }
                         var found = subjectTreeApp.tree.get_node(selected).data.content;
                         window.location.href = "/Subject/RolePermission/" + found;
                     });
@@ -59,14 +62,10 @@
     </script>
 }
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <div class="collapse navbar-collapse">
-            @Html.ActionLink("Grouping Subjects", "Group", null, new { @class = "btn btn-default navbar-btn" })
-            <button type="button" class="btn btn-default navbar-btn" id="btn_map">Grant Roles & Permissions</button>
-        </div>
-    </div>
-</nav>
+@section subnav {
+    @Html.ActionLink("Grouping Subjects", "Group", null, new { @class = "btn btn-default navbar-btn" })
+    <button type="button" class="btn btn-default navbar-btn" id="btn_map">Grant Roles & Permissions</button>
+}
 
 <div class="row">
     <div class="col-md-3">
@@ -75,7 +74,7 @@
     </div>
     <div class="col-md-3">
         <h4>Corresponding Roles</h4>
-        <div id ="ctl_role_tree"></div>
+        <div id="ctl_role_tree"></div>
     </div>
     <div class="col-md-3">
         <h4>Corresponding Permissions</h4>
