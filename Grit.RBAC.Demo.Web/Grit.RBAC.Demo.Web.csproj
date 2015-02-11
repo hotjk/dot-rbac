@@ -245,14 +245,6 @@
       <Project>{2e073815-faff-4ec8-8817-1dcab66fd38b}</Project>
       <Name>Grit.RBAC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Grit.Sequence.Repository.Mysql\Grit.Sequence.Repository.MySql.csproj">
-      <Project>{c8223ccd-75f4-4b9e-813b-b8a5a83ff758}</Project>
-      <Name>Grit.Sequence.Repository.MySql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Grit.Sequence\Grit.Sequence.csproj">
-      <Project>{0161cd61-4221-47c3-9567-1695c06de101}</Project>
-      <Name>Grit.Sequence</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Grit.Tree.JsTree\Grit.Tree.JsTree.csproj">
       <Project>{63ff4d80-7207-4925-8d2f-19c036ff6e35}</Project>
       <Name>Grit.Tree.JsTree</Name>

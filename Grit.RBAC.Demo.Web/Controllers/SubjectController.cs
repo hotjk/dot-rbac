@@ -125,7 +125,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
         public ActionResult RolePermission(int id)
         {
             var subject = RBACService.GetSubject(id, true, false, true);
-            ViewBag.SubjectId = subject.SubjectId;
+            ViewBag.Subject = subject;
 
             var roles = RBACService.GetRoles();
             var treeRole = TreeService.GetTree(Constants.ROLE_TREE_ID);

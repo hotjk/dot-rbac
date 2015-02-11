@@ -14,7 +14,7 @@
                 $("#btn_save").on('click', function(){
                     var data = [roleTree.data(), permissionTree.data()];
                     $.ajax({
-                        url: '@Url.Action("RolePermission", "Subject", new { id = ViewBag.SubjectId })',
+                        url: '@Url.Action("RolePermission", "Subject", new { id = ViewBag.Subject.SubjectId })',
                         type: 'POST',
                         data: JSON.stringify(data),
                         dataType: 'json',
@@ -30,6 +30,9 @@
             });
         });
     </script>
+}
+@section subnav {
+    <p class="navbar-text">@ViewBag.Subject.Name</p>
 }
 
 @section subnav_right {
