@@ -31,8 +31,7 @@ namespace Grit.RBAC
             this.Roles.Add(role);
             return this;
         }
-
-        public ISet<int> GetPermissions()
+        
         public Subject Add(IEnumerable<Role> roles)
         {
             this.Roles.AddRange(roles);
@@ -51,7 +50,7 @@ namespace Grit.RBAC
             return this;
         }
 
-        public byte[] GetPermissions()
+        public ISet<int> GetPermissions()
         {
             ISet<int> permissions = new HashSet<int>();
             foreach (Role role in this.Roles)

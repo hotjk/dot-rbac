@@ -14,15 +14,15 @@ namespace Grit.Tree.Repository.MySql
 
         // CREATE TABLE `tree` ( `Tree` int(11) NOT NULL, `Id` int(11) NOT NULL, `Parent` int(11) DEFAULT NULL, `Data` int(11) DEFAULT NULL, PRIMARY KEY (`Id`,`Tree`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         
-        public string Table { get; set; }
-        
         public IEnumerable<Node> GetTreeNodes(int tree)
         {
             using (IDbConnection connection = OpenConnection())
             {
                 return connection.Query<Node>(
-                    string.Format("SELECT `Tree`, `Id`, `Parent`, `Data` FROM `{0}` WHERE `Tree` = @Tree ORDER BY `Parent`, `Id`;",
-                    Table), new { Tree = tree });
+                    string.Format(
+@"SELECT `Tree`, `Id`, `Parent`, `Data` FROM `{0}` 
+WHERE `Tree` = @Tree ORDER BY `Parent`, `Id`;",
+                    Option.Table), new { Tree = tree });
             }
         }
 
@@ -37,10 +37,13 @@ namespace Grit.Tree.Repository.MySql
             {
                 using (var transaction = connection.BeginTransaction())
                 {
-                    connection.Execute(string.Format("DELETE FROM `{0}` WHERE `Tree` = @Tree;",
-                        Table), new { Tree = nodes.First().Tree });
-                    connection.Execute(string.Format("INSERT INTO `{0}` (`Tree`, `Id`, `Parent`, `Data`) VALUES (@Tree, @Id, @Parent, @Data);",
-                        Table), nodes);
+                    connection.Execute(string.Format(
+@"DELETE FROM `{0}` WHERE `Tree` = @Tree;",
+                        Option.Table), new { Tree = nodes.First().Tree });
+                    connection.Execute(string.Format(
+@"INSERT INTO `{0}` (`Tree`, `Id`, `Parent`, `Data`) 
+VALUES (@Tree, @Id, @Parent, @Data);",
+                        Option.Table), nodes);
                     transaction.Commit();
                 }
             }

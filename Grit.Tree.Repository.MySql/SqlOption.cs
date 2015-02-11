@@ -9,5 +9,6 @@ namespace Grit.Tree.Repository.MySql
     public class SqlOption
     {
         public string ConnectionString { get; set; }
+        public string Table { get; set; }
     }
 }

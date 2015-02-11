@@ -12,13 +12,13 @@ namespace Grit.Tree.Repository.MySql
     {
         public BaseRepository(SqlOption option)
         {
-            this.ConnectionString = option.ConnectionString;
+            Option = option;
         }
-        private string ConnectionString { get; set; }
+        protected SqlOption Option { get; private set; }
 
         public IDbConnection OpenConnection()
         {
-            MySqlConnection connection = new MySqlConnection(ConnectionString);
+            MySqlConnection connection = new MySqlConnection(Option.ConnectionString);
             connection.Open();
             return connection;
         }

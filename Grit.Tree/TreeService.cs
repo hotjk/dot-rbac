@@ -9,10 +9,9 @@ namespace Grit.Tree
 {
     public class TreeService : ITreeService
     {
-        public TreeService(ITreeRepository treeRepository, string table)
+        public TreeService(ITreeRepository treeRepository)
         {
             this.TreeRepository = treeRepository;
-            this.TreeRepository.Table = table;
         }
         private ITreeRepository TreeRepository { get; set; }
 

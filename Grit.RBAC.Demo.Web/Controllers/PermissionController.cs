@@ -10,13 +10,13 @@ using System.Web.Mvc;
 
 namespace Grit.RBAC.Demo.Web.Controllers
 {
-    public class PermssionController : Controller
+    public class PermissionController : Controller
     {
         private IRBACService RBACService { get; set; }
         private IRBACWriteService RBACWriteService { get; set; }
         private ITreeService TreeService { get; set; }
 
-        public PermssionController(IRBACService rbacService,
+        public PermissionController(IRBACService rbacService,
             IRBACWriteService rbacWriteService,
             ITreeService treeService)
         {
@@ -42,6 +42,22 @@ namespace Grit.RBAC.Demo.Web.Controllers
             var root = new JsTreeParser().Parse(Constants.PERMISSION_TREE_ID, nodes);
             TreeService.SaveTree(root);
             return new JsonNetResult(nodes);
+        }
+
+        [HttpGet]
+        public ActionResult Index()
+        {
+            var permissions = RBACService.GetPermissions();
+            var root = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
+            var jsTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
+                .Build(root, permissions);
+            jsTree.Each(x =>
+            {
+                if (x == jsTree) return;
+                x.state.disabled = true;
+            });
+            ViewBag.Tree = jsTree.children;
+            return View();
         }
     }
 }
