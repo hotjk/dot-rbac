@@ -2,14 +2,13 @@
     ViewBag.RequireJsBundles = new string[] { "jstree-group-js" };
 }
 @using Grit.Utility.Web.Json
-<h2>@ViewBag.Title</h2>
 @Styles.Render("~/Content/jstree/themes/proton/style")
 @section scripts {
     <script>
         require(['jquery', 'bootstrap', 'jstree-group-js'],
-            function ($, bootstrap, app) {
+            function ($, bootstrap, treeGroup) {
                 $(document).ready(function () {
-                    app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
+                    var app = treeGroup($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
                     $("#btn_save").on('click', function(){
                         $.ajax({
                             url: "@Url.Action("Group")",
@@ -28,9 +27,14 @@
     </script>
 }
 
-<div class="row">
-    <button type="button" class="btn btn-default pull-right" id="btn_save">Save</button>
-</div>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <button type="button" class="btn btn-default navbar-btn pull-right" id="btn_save">Save</button>
+        </div>
+    </div>
+</nav>
+
 <div class="row">
     <div id="ctl_tree" class="col-md-12"></div>
 </div>

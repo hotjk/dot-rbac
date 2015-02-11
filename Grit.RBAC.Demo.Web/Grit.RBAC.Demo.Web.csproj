@@ -129,6 +129,7 @@
     <Compile Include="App_Start\NinjectDependencyResolver.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\OtherController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
@@ -216,6 +217,8 @@
     <Content Include="Views\Role\Group.cshtml" />
     <Content Include="Views\Role\Map.cshtml" />
     <Content Include="Views\Permission\Index.cshtml" />
+    <Content Include="Views\Other\Lookup.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,4 +1,5 @@
-﻿define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
+﻿// singleton
+define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
     'use strict';
     var DUMMY_OPTION = "<option value=''></option>";
     var SEPERATPR = "&nbsp;&nbsp;&nbsp;&nbsp;";

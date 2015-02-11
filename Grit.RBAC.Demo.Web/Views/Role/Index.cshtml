@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.RequireJsBundles = new string[] { "jstree-static-js" };
+}
+@using Grit.Utility.Web.Json
+@Styles.Render("~/Content/jstree/themes/proton/style")
+@section scripts {
+    <script>
+        require(['jquery', 'bootstrap', 'jstree-static-js'],
+            function ($, bootstrap, treeStatic) {
+                $(document).ready(function () {
+                    var roleTreeApp = treeStatic($('#ctl_role_tree'), @Html.Json(@ViewBag.Tree as object));
+                    var permissionTreeApp = null;// = treeStatic($('#ctl_permission_tree'), []);
+                    roleTreeApp.treeControl.on('select_node.jstree', function (e, data) {
+                        var roleId = roleTreeApp.tree.get_node(data.selected[0]).data.content;
+                        $.getJSON('@Url.Action("Permission")/' + roleId)
+                        .done(function(data) {
+                            if(permissionTreeApp != null) {
+                                permissionTreeApp.tree.destroy();
+                            }
+                            permissionTreeApp = treeStatic($('#ctl_permission_tree'), data);
+                        });
+                    }).on('deselect_node.jstree', function (e, data) {
+                        if(permissionTreeApp != null) {
+                            permissionTreeApp.tree.destroy();
+                        }
+                    });
+                });
+            });
+    </script>
+}
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            @Html.ActionLink("Group", "Group", null, new { @class = "btn btn-default navbar-btn" })
+            @Html.ActionLink("Map", "Map", null, new { @class = "btn btn-default navbar-btn" })
+        </div>
+    </div>
+</nav>
+
+<div class="row">
+    <div id="ctl_role_tree" class="col-md-6"></div>
+    <div id="ctl_permission_tree" class="col-md-6"></div>
+</div>
+

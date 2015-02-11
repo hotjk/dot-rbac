@@ -38,6 +38,15 @@ namespace Grit.RBAC
             return this;
         }
 
+        public bool HavePermission(int permission)
+        {
+            if (Permissions.Any(n => n.PermissionId == permission))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public string Debug(int indent=0)
         {
             StringBuilder sb = new StringBuilder();

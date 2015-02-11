@@ -1,17 +1,14 @@
 ﻿@{
-    ViewBag.Title = "Map";
     ViewBag.RequireJsBundles = new string[] { "jstree-map-js" };
 }
 @using Grit.Utility.Web.Json
-<h2>@ViewBag.Title</h2>
-
 <link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
 @section scripts {
     <script>
     require(['jquery', 'bootstrap', 'jstree-map-js'],
-        function ($, bootstrap, app) {
+        function ($, bootstrap, treeMap) {
             $(document).ready(function () {
-                app.init($('#ctl_tree_left'), $('#ctl_tree_right'),
+                var app = treeMap($('#ctl_tree_left'), $('#ctl_tree_right'),
                     @Html.Json(@ViewBag.LeftTree as object),
                         @Html.Json(@ViewBag.RightTree as object));
                     $("#btn_save").on('click', function(){
@@ -31,9 +28,15 @@
             });
     </script>
 }
-<div class="row">
-    <button type="button" class="btn btn-default pull-right" id="btn_save">Save</button>
-</div>
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <button type="button" class="btn btn-default navbar-btn pull-right" id="btn_save">Save</button>
+        </div>
+    </div>
+</nav>
+
 <div class="row">
     <div id="ctl_tree_left" class="col-md-6"></div>
     <div id="ctl_tree_right" class="col-md-6"></div>

@@ -24,6 +24,24 @@ namespace Grit.RBAC.Demo.Web.Controllers
             RBACWriteService = rbacWriteService;
             TreeService = treeService;
         }
+
+        [HttpGet]
+        public ActionResult Index()
+        {
+            var permissions = RBACService.GetPermissions();
+            var root = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
+            var jsTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
+                .Build(root, permissions);
+
+            jsTree.Each(x =>
+            {
+                if (x == jsTree) return;
+                x.state.disabled = true;
+            });
+
+            ViewBag.Tree = jsTree.children;
+            return View();
+        }
         
         [HttpGet]
         public ActionResult Group()
@@ -42,22 +60,6 @@ namespace Grit.RBAC.Demo.Web.Controllers
             var root = new JsTreeParser().Parse(Constants.PERMISSION_TREE_ID, nodes);
             TreeService.SaveTree(root);
             return new JsonNetResult(nodes);
-        }
-
-        [HttpGet]
-        public ActionResult Index()
-        {
-            var permissions = RBACService.GetPermissions();
-            var root = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
-            var jsTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
-                .Build(root, permissions);
-            jsTree.Each(x =>
-            {
-                if (x == jsTree) return;
-                x.state.disabled = true;
-            });
-            ViewBag.Tree = jsTree.children;
-            return View();
         }
     }
 }

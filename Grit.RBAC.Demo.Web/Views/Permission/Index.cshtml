@@ -2,19 +2,25 @@
     ViewBag.RequireJsBundles = new string[] { "jstree-static-js" };
 }
 @using Grit.Utility.Web.Json
-<h2>@ViewBag.Title</h2>
-
 @Styles.Render("~/Content/jstree/themes/proton/style")
 @section scripts {
     <script>
         require(['jquery', 'bootstrap', 'jstree-static-js'],
-            function ($, bootstrap, app) {
+            function ($, bootstrap, treeStatic) {
                 $(document).ready(function () {
-                    app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
+                    var app = treeStatic($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
                 });
             });
     </script>
 }
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            @Html.ActionLink("Group", "Group", null, new { @class = "btn btn-default navbar-btn" })
+        </div>
+    </div>
+</nav>
 
 <div class="row">
     <div id="ctl_tree" class="col-md-12"></div>
