@@ -44,6 +44,12 @@
                 var json_data = $tree.get_json('#', { 'no_state': true });
                 pick(json_data, ['id', 'data', 'children']);
                 return json_data;
+            },
+            destroy: function () {
+                if ($tree != null) {
+                    $tree.destroy();
+                    $tree = null;
+                }
             }
         }
     };

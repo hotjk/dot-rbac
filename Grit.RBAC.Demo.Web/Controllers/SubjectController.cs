@@ -59,6 +59,28 @@ namespace Grit.RBAC.Demo.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult DirectPermission(int id)
+        {
+            var subject = RBACService.GetSubject(id, true, true, true);
+            var permissions = RBACService.GetPermissions();
+
+            var treePermission = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
+            var jsTreePermission = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
+                .Build(treePermission, permissions);
+            jsTreePermission.Each(x =>
+            {
+                if (x == jsTreePermission) return;
+                x.state.disabled = true;
+                if (subject.HaveDirectPermission(x.data.content))
+                {
+                    x.state.selected = true;
+                }
+            });
+
+            return new JsonNetResult(jsTreePermission.children);
+        }
+
+        [HttpGet]
         public ActionResult Permission(int id)
         {
             var subject = RBACService.GetSubject(id, true, true, true);

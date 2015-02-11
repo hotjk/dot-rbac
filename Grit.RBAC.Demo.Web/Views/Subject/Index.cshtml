@@ -10,29 +10,41 @@
                 $(document).ready(function () {
                     var subjectTreeApp = treeStatic($('#ctl_subject_tree'), @Html.Json(@ViewBag.Tree as object));
                     var roleTreeApp = null;
+                    var directPermissionTreeApp = null;
                     var permissionTreeApp = null;
                     subjectTreeApp.treeControl.on('select_node.jstree', function (e, data) {
                         var found = subjectTreeApp.tree.get_node(data.selected[0]).data.content;
                         $.getJSON('@Url.Action("Role")/' + found)
                             .done(function(data) {
                                 if(roleTreeApp != null) {
-                                    roleTreeApp.tree.destroy();
+                                    roleTreeApp.destroy();
                                 }
                                 roleTreeApp = treeStatic($('#ctl_role_tree'), data);
+                            });
+                        $.getJSON('@Url.Action("DirectPermission")/' + found)
+                            .done(function(data) {
+                                if(directPermissionTreeApp != null) {
+                                    directPermissionTreeApp.destroy();
+                                }
+                                directPermissionTreeApp = treeStatic($('#ctl_direct_permission_tree'), data);
                             });
                         $.getJSON('@Url.Action("Permission")/' + found)
                             .done(function(data) {
                                 if(permissionTreeApp != null) {
-                                    permissionTreeApp.tree.destroy();
+                                    permissionTreeApp.destroy();
                                 }
                                 permissionTreeApp = treeStatic($('#ctl_permission_tree'), data);
                             });
+
                     }).on('deselect_node.jstree', function (e, data) {
                         if(roleTreeApp != null) {
-                            roleTreeApp.tree.destroy();
+                            roleTreeApp.destroy();
+                        }
+                        if(directPermissionTreeApp != null) {
+                            directPermissionTreeApp.destroy();
                         }
                         if(permissionTreeApp != null) {
-                            permissionTreeApp.tree.destroy();
+                            permissionTreeApp.destroy();
                         }
                     });
 
@@ -50,15 +62,28 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <div class="collapse navbar-collapse">
-            @Html.ActionLink("Group", "Group", null, new { @class = "btn btn-default navbar-btn" })
-            <button type="button" class="btn btn-default navbar-btn" id="btn_map">Roles & Permissions</button>
+            @Html.ActionLink("Grouping Subjects", "Group", null, new { @class = "btn btn-default navbar-btn" })
+            <button type="button" class="btn btn-default navbar-btn" id="btn_map">Grant Roles & Permissions</button>
         </div>
     </div>
 </nav>
 
 <div class="row">
-    <div id="ctl_subject_tree" class="col-md-4"></div>
-    <div id="ctl_role_tree" class="col-md-4"></div>
-    <div id="ctl_permission_tree" class="col-md-4"></div>
+    <div class="col-md-3">
+        <h4>Subjects</h4>
+        <div id="ctl_subject_tree"></div>
+    </div>
+    <div class="col-md-3">
+        <h4>Corresponding Roles</h4>
+        <div id ="ctl_role_tree"></div>
+    </div>
+    <div class="col-md-3">
+        <h4>Corresponding Permissions</h4>
+        <div id="ctl_direct_permission_tree"></div>
+    </div>
+    <div class="col-md-3">
+        <h4>Combined Permissions</h4>
+        <div id="ctl_permission_tree"></div>
+    </div>
 </div>
 
