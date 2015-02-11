@@ -131,8 +131,8 @@ WHERE sr.SubjectId = @SubjectId;", new { SubjectId = id });
                     var permissions = connection.Query<Permission>(
     @"SELECT p.PermissionId, p.Name
 FROM rbac_permission p 
-JOIN rbac_subject_permission rp ON p.PermissionId = sp.PermissionId 
-WHERE sp.SubjectId = @SubjectId;", new { SubjectId = id });
+JOIN rbac_subject_permission rp ON p.PermissionId = rp.PermissionId 
+WHERE rp.SubjectId = @SubjectId;", new { SubjectId = id });
                     subject.Permissions.AddRange(permissions);
                 }
                 return subject;

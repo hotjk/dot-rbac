@@ -159,6 +159,7 @@
     <Content Include="Content\jstree\themes\proton\style.min.css" />
     <Content Include="Content\jstree\themes\proton\throbber.gif" />
     <Content Include="Scripts\app\home\index.js" />
+    <Content Include="Scripts\app\jstree.select.js" />
     <Content Include="Scripts\app\jstree.static.js" />
     <Content Include="Scripts\app\jstree.group.js" />
     <Content Include="Scripts\app\jstree.lookup.js" />
@@ -194,9 +195,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\app\jstree.map.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Home\Group.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -210,15 +208,15 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Home\Map.cshtml" />
-    <Content Include="Views\Home\Lookup.cshtml" />
-    <Content Include="Views\Home\Static.cshtml" />
     <Content Include="Views\Permission\Group.cshtml" />
     <Content Include="Views\Role\Group.cshtml" />
     <Content Include="Views\Role\Map.cshtml" />
     <Content Include="Views\Permission\Index.cshtml" />
     <Content Include="Views\Other\Lookup.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Subject\Index.cshtml" />
+    <Content Include="Views\Subject\Group.cshtml" />
+    <Content Include="Views\Subject\RolePermission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

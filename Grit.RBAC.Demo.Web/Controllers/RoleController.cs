@@ -82,15 +82,15 @@ namespace Grit.RBAC.Demo.Web.Controllers
         public ActionResult Map()
         {
             var roles = RBACService.GetRoles(true);
-            var leftTree = TreeService.GetTree(Constants.ROLE_TREE_ID);
+            var treeRole = TreeService.GetTree(Constants.ROLE_TREE_ID);
             ViewBag.LeftTree = new JsTreeBuilder<Role>(x => x.Name, x => x.RoleId, x=>x.Permissions.Select(n=>n.PermissionId))
-                .Build(leftTree, roles)
+                .Build(treeRole, roles)
                 .children;
 
             var permissions = RBACService.GetPermissions();
-            var rightTree = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
+            var treePermission = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
             ViewBag.RightTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
-                .Build(rightTree, permissions)
+                .Build(treePermission, permissions)
                 .children;
 
             return View();

@@ -77,6 +77,16 @@ namespace Grit.RBAC
             return permissions.ToByte();
         }
 
+        public bool HaveRole(int role)
+        {
+            return Roles.Any(n => n.RoleId == role);
+        }
+
+        public bool HaveDirectPermission(int permission)
+        {
+            return Permissions.Any(n => n.PermissionId == permission);
+        }
+
         public bool HavePermission(int permission)
         {
             if (Permissions.Any(n => n.PermissionId == permission))

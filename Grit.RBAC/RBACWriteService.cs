@@ -44,5 +44,10 @@ namespace Grit.RBAC
         {
             RBACWriteRepository.SaveSubjectRoles(subject);
         }
+
+        public void SaveSubjectPermissions(Subject subject)
+        {
+            RBACWriteRepository.SaveSubjectPermissions(subject);
+        }
     }
 }

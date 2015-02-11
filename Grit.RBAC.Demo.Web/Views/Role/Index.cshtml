@@ -9,10 +9,10 @@
             function ($, bootstrap, treeStatic) {
                 $(document).ready(function () {
                     var roleTreeApp = treeStatic($('#ctl_role_tree'), @Html.Json(@ViewBag.Tree as object));
-                    var permissionTreeApp = null;// = treeStatic($('#ctl_permission_tree'), []);
+                    var permissionTreeApp = null;
                     roleTreeApp.treeControl.on('select_node.jstree', function (e, data) {
-                        var roleId = roleTreeApp.tree.get_node(data.selected[0]).data.content;
-                        $.getJSON('@Url.Action("Permission")/' + roleId)
+                        var found = roleTreeApp.tree.get_node(data.selected[0]).data.content;
+                        $.getJSON('@Url.Action("Permission")/' + found)
                         .done(function(data) {
                             if(permissionTreeApp != null) {
                                 permissionTreeApp.tree.destroy();

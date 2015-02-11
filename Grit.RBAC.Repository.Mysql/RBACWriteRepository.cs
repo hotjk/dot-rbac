@@ -141,7 +141,7 @@ VALUES (@SubjectId, @RoleId);",
 WHERE SubjectId = @SubjectId;", subject);
                     connection.Execute(
 @"INSERT INTO rbac_subject_permission (SubjectId, PermissionId)
-VALUES (@SubjectId, @PermissionId;", subject.Permissions);
+VALUES (@SubjectId, @PermissionId);", subject.Permissions.Select(n => new { SubjectId = subject.SubjectId, PermissionId = n.PermissionId }));
                     transaction.Commit();
                 }
             }

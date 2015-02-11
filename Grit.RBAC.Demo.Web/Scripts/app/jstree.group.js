@@ -38,6 +38,8 @@
         });
         $tree = $treeControl.jstree(true);
         return {
+            treeControl: $treeControl,
+            tree: $tree,
             data: function () {
                 var json_data = $tree.get_json('#', { 'no_state': true });
                 pick(json_data, ['id', 'data', 'children']);

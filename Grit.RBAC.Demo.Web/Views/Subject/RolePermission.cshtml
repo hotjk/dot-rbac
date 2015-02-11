@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.RequireJsBundles = new string[] { "jstree-select-js" };
+}
+@using Grit.Utility.Web.Json
+<link href="~/Content/jstree/themes/proton/style.css" rel="stylesheet" />
+@section scripts {
+    <script>
+        require(['jquery', 'bootstrap', 'jstree-select-js'],
+    function ($, bootstrap, treeSelect) {
+        $(document).ready(function () {
+            var roleTree = treeSelect($('#ctl_tree_role'), @Html.Json(@ViewBag.RoleTree as object));
+            var permissionTree = treeSelect($('#ctl_tree_permission'), @Html.Json(@ViewBag.PermissionTree as object));
+            $("#btn_save").on('click', function(){
+                var data = [roleTree.data(), permissionTree.data()];
+                $.ajax({
+                    url: '@Url.Action("RolePermission", "Subject", new { id = ViewBag.SubjectId })',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    processData: false,
+                    contentType: 'application/json; charset=utf-8'
+                }).done(function (data) {
+                }).fail(function (data) {
+                }).always(function (data) {
+                });
+            });
+        });
+    });
+    </script>
+}
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <button type="button" class="btn btn-default navbar-btn pull-right" id="btn_save">Save</button>
+        </div>
+    </div>
+</nav>
+
+<div class="row">
+    <div id="ctl_tree_role" class="col-md-6"></div>
+    <div id="ctl_tree_permission" class="col-md-6"></div>
+</div>
+
+

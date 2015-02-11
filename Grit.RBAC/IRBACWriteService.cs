@@ -16,5 +16,6 @@ namespace Grit.RBAC
 
         bool SaveSubject(Subject subject);
         void SaveSubjectRoles(Subject subject);
+        void SaveSubjectPermissions(Subject subject);
     }
 }
