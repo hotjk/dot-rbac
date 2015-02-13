@@ -27,23 +27,23 @@ namespace Grit.Tree.UITree
             tree.root[0] = node.Tree;
 
             int max = 0;
-            GetMaxDeepth(node, 0, ref max);
-            tree.deepth = max;
+            GetMaxDepth(node, 0, ref max);
+            tree.depth = max;
 
             return tree;
         }
 
-        public void GetMaxDeepth(Node node, int deepth, ref int max)
+        public void GetMaxDepth(Node node, int depth, ref int max)
         {
-            if(deepth > max)
+            if(depth > max)
             {
-                max = deepth;
+                max = depth;
             }
             if(node.Children != null)
             {
                 foreach(var child in node.Children)
                 {
-                    GetMaxDeepth(child, deepth+1, ref max);
+                    GetMaxDepth(child, depth+1, ref max);
                 }
             }
         }

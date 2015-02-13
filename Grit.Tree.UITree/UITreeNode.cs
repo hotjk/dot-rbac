@@ -8,7 +8,7 @@ namespace Grit.Tree.UITree
 {
     public class UITreeNode
     {
-        public int deepth { get; set; }
+        public int depth { get; set; }
         public Object[] root { get; set; }
     }
 }

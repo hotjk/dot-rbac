@@ -5,7 +5,7 @@ define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
     var SEPERATPR = "&nbsp;&nbsp;&nbsp;&nbsp;";
     var STEP_JOIN_WITH = ".";
     var INDEX_ID = 0, INDEX_NAME = 1, INDEX_OBSOLETE = 2, INDEX_CHILDREN = 3;
-    var INDEX_AUTO_ID = 0, INDEX_AUTO_NAME = 1, INDEX_AUTO_DEEPTH = 2, INDEX_AUTO_OBSOLETE = 3;
+    var INDEX_AUTO_ID = 0, INDEX_AUTO_NAME = 1, INDEX_AUTO_DEPTH = 2, INDEX_AUTO_OBSOLETE = 3;
     var _lookups = [];
 
     // find node in node tree.
@@ -54,16 +54,16 @@ define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
         });
     }
 
-    var _bindSelect = function (tree, textbox, select_array, deepth, parent, orignalValuePath, onlyLeafCanBeSelect, hideUnusedSelect) {
-        var select = select_array[deepth];
+    var _bindSelect = function (tree, textbox, select_array, depth, parent, orignalValuePath, onlyLeafCanBeSelect, hideUnusedSelect) {
+        var select = select_array[depth];
         if (parent == null || parent[INDEX_CHILDREN] == null) {
-            _clearSelects(select_array, deepth);
+            _clearSelects(select_array, depth);
             if (hideUnusedSelect) {
                 _hideSelects(select_array);
             }
             return;
         }
-        _clearSelects(select_array, deepth);
+        _clearSelects(select_array, depth);
         select.append(DUMMY_OPTION);
         $.each(parent[INDEX_CHILDREN], function (k, v) {
             if (v[INDEX_OBSOLETE] == 0 || $.grep(orignalValuePath, function (e) { return e[INDEX_ID] == v[INDEX_ID]; }).length != 0) {
@@ -76,10 +76,10 @@ define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
             if (val != "") {
                 node = _findChild(parent, parseInt(val, 10));
             }
-            _bindSelect(tree, textbox, select_array, deepth + 1, node, orignalValuePath, onlyLeafCanBeSelect, hideUnusedSelect);
+            _bindSelect(tree, textbox, select_array, depth + 1, node, orignalValuePath, onlyLeafCanBeSelect, hideUnusedSelect);
             if (!onlyLeafCanBeSelect || (node != null && node[INDEX_CHILDREN] == null)) {
-                if (val == "" && deepth != 0) {
-                    val = select_array[deepth - 1].val();
+                if (val == "" && depth != 0) {
+                    val = select_array[depth - 1].val();
                 }
                 textbox.val(val).blur();
             }
@@ -103,7 +103,7 @@ define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
         var val = parseInt(textbox.val(), 10);
         $.each(dataSource, function (k, v) {
             if (v[INDEX_AUTO_OBSOLETE] == 0 || v[INDEX_ID] == val) {
-                select.append('<option value="' + v[INDEX_ID] + '">' + Array(v[INDEX_AUTO_DEEPTH]).join(seperator) + v[INDEX_NAME] + '</option>');
+                select.append('<option value="' + v[INDEX_ID] + '">' + Array(v[INDEX_AUTO_DEPTH]).join(seperator) + v[INDEX_NAME] + '</option>');
             }
         });
         select.unbind().bind('change', function () {
@@ -135,11 +135,11 @@ define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
         return tree;
     }
 
-    var _flotNode = function (node, list, deepth) {
-        list.push([node[INDEX_ID], node[INDEX_NAME], deepth, node[INDEX_OBSOLETE]]);
+    var _flotNode = function (node, list, depth) {
+        list.push([node[INDEX_ID], node[INDEX_NAME], depth, node[INDEX_OBSOLETE]]);
         if (node[INDEX_CHILDREN] != null) {
             $.each(node[INDEX_CHILDREN], function (i, v) {
-                _flotNode(v, list, deepth + 1);
+                _flotNode(v, list, depth + 1);
             });
         }
     }
@@ -178,7 +178,7 @@ define('jstree-lookup-js', ['jquery', 'jstree'], function ($, jstree) {
             var select_array = [];
             var container = $("<div class='lookup_container'></div>");
             textbox.before(container);
-            for (var i = 0; i < tree.deepth; i++) {
+            for (var i = 0; i < tree.depth; i++) {
                 var select = $("<select class='form-control'></select>");
                 select_array.push(select);
                 container.append(select);
