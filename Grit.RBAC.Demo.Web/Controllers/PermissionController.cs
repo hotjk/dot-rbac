@@ -32,7 +32,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
             var root = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
             var jsTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
                 .Build(root, permissions);
-
+            
             jsTree.Each(x =>
             {
                 if (x == jsTree) return;
