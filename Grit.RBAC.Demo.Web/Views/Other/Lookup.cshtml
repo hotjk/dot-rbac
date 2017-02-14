@@ -1,7 +1,8 @@
 ﻿@{
-    ViewBag.RequireJsBundles = new string[] { "jstree-lookup-js" };
+    ViewBag.RequireJsBundles = new string[] { "jstree-lookup-js", "jstree-static-js" };
 }
 @using Grit.Utility.Web.Json
+@Styles.Render("~/Content/jstree/themes/proton/style")
 <h2>@ViewBag.Title</h2>
 @section styles {
     <style>
@@ -16,28 +17,37 @@
 }
 @section scripts {
     <script>
-        require(['jquery', 'bootstrap', 'jstree-lookup-js'],
-        function ($, bootstrap, lookup) {
-            $(document).ready(function () {
-                lookup.AddTree(@Html.Json(@ViewBag.Tree as object));
-                lookup.BindLookup($('#demo1'), @Constants.PERMISSION_TREE_ID, true);
-                lookup.BindLookup($('#demo2'), @Constants.PERMISSION_TREE_ID);
-                lookup.BindLookup($('#demo3'), @Constants.PERMISSION_TREE_ID, true, true);
-                lookup.BindLookup($('#demo10'), @Constants.PERMISSION_TREE_ID, false, true);
-                lookup.BindFlatLookup($('#demo6'), @Constants.PERMISSION_TREE_ID);
+    require(['jquery', 'bootstrap', 'jstree-lookup-js', 'jstree-static-js'],
+    function ($, bootstrap, lookup, treeStatic) {
+        $(document).ready(function () {
+            lookup.AddTree(@Html.Json(@ViewBag.Tree as object));
+            lookup.BindLookup($('#demo1'), @Constants.PERMISSION_TREE_ID, true);
+            lookup.BindLookup($('#demo2'), @Constants.PERMISSION_TREE_ID);
+            lookup.BindLookup($('#demo3'), @Constants.PERMISSION_TREE_ID, true, true);
+            lookup.BindLookup($('#demo10'), @Constants.PERMISSION_TREE_ID, false, true);
+            lookup.BindFlatLookup($('#demo6'), @Constants.PERMISSION_TREE_ID);
 
-                $('#demo1').bind('blur', function () {
-                    $('#demo1_label').text($(this).val());
-                }).blur();
-                $('#demo2').bind('blur', function () {
-                    $('#demo2_label').text($(this).val());
-                }).blur();
-                $('#demo3').bind('blur', function () {
-                    $('#demo3_label').text($(this).val());
-                }).blur();
-                $('#demo10').bind('blur', function () {
-                    $('#demo10_label').text($(this).val());
-                }).blur();
+            $('#demo1').bind('blur', function () {
+                $('#demo1_label').text($(this).val());
+            }).blur();
+            $('#demo2').bind('blur', function () {
+                $('#demo2_label').text($(this).val());
+            }).blur();
+            $('#demo3').bind('blur', function () {
+                $('#demo3_label').text($(this).val());
+            }).blur();
+            $('#demo10').bind('blur', function () {
+                $('#demo10_label').text($(this).val());
+            }).blur();
+            $('#demo6').bind('blur', function () {
+                $('#demo6_label').text($(this).val());
+            }).blur();
+
+            var demo11 = treeStatic($('#demo11'), @Html.Json(@ViewBag.jsTree as object));
+            demo11.treeControl.on('select_node.jstree', function (e, data) {
+                var found = demo11.tree.get_node(data.selected[0]).data.content;
+                $('#demo11_label').text(found);
+            });
             });
         });
     </script>
@@ -90,11 +100,21 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">
                 Drop down list
+                <span id="demo6_label"></span>
             </label>
             <div class="col-sm-4">
                 <input type="text" class="js-flot-lookup form-control" value="9" id="demo6" />
             </div>
         </div>
         <hr />
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                Tree
+                <span id="demo11_label"></span>
+            </label>
+            <div class="col-sm-4" id="demo11">
+            </div>
+        </div>
     </div>
 </form>
