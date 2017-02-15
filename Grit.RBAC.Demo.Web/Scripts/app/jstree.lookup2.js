@@ -1,5 +1,5 @@
 ﻿// singleton
-define('jstree-lookup-js', ['jquery'], function ($) {
+define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeStatic) {
     'use strict';
     var DUMMY_OPTION = "<option value=''></option>";
     var SEPERATPR = "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -7,6 +7,7 @@ define('jstree-lookup-js', ['jquery'], function ($) {
     var INDEX_ID = 0, INDEX_NAME = 1, INDEX_OBSOLETE = 2, INDEX_CHILDREN = 3;
     var INDEX_AUTO_ID = 0, INDEX_AUTO_NAME = 1, INDEX_AUTO_DEPTH = 2, INDEX_AUTO_OBSOLETE = 3;
     var _trees = {};
+    var _jsTrees = {};
 
     // find node in node tree.
     var _findChild = function (node, id) {
@@ -142,6 +143,10 @@ define('jstree-lookup-js', ['jquery'], function ($) {
             _trees[key] = tree;
         },
 
+        AddJsTree: function(key, tree) {
+            _jsTrees[key] = tree;
+        },
+
         // Build one drop down list, all tree node will be flat and indentation.
         BindFlatLookup: function (textbox, key, seperator) {
             var tree = _trees[key];
@@ -187,6 +192,29 @@ define('jstree-lookup-js', ['jquery'], function ($) {
                 _setValues(tree, select_array, textbox.val());
             });
             textbox.hide();
+        },
+
+        BindJsTree: function (textbox, key) {
+            var tree = _jsTrees[key];
+            if (tree == null) {
+                return true;
+            }
+
+            var container = $("<div class='lookup_container'></div>");
+            textbox.before(container);
+
+            var theTree = treeStatic(container, tree);
+            theTree.treeControl.on('select_node.jstree', function (e, data) {
+                var found = theTree.tree.get_node(data.selected[0]).data.content;
+                textbox.val(found).blur();
+            }).on('deselect_node.jstree', function (e, data) {
+                textbox.val('').blur();
+            });
+
+            textbox.unbind('change').bind('change', function () {
+                theTree.select(textbox.val());
+            }).hide();
+            setTimeout(function () { textbox.change(); }, 1000);
         },
 
         Contain: function (treeID, nodeValue) {

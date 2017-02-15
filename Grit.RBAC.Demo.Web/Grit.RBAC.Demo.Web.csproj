@@ -161,6 +161,7 @@
     <Content Include="Content\jstree\themes\proton\style.min.css" />
     <Content Include="Content\jstree\themes\proton\throbber.gif" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\app\jstree.lookup2.js" />
     <Content Include="Scripts\app\jstree.select.js" />
     <Content Include="Scripts\app\jstree.static.js" />
     <Content Include="Scripts\app\jstree.group.js" />

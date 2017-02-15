@@ -21,6 +21,21 @@
         }
     };
 
+    function find(nodes, data) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].data.content == data) {
+                return nodes[i].id;
+            }
+            if (nodes[i].children) {
+                var found = find(nodes[i].children, data);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
     var App = function (treeControl, treeJson) {
         var $treeControl = treeControl;
         $treeControl.jstree({
@@ -50,6 +65,11 @@
                     $tree.destroy();
                     $tree = null;
                 }
+            },
+            select: function (v) {
+                var data = $tree.get_json('#', { 'no_state': true });
+                var id = find(data, v);
+                $tree.select_node(id, true);
             }
         }
     };

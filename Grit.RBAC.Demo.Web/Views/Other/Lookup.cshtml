@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.RequireJsBundles = new string[] { "jstree-lookup-js", "jstree-static-js" };
+    ViewBag.RequireJsBundles = new string[] { "jstree-lookup2-js", "jstree-static-js" };
 }
 @using Grit.Utility.Web.Json
 @Styles.Render("~/Content/jstree/themes/proton/style")
@@ -17,10 +17,10 @@
 }
 @section scripts {
     <script>
-    require(['jquery', 'bootstrap', 'jstree-lookup-js', 'jstree-static-js'],
+    require(['jquery', 'bootstrap', 'jstree-lookup2-js', 'jstree-static-js'],
     function ($, bootstrap, lookup, treeStatic) {
         $(document).ready(function () {
-            lookup.AddTree(@Html.Json(@ViewBag.Tree as object));
+            lookup.AddTree(@Constants.PERMISSION_TREE_ID, @Html.Json(@ViewBag.Tree as object));
             lookup.BindLookup($('#demo1'), @Constants.PERMISSION_TREE_ID, true);
             lookup.BindLookup($('#demo2'), @Constants.PERMISSION_TREE_ID);
             lookup.BindLookup($('#demo3'), @Constants.PERMISSION_TREE_ID, true, true);
@@ -43,14 +43,14 @@
                 $('#demo6_label').text($(this).val());
             }).blur();
 
-            var demo11 = treeStatic($('#demo11'), @Html.Json(@ViewBag.jsTree as object));
-            demo11.treeControl.on('select_node.jstree', function (e, data) {
-                var found = demo11.tree.get_node(data.selected[0]).data.content;
-                $('#demo11_label').text(found);
-            });
-            });
+            lookup.AddJsTree(@Constants.PERMISSION_TREE_ID, @Html.Json(@ViewBag.jsTree as object));
+            lookup.BindJsTree($('#demo12'), @Constants.PERMISSION_TREE_ID);
+            $('#demo12').bind('blur', function () {
+                $('#demo12_label').text($(this).val());
+            }).blur();
         });
-    </script>
+    });
+</script>
 }
 <form class="form-horizontal">
     <div class="row">
@@ -111,10 +111,10 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">
                 Tree
-                <span id="demo11_label"></span>
+                <span id="demo12_label"></span>
             </label>
-            <div class="col-sm-4" id="demo11">
+            <div class="col-sm-4">
+                <input type="text" class="js-tree form-control" value="4" id="demo12" />
             </div>
-        </div>
     </div>
 </form>
