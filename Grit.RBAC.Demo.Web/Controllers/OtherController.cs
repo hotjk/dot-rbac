@@ -34,7 +34,7 @@ namespace Grit.RBAC.Demo.Web.Controllers
                 .Build(root, permissions);
 
             ViewBag.jsTree = new JsTreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
-                .Build(root, permissions).children;
+                .Build(root, permissions);
 
             return View();
         }

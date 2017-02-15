@@ -36,6 +36,19 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
         return false;
     }
 
+    var _findTreeNode = function (node, value) {
+        if (node.data != null && node.data.content == value) {
+            return node;
+        }
+        if (node.children != null) {
+            for (var i = 0; i < node.children.length; i++) {
+                var found = _findTreeNode(node.children[i], value);
+                if (found != null) return found;
+            }
+        }
+        return null;
+    }
+
     // remove all options from all select.
     var _clearSelects = function (select_array, from) {
         for (var i = from; i < select_array.length; i++) {
@@ -203,7 +216,7 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
             var container = $("<div class='lookup_container'></div>");
             textbox.before(container);
 
-            var theTree = treeStatic(container, tree);
+            var theTree = treeStatic(container, tree.children);
             theTree.treeControl.on('select_node.jstree', function (e, data) {
                 var node = theTree.tree.get_node(data.selected[0]);
                 if (onlyLeafCanBeSelect && node.children.length > 0) {
@@ -215,12 +228,53 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
                 textbox.val(found).blur();
             }).on('deselect_node.jstree', function (e, data) {
                 textbox.val('').blur();
+            }).on('ready.jstree', function () {
+                theTree.select(textbox.val());
             });
 
             textbox.unbind('change').bind('change', function () {
                 theTree.select(textbox.val());
             }).hide();
-            setTimeout(function () { textbox.change(); }, 1000);
+        },
+
+        BindJsTreePicker: function (textbox, key, modal, title, onlyLeafCanBeSelect) {
+            var tree = _jsTrees[key];
+            if (tree == null) {
+                return true;
+            }
+
+            var container = $("<div class='lookup_container'></div>");
+            textbox.before(container);
+            var input = $("<input class='form-control' readonly></input>");
+            container.append(input);
+
+            textbox.unbind('change').bind('change', function () {
+                var node = _findTreeNode(tree, parseInt(textbox.val()));
+                input.val(node != null ? node.text : '');
+            }).change().hide();
+            
+            input.unbind('focus').bind('focus', function () {
+                modal.find('.modal-title').text(title);
+                var theTree = treeStatic(modal.find('.modal-body'), tree.children);
+                theTree.treeControl.on('select_node.jstree', function (e, data) {
+                    var node = theTree.tree.get_node(data.selected[0]);
+                    if (onlyLeafCanBeSelect && node.children.length > 0) {
+                        theTree.deselect();
+                        textbox.val('').change().blur();
+                        return;
+                    }
+                    var found = node.data.content;
+                    textbox.val(found).change().blur();
+                }).on('deselect_node.jstree', function (e, data) {
+                    textbox.val('').change().blur();
+                }).on('ready.jstree', function () {
+                    theTree.select(textbox.val());
+                });
+                
+                modal.modal().on('hidden.bs.modal', function (e) {
+                    theTree.destroy();
+                });
+            });
         },
 
         Contain: function (treeID, nodeValue) {

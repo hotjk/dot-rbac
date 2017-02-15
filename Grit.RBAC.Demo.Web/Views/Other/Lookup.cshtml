@@ -44,77 +44,151 @@
             }).blur();
 
             lookup.AddJsTree(@Constants.PERMISSION_TREE_ID, @Html.Json(@ViewBag.jsTree as object));
-            lookup.BindJsTree($('#demo12'), @Constants.PERMISSION_TREE_ID, true);
+            lookup.BindJsTree($('#demo11'), @Constants.PERMISSION_TREE_ID, true);
+            $('#demo11').bind('blur', function () {
+                $('#demo11_label').text($(this).val());
+            }).blur();
+
+
+            lookup.BindJsTreePicker($('#demo12'), @Constants.PERMISSION_TREE_ID, $('#myModal'), 'Tree Picker', false);
             $('#demo12').bind('blur', function () {
                 $('#demo12_label').text($(this).val());
+            }).blur();
+
+            lookup.BindJsTreePicker($('#demo13'), @Constants.PERMISSION_TREE_ID, $('#myModal'), 'Another Tree Picker', true);
+            $('#demo13').bind('blur', function () {
+                $('#demo13_label').text($(this).val());
             }).blur();
         });
     });
 </script>
 }
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Demo</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
 <form class="form-horizontal">
     <div class="row">
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                Select leaves
-                <span id="demo1_label"></span>
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-lookup" value="4" id="demo1" />
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Select leaves
+                        <span id="demo1_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-lookup" value="4" id="demo1" />
+                    </div>
+                </div>
+            </div>
+         </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Select branches and leaves
+                        <span id="demo2_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-lookup" value="7" id="demo2" />
+                    </div>
+                </div>
             </div>
         </div>
-
-        <hr />
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                Select branches and leaves
-                <span id="demo2_label"></span>
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-lookup" value="7" id="demo2" />
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Select leaves(hide)
+                        <span id="demo3_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-lookup" value="9" id="demo3" />
+                    </div>
+                </div>
             </div>
         </div>
-        <hr />
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                Select leaves(hide)
-                <span id="demo3_label"></span>
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-lookup" value="9" id="demo3" />
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Select branches and leaves(hide)
+                        <span id="demo10_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-lookup" value="9" id="demo10" />
+                    </div>
+                </div>
             </div>
         </div>
-
-        <hr />
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                Select branches and leaves(hide)
-                <span id="demo10_label"></span>
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-lookup" value="9" id="demo10" />
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Drop down list
+                        <span id="demo6_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-flot-lookup form-control" value="9" id="demo6" />
+                    </div>
+                </div>
             </div>
         </div>
-
-        <hr />
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                Drop down list
-                <span id="demo6_label"></span>
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-flot-lookup form-control" value="9" id="demo6" />
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Tree
+                        <span id="demo11_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-tree form-control" value="4" id="demo11" />
+                    </div>
+                </div>
             </div>
         </div>
-        <hr />
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">
-                Tree
-                <span id="demo12_label"></span>
-            </label>
-            <div class="col-sm-4">
-                <input type="text" class="js-tree form-control" value="4" id="demo12" />
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Tree Picker
+                        <span id="demo12_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-tree form-control" value="4" id="demo12" />
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        Another Tree Picker
+                        <span id="demo13_label"></span>
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="js-tree form-control" value="1" id="demo13" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
