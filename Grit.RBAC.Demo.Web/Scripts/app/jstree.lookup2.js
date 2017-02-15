@@ -194,7 +194,7 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
             textbox.hide();
         },
 
-        BindJsTree: function (textbox, key) {
+        BindJsTree: function (textbox, key, onlyLeafCanBeSelect) {
             var tree = _jsTrees[key];
             if (tree == null) {
                 return true;
@@ -205,7 +205,13 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
 
             var theTree = treeStatic(container, tree);
             theTree.treeControl.on('select_node.jstree', function (e, data) {
-                var found = theTree.tree.get_node(data.selected[0]).data.content;
+                var node = theTree.tree.get_node(data.selected[0]);
+                if (onlyLeafCanBeSelect && node.children.length > 0) {
+                    theTree.deselect();
+                    textbox.val('').blur();
+                    return;
+                }
+                var found = node.data.content;
                 textbox.val(found).blur();
             }).on('deselect_node.jstree', function (e, data) {
                 textbox.val('').blur();

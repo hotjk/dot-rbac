@@ -70,6 +70,9 @@
                 var data = $tree.get_json('#', { 'no_state': true });
                 var id = find(data, v);
                 $tree.select_node(id, true);
+            },
+            deselect: function () {
+                $tree.deselect_all();
             }
         }
     };

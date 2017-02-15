@@ -44,7 +44,7 @@
             }).blur();
 
             lookup.AddJsTree(@Constants.PERMISSION_TREE_ID, @Html.Json(@ViewBag.jsTree as object));
-            lookup.BindJsTree($('#demo12'), @Constants.PERMISSION_TREE_ID);
+            lookup.BindJsTree($('#demo12'), @Constants.PERMISSION_TREE_ID, true);
             $('#demo12').bind('blur', function () {
                 $('#demo12_label').text($(this).val());
             }).blur();
