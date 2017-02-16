@@ -1,33 +1,65 @@
-﻿// singleton
+﻿/*
+## tree structure
+{
+  "depth": 3, // max depth of tree
+  "root": [   // tree node, the root array should only have one node
+    8,        // node id
+    null,     // node name(text)
+    0,        // obsolete?
+    [         // children
+      ...
+    ]
+  ]
+}
+## tree demo
+{"depth":3,"root":[8,null,0,[[5,"Order",0,[[4,"Invoice",0],[2,"Pay Order",0,[[21,"Close Order",0]]],[3,"Shipment",0,[[22,"Copy",0]]]]],[1,"Create Order",0],[10,"Print",0],[20,"Query",0]]]}
+
+## jsTree structure
+{
+  "text": "Order",
+  "icon": null,
+  "data": {
+    "content": 5,
+    "elements": null
+  },
+  "children": [
+    ...
+  ]
+}
+## jsTree demo
+{"text":null,"icon":null,"data":null,"children":[{"text":"Order","icon":null,"data":{"content":5,"elements":null},"children":[{"text":"Invoice","icon":null,"data":{"content":4,"elements":null},"children":null,"state":{"opened":true,"disabled":false,"selected":false}},{"text":"Pay Order","icon":null,"data":{"content":2,"elements":null},"children":[{"text":"Close Order","icon":null,"data":{"content":21,"elements":null},"children":null,"state":{"opened":true,"disabled":false,"selected":false}}],"state":{"opened":true,"disabled":false,"selected":false}},{"text":"Shipment","icon":null,"data":{"content":3,"elements":null},"children":[{"text":"Copy","icon":null,"data":{"content":22,"elements":null},"children":null,"state":{"opened":true,"disabled":false,"selected":false}}],"state":{"opened":true,"disabled":false,"selected":false}}],"state":{"opened":true,"disabled":false,"selected":false}},{"text":"Create Order","icon":null,"data":{"content":1,"elements":null},"children":null,"state":{"opened":true,"disabled":false,"selected":false}},{"text":"Print","icon":null,"data":{"content":10,"elements":null},"children":null,"state":{"opened":true,"disabled":false,"selected":false}},{"text":"Query","icon":null,"data":{"content":20,"elements":null},"children":null,"state":{"opened":true,"disabled":false,"selected":false}}],"state":null}
+*/
+
 define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeStatic) {
     'use strict';
     var DUMMY_OPTION = "<option value=''></option>";
     var SEPERATPR = "&nbsp;&nbsp;&nbsp;&nbsp;";
     var STEP_JOIN_WITH = ".";
-    var INDEX_ID = 0, INDEX_NAME = 1, INDEX_OBSOLETE = 2, INDEX_CHILDREN = 3;
-    var INDEX_AUTO_ID = 0, INDEX_AUTO_NAME = 1, INDEX_AUTO_DEPTH = 2, INDEX_AUTO_OBSOLETE = 3;
+    var NODE_ID = 0, NODE_NAME = 1, NODE_OBSOLETE = 2, NODE_CHILDREN = 3;
+    var FLAT_ID = 0, FLAT_NAME = 1, FLAT_OBSOLETE = 2, FLAT_DEPTH = 3;
     var _trees = {};
     var _jsTrees = {};
 
     // find node in node tree.
     var _findChild = function (node, id) {
-        for (var i = 0; i < node[INDEX_CHILDREN].length; i++) {
-            if (node[INDEX_CHILDREN][i][INDEX_ID] == id) {
-                return node[INDEX_CHILDREN][i];
+        for (var i = 0; i < node[NODE_CHILDREN].length; i++) {
+            if (node[NODE_CHILDREN][i][NODE_ID] == id) {
+                return node[NODE_CHILDREN][i];
             }
         }
         return null;
     }
 
+    // find a node and return the node path.
     // path is a reference parameter.
     var _findValuePath = function (node, id, path) {
-        if (node[INDEX_ID] == id) {
+        if (node[NODE_ID] == id) {
             path.push(node);
             return true;
         }
-        if (node[INDEX_CHILDREN] != null) {
-            for (var i = 0; i < node[INDEX_CHILDREN].length; i++) {
-                if (_findValuePath(node[INDEX_CHILDREN][i], id, path)) {
+        if (node[NODE_CHILDREN] != null) {
+            for (var i = 0; i < node[NODE_CHILDREN].length; i++) {
+                if (_findValuePath(node[NODE_CHILDREN][i], id, path)) {
                     path.push(node);
                     return true;
                 }
@@ -36,6 +68,7 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
         return false;
     }
 
+    // find js tree node
     var _findTreeNode = function (node, value) {
         if (node.data != null && node.data.content == value) {
             return node;
@@ -56,21 +89,16 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
         }
     }
 
-    // hide not value option from all select.
+    // hide no value option from all select.
     var _hideSelects = function (select_array) {
         $.each(select_array, function (i, v) {
-            if (v.find('option').length <= 1) {
-                v.hide();
-            }
-            else {
-                v.show();
-            }
+            v.toggle(v.find('option').length > 0);
         });
     }
 
     var _bindSelect = function (tree, textbox, select_array, depth, parent, orignalValuePath, onlyLeafCanBeSelect, hideUnusedSelect) {
         var select = select_array[depth];
-        if (parent == null || parent[INDEX_CHILDREN] == null) {
+        if (parent == null || parent[NODE_CHILDREN] == null) {
             _clearSelects(select_array, depth);
             if (hideUnusedSelect) {
                 _hideSelects(select_array);
@@ -79,9 +107,9 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
         }
         _clearSelects(select_array, depth);
         select.append(DUMMY_OPTION);
-        $.each(parent[INDEX_CHILDREN], function (k, v) {
-            if (v[INDEX_OBSOLETE] == 0 || $.grep(orignalValuePath, function (e) { return e[INDEX_ID] == v[INDEX_ID]; }).length != 0) {
-                select.append('<option value="' + v[INDEX_ID] + '">' + v[INDEX_NAME] + '</option>');
+        $.each(parent[NODE_CHILDREN], function (k, v) {
+            if (v[NODE_OBSOLETE] == 0 || $.grep(orignalValuePath, function (e) { return e[NODE_ID] == v[NODE_ID]; }).length != 0) {
+                select.append('<option value="' + v[NODE_ID] + '">' + v[NODE_NAME] + '</option>');
             }
         });
         select.unbind().bind('change', function () {
@@ -91,7 +119,7 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
                 node = _findChild(parent, parseInt(val, 10));
             }
             _bindSelect(tree, textbox, select_array, depth + 1, node, orignalValuePath, onlyLeafCanBeSelect, hideUnusedSelect);
-            if (!onlyLeafCanBeSelect || (node != null && node[INDEX_CHILDREN] == null)) {
+            if (!onlyLeafCanBeSelect || (node != null && node[NODE_CHILDREN] == null)) {
                 if (val == "" && depth != 0) {
                     val = select_array[depth - 1].val();
                 }
@@ -116,8 +144,8 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
         select.append(DUMMY_OPTION);
         var val = parseInt(textbox.val(), 10);
         $.each(dataSource, function (k, v) {
-            if (v[INDEX_AUTO_OBSOLETE] == 0 || v[INDEX_ID] == val) {
-                select.append('<option value="' + v[INDEX_ID] + '">' + Array(v[INDEX_AUTO_DEPTH]).join(seperator) + v[INDEX_NAME] + '</option>');
+            if (v[FLAT_OBSOLETE] == 0 || v[FLAT_ID] == val) {
+                select.append('<option value="' + v[FLAT_ID] + '">' + Array(v[FLAT_DEPTH]).join(seperator) + v[FLAT_NAME] + '</option>');
             }
         });
         select.unbind().bind('change', function () {
@@ -131,20 +159,34 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
         _findValuePath(tree.root, value, path);
         path = path.slice(0, path.length - 1).reverse();
         if (path.length == 0) {
-            select_array[INDEX_ID].val('').change();
+            select_array[NODE_ID].val('').change();
         }
         else {
             for (var i = 0; i < path.length; i++) {
-                select_array[i].val(path[i][INDEX_ID]).change();
+                select_array[i].val(path[i][NODE_ID]).change();
             }
         }
     }
 
-
+    /*
+    Convert a node tree to flot node list
+    ## flot node list structure
+    [
+      [       // node
+        8,    // node id
+        null, // node text
+        0,    // depth
+        0     // obsolete?
+      ]
+    ...
+    ]    
+    ##flot node list demo
+    [[8, null, 0, 0], [5, "Order", 1, 0], [4, "Invoice", 2, 0], [2, "Pay Order", 2, 0], [21, "Close Order", 3, 0], [3, "Shipment", 2, 0], [22, "Copy", 3, 0], [1, "Create Order", 1, 0], [10, "Print", 1, 0], [20, "Query", 1, 0]]
+*/
     var _flotNode = function (node, list, depth) {
-        list.push([node[INDEX_ID], node[INDEX_NAME], depth, node[INDEX_OBSOLETE]]);
-        if (node[INDEX_CHILDREN] != null) {
-            $.each(node[INDEX_CHILDREN], function (i, v) {
+        list.push([node[NODE_ID], node[NODE_NAME], node[NODE_OBSOLETE], depth]);
+        if (node[NODE_CHILDREN] != null) {
+            $.each(node[NODE_CHILDREN], function (i, v) {
                 _flotNode(v, list, depth + 1);
             });
         }
@@ -275,15 +317,6 @@ define('jstree-lookup2-js', ['jquery', 'jstree-static-js'], function ($, treeSta
                     theTree.destroy();
                 });
             });
-        },
-
-        Contain: function (treeID, nodeValue) {
-            var tree = _trees[key];
-            if (tree == null) {
-                return true;
-            }
-            var path = [];
-            return _findValuePath(tree.root, nodeValue, path);
         }
     };
 });

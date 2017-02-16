@@ -45,12 +45,7 @@ define('jstree-lookup-js', ['jquery'], function ($) {
     // hide not value option from all select.
     var _hideSelects = function (select_array) {
         $.each(select_array, function (i, v) {
-            if (v.find('option').length <= 1) {
-                v.hide();
-            }
-            else {
-                v.show();
-            }
+            v.toggle(v.find('option').length > 0);
         });
     }
 
