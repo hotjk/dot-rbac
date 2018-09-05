@@ -38,5 +38,15 @@ namespace Grit.RBAC.Demo.Web.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public ActionResult LookupLite()
+        {
+            var permissions = RBACService.GetPermissions();
+            var root = TreeService.GetTree(Constants.PERMISSION_TREE_ID);
+            ViewBag.Tree = new UITreeBuilder<Permission>(x => x.Name, x => x.PermissionId)
+                .Build(root, permissions);
+            return View();
+        }
     }
 }

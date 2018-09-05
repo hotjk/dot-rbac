@@ -161,6 +161,7 @@
     <Content Include="Content\jstree\themes\proton\style.min.css" />
     <Content Include="Content\jstree\themes\proton\throbber.gif" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\app\jstree.lookup2lite.js" />
     <Content Include="Scripts\app\jstree.lookup2.js" />
     <Content Include="Scripts\app\jstree.select.js" />
     <Content Include="Scripts\app\jstree.static.js" />
@@ -225,6 +226,7 @@
     <Content Include="Views\Subject\Index.cshtml" />
     <Content Include="Views\Subject\Group.cshtml" />
     <Content Include="Views\Subject\RolePermission.cshtml" />
+    <Content Include="Views\Other\LookupLite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
